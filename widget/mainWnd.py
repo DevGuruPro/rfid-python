@@ -1,7 +1,6 @@
 import sys
 
-from PySide6 import QtCore
-from PySide6.QtGui import Qt, QPainter, QPixmap
+from PySide6.QtGui import Qt
 from PySide6.QtWidgets import QMainWindow, QApplication, QHeaderView, QTableWidget, QTableWidgetItem
 
 from settings import SERIAL_PORT_GPS, BAUD_RATE_GPS
