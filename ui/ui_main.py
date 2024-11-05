@@ -62,14 +62,18 @@ class Ui_MainWindow(object):
         self.tableWidget = QTableWidget(self.widget_45)
         if (self.tableWidget.columnCount() < 3):
             self.tableWidget.setColumnCount(3)
+        font = QFont()
+        font.setPointSize(8)
+        font.setBold(False)
         __qtablewidgetitem = QTableWidgetItem()
+        __qtablewidgetitem.setFont(font);
         self.tableWidget.setHorizontalHeaderItem(0, __qtablewidgetitem)
         __qtablewidgetitem1 = QTableWidgetItem()
         self.tableWidget.setHorizontalHeaderItem(1, __qtablewidgetitem1)
         __qtablewidgetitem2 = QTableWidgetItem()
         self.tableWidget.setHorizontalHeaderItem(2, __qtablewidgetitem2)
-        if (self.tableWidget.rowCount() < 8):
-            self.tableWidget.setRowCount(8)
+        if (self.tableWidget.rowCount() < 6):
+            self.tableWidget.setRowCount(6)
         __qtablewidgetitem3 = QTableWidgetItem()
         self.tableWidget.setVerticalHeaderItem(0, __qtablewidgetitem3)
         __qtablewidgetitem4 = QTableWidgetItem()
@@ -83,38 +87,37 @@ class Ui_MainWindow(object):
         __qtablewidgetitem8 = QTableWidgetItem()
         self.tableWidget.setVerticalHeaderItem(5, __qtablewidgetitem8)
         __qtablewidgetitem9 = QTableWidgetItem()
-        self.tableWidget.setVerticalHeaderItem(6, __qtablewidgetitem9)
+        __qtablewidgetitem9.setFlags(Qt.NoItemFlags);
+        self.tableWidget.setItem(0, 0, __qtablewidgetitem9)
         __qtablewidgetitem10 = QTableWidgetItem()
-        self.tableWidget.setVerticalHeaderItem(7, __qtablewidgetitem10)
+        self.tableWidget.setItem(0, 1, __qtablewidgetitem10)
         __qtablewidgetitem11 = QTableWidgetItem()
-        __qtablewidgetitem11.setFlags(Qt.NoItemFlags);
-        self.tableWidget.setItem(0, 0, __qtablewidgetitem11)
+        self.tableWidget.setItem(0, 2, __qtablewidgetitem11)
         __qtablewidgetitem12 = QTableWidgetItem()
-        self.tableWidget.setItem(0, 1, __qtablewidgetitem12)
-        __qtablewidgetitem13 = QTableWidgetItem()
-        self.tableWidget.setItem(1, 0, __qtablewidgetitem13)
+        self.tableWidget.setItem(1, 0, __qtablewidgetitem12)
         self.tableWidget.setObjectName(u"tableWidget")
-        font = QFont()
-        font.setBold(False)
-        font.setItalic(False)
-        self.tableWidget.setFont(font)
+        font1 = QFont()
+        font1.setBold(False)
+        font1.setItalic(False)
+        self.tableWidget.setFont(font1)
         self.tableWidget.setStyleSheet(u"QTableWidget {  \n"
 "  	 background-color: rgba(40, 40, 40, 180); \n"
 "    gridline-color: #d1d1d1;  \n"
-"    font: 14px;  \n"
+"    font: 24px;\n"
 "}  \n"
 "QHeaderView::section {  \n"
 "    background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1,   \n"
 "                                      stop:0 #777777, stop:1 #000000);\n"
 "    color: white;  \n"
-"    padding: 4px;\n"
-"	font: bold;\n"
+"    padding: 5px;\n"
+"	font: 24px bold;\n"
 "    border: 1px solid #555;  \n"
 "}  \n"
 "QTableWidget::item {\n"
 "	background-color: rgba(40, 40, 40, 150);  \n"
 "	color: white;\n"
-"    border: 1px solid #202020;  \n"
+"    border: 1px solid #202020;\n"
+" 	padding: 5px  \n"
 "}  \n"
 "/*QTableWidget::item:selected {  \n"
 "    background-color: #336699;  \n"
@@ -122,12 +125,13 @@ class Ui_MainWindow(object):
 "} */")
         self.tableWidget.setSelectionMode(QAbstractItemView.NoSelection)
         self.tableWidget.setTextElideMode(Qt.ElideLeft)
+        self.tableWidget.setRowCount(6)
         self.tableWidget.horizontalHeader().setVisible(True)
-        self.tableWidget.horizontalHeader().setMinimumSectionSize(150)
+        self.tableWidget.horizontalHeader().setMinimumSectionSize(100)
         self.tableWidget.horizontalHeader().setDefaultSectionSize(200)
         self.tableWidget.horizontalHeader().setHighlightSections(True)
         self.tableWidget.verticalHeader().setVisible(False)
-        self.tableWidget.verticalHeader().setDefaultSectionSize(30)
+        self.tableWidget.verticalHeader().setDefaultSectionSize(60)
 
         self.verticalLayout_30.addWidget(self.tableWidget)
 
@@ -145,10 +149,10 @@ class Ui_MainWindow(object):
         self.verticalLayout_2.setContentsMargins(0, 0, 0, 0)
         self.label = QLabel(self.widget)
         self.label.setObjectName(u"label")
-        font1 = QFont()
-        font1.setPointSize(10)
-        font1.setBold(True)
-        self.label.setFont(font1)
+        font2 = QFont()
+        font2.setPointSize(10)
+        font2.setBold(True)
+        self.label.setFont(font2)
         self.label.setStyleSheet(u"background-color: orange; \n"
 "padding: 5px;\n"
 "border: 1px solid black;")
@@ -214,7 +218,7 @@ class Ui_MainWindow(object):
         self.verticalLayout_3.setContentsMargins(0, 0, 0, 0)
         self.label_8 = QLabel(self.widget_2)
         self.label_8.setObjectName(u"label_8")
-        self.label_8.setFont(font1)
+        self.label_8.setFont(font2)
         self.label_8.setStyleSheet(u"background-color: orange; \n"
 "padding: 5px;\n"
 "border: 1px solid black;")
@@ -294,7 +298,7 @@ class Ui_MainWindow(object):
         self.gridLayout_4.setContentsMargins(50, -1, 50, -1)
         self.groupBox_2 = QGroupBox(self.widget_3)
         self.groupBox_2.setObjectName(u"groupBox_2")
-        self.groupBox_2.setFont(font1)
+        self.groupBox_2.setFont(font2)
         self.groupBox_2.setStyleSheet(u"QGroupBox::title {  \n"
 "    color: white;  /* Change 'blue' to any color you want */  \n"
 "}")
@@ -313,7 +317,7 @@ class Ui_MainWindow(object):
         self.verticalLayout_13.setContentsMargins(9, 0, 9, 0)
         self.checkBox = QCheckBox(self.widget_8)
         self.checkBox.setObjectName(u"checkBox")
-        self.checkBox.setFont(font1)
+        self.checkBox.setFont(font2)
         self.checkBox.setStyleSheet(u"QCheckBox{\n"
 "	color: white; \n"
 "}")
@@ -342,7 +346,7 @@ class Ui_MainWindow(object):
         self.horizontalLayout_12.setContentsMargins(-1, 0, -1, 0)
         self.radioButton = QRadioButton(self.groupBox_3)
         self.radioButton.setObjectName(u"radioButton")
-        self.radioButton.setFont(font1)
+        self.radioButton.setFont(font2)
         self.radioButton.setStyleSheet(u"QRadioButton{\n"
 "	color: white; \n"
 "}")
@@ -352,7 +356,7 @@ class Ui_MainWindow(object):
 
         self.radioButton_2 = QRadioButton(self.groupBox_3)
         self.radioButton_2.setObjectName(u"radioButton_2")
-        self.radioButton_2.setFont(font1)
+        self.radioButton_2.setFont(font2)
         self.radioButton_2.setStyleSheet(u"QRadioButton{\n"
 "	color: white; \n"
 "}")
@@ -383,7 +387,7 @@ class Ui_MainWindow(object):
         self.verticalLayout_10.setContentsMargins(-1, 0, -1, 0)
         self.label_31 = QLabel(self.widget_11)
         self.label_31.setObjectName(u"label_31")
-        self.label_31.setFont(font1)
+        self.label_31.setFont(font2)
         self.label_31.setStyleSheet(u"QLabel {  \n"
 "    color: white;  /* Change 'blue' to your preferred color */  \n"
 "}  ")
@@ -392,7 +396,7 @@ class Ui_MainWindow(object):
 
         self.label_32 = QLabel(self.widget_11)
         self.label_32.setObjectName(u"label_32")
-        self.label_32.setFont(font1)
+        self.label_32.setFont(font2)
         self.label_32.setStyleSheet(u"QLabel {  \n"
 "    color: white;  /* Change 'blue' to your preferred color */  \n"
 "}  ")
@@ -401,7 +405,7 @@ class Ui_MainWindow(object):
 
         self.label_33 = QLabel(self.widget_11)
         self.label_33.setObjectName(u"label_33")
-        self.label_33.setFont(font1)
+        self.label_33.setFont(font2)
         self.label_33.setStyleSheet(u"QLabel {  \n"
 "    color: white;  /* Change 'blue' to your preferred color */  \n"
 "}  ")
@@ -410,7 +414,7 @@ class Ui_MainWindow(object):
 
         self.label_34 = QLabel(self.widget_11)
         self.label_34.setObjectName(u"label_34")
-        self.label_34.setFont(font1)
+        self.label_34.setFont(font2)
         self.label_34.setStyleSheet(u"QLabel {  \n"
 "    color: white;  /* Change 'blue' to your preferred color */  \n"
 "}  ")
@@ -419,7 +423,7 @@ class Ui_MainWindow(object):
 
         self.label_35 = QLabel(self.widget_11)
         self.label_35.setObjectName(u"label_35")
-        self.label_35.setFont(font1)
+        self.label_35.setFont(font2)
         self.label_35.setStyleSheet(u"QLabel {  \n"
 "    color: white;  /* Change 'blue' to your preferred color */  \n"
 "}  ")
@@ -428,7 +432,7 @@ class Ui_MainWindow(object):
 
         self.label_36 = QLabel(self.widget_11)
         self.label_36.setObjectName(u"label_36")
-        self.label_36.setFont(font1)
+        self.label_36.setFont(font2)
         self.label_36.setStyleSheet(u"QLabel {  \n"
 "    color: white;  /* Change 'blue' to your preferred color */  \n"
 "}  ")
@@ -437,7 +441,7 @@ class Ui_MainWindow(object):
 
         self.label_37 = QLabel(self.widget_11)
         self.label_37.setObjectName(u"label_37")
-        self.label_37.setFont(font1)
+        self.label_37.setFont(font2)
         self.label_37.setStyleSheet(u"QLabel {  \n"
 "    color: white;  /* Change 'blue' to your preferred color */  \n"
 "}  ")
@@ -460,7 +464,7 @@ class Ui_MainWindow(object):
         self.verticalLayout_11.setContentsMargins(-1, 0, -1, 0)
         self.edit_gps_noti = QLineEdit(self.widget_12)
         self.edit_gps_noti.setObjectName(u"edit_gps_noti")
-        self.edit_gps_noti.setFont(font1)
+        self.edit_gps_noti.setFont(font2)
         self.edit_gps_noti.setStyleSheet(u"QLineEdit {  \n"
 "    border: 2px solid gray;  \n"
 "    border-radius: 10px;  \n"
@@ -473,7 +477,7 @@ class Ui_MainWindow(object):
 
         self.edit_gps_hand = QLineEdit(self.widget_12)
         self.edit_gps_hand.setObjectName(u"edit_gps_hand")
-        self.edit_gps_hand.setFont(font1)
+        self.edit_gps_hand.setFont(font2)
         self.edit_gps_hand.setStyleSheet(u"QLineEdit {  \n"
 "    border: 2px solid gray;  \n"
 "    border-radius: 10px;  \n"
@@ -486,7 +490,7 @@ class Ui_MainWindow(object):
 
         self.edit_gps_port = QLineEdit(self.widget_12)
         self.edit_gps_port.setObjectName(u"edit_gps_port")
-        self.edit_gps_port.setFont(font1)
+        self.edit_gps_port.setFont(font2)
         self.edit_gps_port.setStyleSheet(u"QLineEdit {  \n"
 "    border: 2px solid gray;  \n"
 "    border-radius: 10px;  \n"
@@ -499,7 +503,7 @@ class Ui_MainWindow(object):
 
         self.edit_gps_dbits = QLineEdit(self.widget_12)
         self.edit_gps_dbits.setObjectName(u"edit_gps_dbits")
-        self.edit_gps_dbits.setFont(font1)
+        self.edit_gps_dbits.setFont(font2)
         self.edit_gps_dbits.setStyleSheet(u"QLineEdit {  \n"
 "    border: 2px solid gray;  \n"
 "    border-radius: 10px;  \n"
@@ -512,7 +516,7 @@ class Ui_MainWindow(object):
 
         self.edit_gps_sbits = QLineEdit(self.widget_12)
         self.edit_gps_sbits.setObjectName(u"edit_gps_sbits")
-        self.edit_gps_sbits.setFont(font1)
+        self.edit_gps_sbits.setFont(font2)
         self.edit_gps_sbits.setStyleSheet(u"QLineEdit {  \n"
 "    border: 2px solid gray;  \n"
 "    border-radius: 10px;  \n"
@@ -525,7 +529,7 @@ class Ui_MainWindow(object):
 
         self.edit_gps_parity = QLineEdit(self.widget_12)
         self.edit_gps_parity.setObjectName(u"edit_gps_parity")
-        self.edit_gps_parity.setFont(font1)
+        self.edit_gps_parity.setFont(font2)
         self.edit_gps_parity.setStyleSheet(u"QLineEdit {  \n"
 "    border: 2px solid gray;  \n"
 "    border-radius: 10px;  \n"
@@ -538,7 +542,7 @@ class Ui_MainWindow(object):
 
         self.edit_gps_baud = QLineEdit(self.widget_12)
         self.edit_gps_baud.setObjectName(u"edit_gps_baud")
-        self.edit_gps_baud.setFont(font1)
+        self.edit_gps_baud.setFont(font2)
         self.edit_gps_baud.setStyleSheet(u"QLineEdit {  \n"
 "    border: 2px solid gray;  \n"
 "    border-radius: 10px;  \n"
@@ -562,7 +566,7 @@ class Ui_MainWindow(object):
         self.groupBox.setObjectName(u"groupBox")
         sizePolicy2.setHeightForWidth(self.groupBox.sizePolicy().hasHeightForWidth())
         self.groupBox.setSizePolicy(sizePolicy2)
-        self.groupBox.setFont(font1)
+        self.groupBox.setFont(font2)
         self.groupBox.setStyleSheet(u"QGroupBox::title {  \n"
 "    color: white;  /* Change 'blue' to any color you want */  \n"
 "}")
@@ -588,7 +592,7 @@ class Ui_MainWindow(object):
         self.verticalLayout_7.setObjectName(u"verticalLayout_7")
         self.label_15 = QLabel(self.widget_7)
         self.label_15.setObjectName(u"label_15")
-        self.label_15.setFont(font1)
+        self.label_15.setFont(font2)
         self.label_15.setStyleSheet(u"QLabel {  \n"
 "    color: white;  /* Change 'blue' to your preferred color */  \n"
 "}  ")
@@ -597,7 +601,7 @@ class Ui_MainWindow(object):
 
         self.label_24 = QLabel(self.widget_7)
         self.label_24.setObjectName(u"label_24")
-        self.label_24.setFont(font1)
+        self.label_24.setFont(font2)
         self.label_24.setStyleSheet(u"QLabel {  \n"
 "    color: white;  /* Change 'blue' to your preferred color */  \n"
 "}  ")
@@ -606,7 +610,7 @@ class Ui_MainWindow(object):
 
         self.label_25 = QLabel(self.widget_7)
         self.label_25.setObjectName(u"label_25")
-        self.label_25.setFont(font1)
+        self.label_25.setFont(font2)
         self.label_25.setStyleSheet(u"QLabel {  \n"
 "    color: white;  /* Change 'blue' to your preferred color */  \n"
 "}  ")
@@ -615,7 +619,7 @@ class Ui_MainWindow(object):
 
         self.label_26 = QLabel(self.widget_7)
         self.label_26.setObjectName(u"label_26")
-        self.label_26.setFont(font1)
+        self.label_26.setFont(font2)
         self.label_26.setStyleSheet(u"QLabel {  \n"
 "    color: white;  /* Change 'blue' to your preferred color */  \n"
 "}  ")
@@ -624,7 +628,7 @@ class Ui_MainWindow(object):
 
         self.label_27 = QLabel(self.widget_7)
         self.label_27.setObjectName(u"label_27")
-        self.label_27.setFont(font1)
+        self.label_27.setFont(font2)
         self.label_27.setStyleSheet(u"QLabel {  \n"
 "    color: white;  /* Change 'blue' to your preferred color */  \n"
 "}  ")
@@ -633,7 +637,7 @@ class Ui_MainWindow(object):
 
         self.label_28 = QLabel(self.widget_7)
         self.label_28.setObjectName(u"label_28")
-        self.label_28.setFont(font1)
+        self.label_28.setFont(font2)
         self.label_28.setStyleSheet(u"QLabel {  \n"
 "    color: white;  /* Change 'blue' to your preferred color */  \n"
 "}  ")
@@ -642,7 +646,7 @@ class Ui_MainWindow(object):
 
         self.label_29 = QLabel(self.widget_7)
         self.label_29.setObjectName(u"label_29")
-        self.label_29.setFont(font1)
+        self.label_29.setFont(font2)
         self.label_29.setStyleSheet(u"QLabel {  \n"
 "    color: white;  /* Change 'blue' to your preferred color */  \n"
 "}  ")
@@ -651,7 +655,7 @@ class Ui_MainWindow(object):
 
         self.label_30 = QLabel(self.widget_7)
         self.label_30.setObjectName(u"label_30")
-        self.label_30.setFont(font1)
+        self.label_30.setFont(font2)
         self.label_30.setStyleSheet(u"QLabel {  \n"
 "    color: white;  /* Change 'blue' to your preferred color */  \n"
 "}  ")
@@ -670,7 +674,7 @@ class Ui_MainWindow(object):
         self.verticalLayout_8.setObjectName(u"verticalLayout_8")
         self.edit_rfid_noti = QLineEdit(self.widget_6)
         self.edit_rfid_noti.setObjectName(u"edit_rfid_noti")
-        self.edit_rfid_noti.setFont(font1)
+        self.edit_rfid_noti.setFont(font2)
         self.edit_rfid_noti.setStyleSheet(u"QLineEdit {  \n"
 "    border: 2px solid gray;  \n"
 "    border-radius: 10px;  \n"
@@ -683,7 +687,7 @@ class Ui_MainWindow(object):
 
         self.edit_rfid_host = QLineEdit(self.widget_6)
         self.edit_rfid_host.setObjectName(u"edit_rfid_host")
-        self.edit_rfid_host.setFont(font1)
+        self.edit_rfid_host.setFont(font2)
         self.edit_rfid_host.setStyleSheet(u"QLineEdit {  \n"
 "    border: 2px solid gray;  \n"
 "    border-radius: 10px;  \n"
@@ -696,7 +700,7 @@ class Ui_MainWindow(object):
 
         self.edit_rfid_ras1 = QLineEdit(self.widget_6)
         self.edit_rfid_ras1.setObjectName(u"edit_rfid_ras1")
-        self.edit_rfid_ras1.setFont(font1)
+        self.edit_rfid_ras1.setFont(font2)
         self.edit_rfid_ras1.setStyleSheet(u"QLineEdit {  \n"
 "    border: 2px solid gray;  \n"
 "    border-radius: 10px;  \n"
@@ -709,7 +713,7 @@ class Ui_MainWindow(object):
 
         self.edit_rfid_ras2 = QLineEdit(self.widget_6)
         self.edit_rfid_ras2.setObjectName(u"edit_rfid_ras2")
-        self.edit_rfid_ras2.setFont(font1)
+        self.edit_rfid_ras2.setFont(font2)
         self.edit_rfid_ras2.setStyleSheet(u"QLineEdit {  \n"
 "    border: 2px solid gray;  \n"
 "    border-radius: 10px;  \n"
@@ -722,7 +726,7 @@ class Ui_MainWindow(object):
 
         self.edit_rfid_las1 = QLineEdit(self.widget_6)
         self.edit_rfid_las1.setObjectName(u"edit_rfid_las1")
-        self.edit_rfid_las1.setFont(font1)
+        self.edit_rfid_las1.setFont(font2)
         self.edit_rfid_las1.setStyleSheet(u"QLineEdit {  \n"
 "    border: 2px solid gray;  \n"
 "    border-radius: 10px;  \n"
@@ -735,7 +739,7 @@ class Ui_MainWindow(object):
 
         self.edit_rfid_las2 = QLineEdit(self.widget_6)
         self.edit_rfid_las2.setObjectName(u"edit_rfid_las2")
-        self.edit_rfid_las2.setFont(font1)
+        self.edit_rfid_las2.setFont(font2)
         self.edit_rfid_las2.setStyleSheet(u"QLineEdit {  \n"
 "    border: 2px solid gray;  \n"
 "    border-radius: 10px;  \n"
@@ -748,7 +752,7 @@ class Ui_MainWindow(object):
 
         self.edit_rfid_ra1 = QLineEdit(self.widget_6)
         self.edit_rfid_ra1.setObjectName(u"edit_rfid_ra1")
-        self.edit_rfid_ra1.setFont(font1)
+        self.edit_rfid_ra1.setFont(font2)
         self.edit_rfid_ra1.setStyleSheet(u"QLineEdit {  \n"
 "    border: 2px solid gray;  \n"
 "    border-radius: 10px;  \n"
@@ -761,7 +765,7 @@ class Ui_MainWindow(object):
 
         self.edit_rfid_ra2 = QLineEdit(self.widget_6)
         self.edit_rfid_ra2.setObjectName(u"edit_rfid_ra2")
-        self.edit_rfid_ra2.setFont(font1)
+        self.edit_rfid_ra2.setFont(font2)
         self.edit_rfid_ra2.setStyleSheet(u"QLineEdit {  \n"
 "    border: 2px solid gray;  \n"
 "    border-radius: 10px;  \n"
@@ -791,10 +795,10 @@ class Ui_MainWindow(object):
         self.verticalLayout_16.setContentsMargins(0, 0, 0, 0)
         self.checkBox_4 = QCheckBox(self.widget_20)
         self.checkBox_4.setObjectName(u"checkBox_4")
-        font2 = QFont()
-        font2.setPointSize(10)
-        font2.setBold(False)
-        self.checkBox_4.setFont(font2)
+        font3 = QFont()
+        font3.setPointSize(10)
+        font3.setBold(False)
+        self.checkBox_4.setFont(font3)
         self.checkBox_4.setStyleSheet(u"QCheckBox{\n"
 "	color:white;\n"
 "}")
@@ -823,7 +827,7 @@ class Ui_MainWindow(object):
         self.label_42.setObjectName(u"label_42")
         sizePolicy1.setHeightForWidth(self.label_42.sizePolicy().hasHeightForWidth())
         self.label_42.setSizePolicy(sizePolicy1)
-        self.label_42.setFont(font2)
+        self.label_42.setFont(font3)
         self.label_42.setStyleSheet(u"QLabel {  \n"
 "    color: white;  /* Change 'blue' to your preferred color */  \n"
 "}  ")
@@ -834,7 +838,7 @@ class Ui_MainWindow(object):
         self.label_43.setObjectName(u"label_43")
         sizePolicy1.setHeightForWidth(self.label_43.sizePolicy().hasHeightForWidth())
         self.label_43.setSizePolicy(sizePolicy1)
-        self.label_43.setFont(font2)
+        self.label_43.setFont(font3)
         self.label_43.setStyleSheet(u"QLabel {  \n"
 "    color: white;  /* Change 'blue' to your preferred color */  \n"
 "}  ")
@@ -852,7 +856,7 @@ class Ui_MainWindow(object):
         self.verticalLayout_19.setContentsMargins(0, 0, 0, 0)
         self.setting_start_tag = QLineEdit(self.widget_23)
         self.setting_start_tag.setObjectName(u"setting_start_tag")
-        self.setting_start_tag.setFont(font2)
+        self.setting_start_tag.setFont(font3)
         self.setting_start_tag.setStyleSheet(u"QLineEdit {  \n"
 "    border: 2px solid gray;  \n"
 "    border-radius: 10px;  \n"
@@ -865,7 +869,7 @@ class Ui_MainWindow(object):
 
         self.setting_end_tag = QLineEdit(self.widget_23)
         self.setting_end_tag.setObjectName(u"setting_end_tag")
-        self.setting_end_tag.setFont(font2)
+        self.setting_end_tag.setFont(font3)
         self.setting_end_tag.setStyleSheet(u"QLineEdit {  \n"
 "    border: 2px solid gray;  \n"
 "    border-radius: 10px;  \n"
@@ -888,7 +892,7 @@ class Ui_MainWindow(object):
         self.verticalLayout_18.setObjectName(u"verticalLayout_18")
         self.setting_save_btn = QPushButton(self.widget_25)
         self.setting_save_btn.setObjectName(u"setting_save_btn")
-        self.setting_save_btn.setFont(font1)
+        self.setting_save_btn.setFont(font2)
         self.setting_save_btn.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
         self.setting_save_btn.setStyleSheet(u"QPushButton {\n"
 "	background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1,   \n"
@@ -932,7 +936,7 @@ class Ui_MainWindow(object):
         self.verticalLayout_15.setContentsMargins(0, 0, 0, 0)
         self.checkBox_3 = QCheckBox(self.widget_16)
         self.checkBox_3.setObjectName(u"checkBox_3")
-        self.checkBox_3.setFont(font2)
+        self.checkBox_3.setFont(font3)
         self.checkBox_3.setStyleSheet(u"QCheckBox{\n"
 "	color:white;\n"
 "}")
@@ -955,7 +959,7 @@ class Ui_MainWindow(object):
         self.horizontalLayout_16.setContentsMargins(0, 0, 0, 0)
         self.label_40 = QLabel(self.widget_18)
         self.label_40.setObjectName(u"label_40")
-        self.label_40.setFont(font2)
+        self.label_40.setFont(font3)
         self.label_40.setStyleSheet(u"QLabel {  \n"
 "    color: white;  /* Change 'blue' to your preferred color */  \n"
 "}  ")
@@ -964,7 +968,7 @@ class Ui_MainWindow(object):
 
         self.setting_min_speed = QLineEdit(self.widget_18)
         self.setting_min_speed.setObjectName(u"setting_min_speed")
-        self.setting_min_speed.setFont(font2)
+        self.setting_min_speed.setFont(font3)
         self.setting_min_speed.setStyleSheet(u"QLineEdit {  \n"
 "    border: 2px solid gray;  \n"
 "    border-radius: 10px;  \n"
@@ -986,7 +990,7 @@ class Ui_MainWindow(object):
         self.horizontalLayout_17.setObjectName(u"horizontalLayout_17")
         self.label_41 = QLabel(self.widget_19)
         self.label_41.setObjectName(u"label_41")
-        self.label_41.setFont(font2)
+        self.label_41.setFont(font3)
         self.label_41.setStyleSheet(u"QLabel {  \n"
 "    color: white;  /* Change 'blue' to your preferred color */  \n"
 "}  ")
@@ -995,7 +999,7 @@ class Ui_MainWindow(object):
 
         self.setting_max_speed = QLineEdit(self.widget_19)
         self.setting_max_speed.setObjectName(u"setting_max_speed")
-        self.setting_max_speed.setFont(font2)
+        self.setting_max_speed.setFont(font3)
         self.setting_max_speed.setStyleSheet(u"QLineEdit {  \n"
 "    border: 2px solid gray;  \n"
 "    border-radius: 10px;  \n"
@@ -1023,7 +1027,7 @@ class Ui_MainWindow(object):
         self.verticalLayout_14.setContentsMargins(0, 0, 0, 0)
         self.checkBox_2 = QCheckBox(self.widget_5)
         self.checkBox_2.setObjectName(u"checkBox_2")
-        self.checkBox_2.setFont(font2)
+        self.checkBox_2.setFont(font3)
         self.checkBox_2.setStyleSheet(u"QCheckBox{\n"
 "	color:white;\n"
 "}")
@@ -1045,7 +1049,7 @@ class Ui_MainWindow(object):
         self.horizontalLayout.setObjectName(u"horizontalLayout")
         self.label_38 = QLabel(self.widget_13)
         self.label_38.setObjectName(u"label_38")
-        self.label_38.setFont(font2)
+        self.label_38.setFont(font3)
         self.label_38.setStyleSheet(u"QLabel {  \n"
 "    color: white;  /* Change 'blue' to your preferred color */  \n"
 "}  ")
@@ -1054,7 +1058,7 @@ class Ui_MainWindow(object):
 
         self.setting_min_rssi = QLineEdit(self.widget_13)
         self.setting_min_rssi.setObjectName(u"setting_min_rssi")
-        self.setting_min_rssi.setFont(font2)
+        self.setting_min_rssi.setFont(font3)
         self.setting_min_rssi.setStyleSheet(u"QLineEdit {  \n"
 "    border: 2px solid gray;  \n"
 "    border-radius: 10px;  \n"
@@ -1076,7 +1080,7 @@ class Ui_MainWindow(object):
         self.horizontalLayout_14.setObjectName(u"horizontalLayout_14")
         self.label_39 = QLabel(self.widget_15)
         self.label_39.setObjectName(u"label_39")
-        self.label_39.setFont(font2)
+        self.label_39.setFont(font3)
         self.label_39.setStyleSheet(u"QLabel {  \n"
 "    color: white;  /* Change 'blue' to your preferred color */  \n"
 "}  ")
@@ -1085,7 +1089,7 @@ class Ui_MainWindow(object):
 
         self.setting_max_rssi = QLineEdit(self.widget_15)
         self.setting_max_rssi.setObjectName(u"setting_max_rssi")
-        self.setting_max_rssi.setFont(font2)
+        self.setting_max_rssi.setFont(font3)
         self.setting_max_rssi.setStyleSheet(u"QLineEdit {  \n"
 "    border: 2px solid gray;  \n"
 "    border-radius: 10px;  \n"
@@ -1132,7 +1136,7 @@ class Ui_MainWindow(object):
         self.verticalLayout_4.setContentsMargins(20, 10, 20, 10)
         self.widget_35 = QWidget(self.widget_27)
         self.widget_35.setObjectName(u"widget_35")
-        self.widget_35.setFont(font1)
+        self.widget_35.setFont(font2)
         self.horizontalLayout_29 = QHBoxLayout(self.widget_35)
         self.horizontalLayout_29.setSpacing(0)
         self.horizontalLayout_29.setObjectName(u"horizontalLayout_29")
@@ -1141,10 +1145,7 @@ class Ui_MainWindow(object):
         self.label_48.setObjectName(u"label_48")
         sizePolicy.setHeightForWidth(self.label_48.sizePolicy().hasHeightForWidth())
         self.label_48.setSizePolicy(sizePolicy)
-        font3 = QFont()
-        font3.setPointSize(8)
-        font3.setBold(False)
-        self.label_48.setFont(font3)
+        self.label_48.setFont(font)
         self.label_48.setStyleSheet(u"QWidget{\n"
 "	color: white;\n"
 "}")
@@ -1157,7 +1158,7 @@ class Ui_MainWindow(object):
 
         self.widget_26 = QWidget(self.widget_27)
         self.widget_26.setObjectName(u"widget_26")
-        self.widget_26.setFont(font1)
+        self.widget_26.setFont(font2)
         self.widget_26.setStyleSheet(u"QWidget{\n"
 "	color: white;\n"
 "}")
@@ -1186,7 +1187,7 @@ class Ui_MainWindow(object):
         sizePolicy4.setVerticalStretch(0)
         sizePolicy4.setHeightForWidth(self.radio_api_default.sizePolicy().hasHeightForWidth())
         self.radio_api_default.setSizePolicy(sizePolicy4)
-        self.radio_api_default.setFont(font1)
+        self.radio_api_default.setFont(font2)
         self.radio_api_default.setChecked(True)
 
         self.horizontalLayout_28.addWidget(self.radio_api_default)
@@ -1195,7 +1196,7 @@ class Ui_MainWindow(object):
         self.radio_api_custom.setObjectName(u"radio_api_custom")
         sizePolicy4.setHeightForWidth(self.radio_api_custom.sizePolicy().hasHeightForWidth())
         self.radio_api_custom.setSizePolicy(sizePolicy4)
-        self.radio_api_custom.setFont(font1)
+        self.radio_api_custom.setFont(font2)
 
         self.horizontalLayout_28.addWidget(self.radio_api_custom)
 
@@ -1203,7 +1204,7 @@ class Ui_MainWindow(object):
         self.radio_api_both.setObjectName(u"radio_api_both")
         sizePolicy4.setHeightForWidth(self.radio_api_both.sizePolicy().hasHeightForWidth())
         self.radio_api_both.setSizePolicy(sizePolicy4)
-        self.radio_api_both.setFont(font1)
+        self.radio_api_both.setFont(font2)
 
         self.horizontalLayout_28.addWidget(self.radio_api_both)
 
@@ -1222,7 +1223,7 @@ class Ui_MainWindow(object):
 
         self.widget_29 = QWidget(self.widget_27)
         self.widget_29.setObjectName(u"widget_29")
-        self.widget_29.setFont(font1)
+        self.widget_29.setFont(font2)
         self.horizontalLayout_22 = QHBoxLayout(self.widget_29)
         self.horizontalLayout_22.setSpacing(0)
         self.horizontalLayout_22.setObjectName(u"horizontalLayout_22")
@@ -1231,7 +1232,7 @@ class Ui_MainWindow(object):
         self.label_44.setObjectName(u"label_44")
         sizePolicy.setHeightForWidth(self.label_44.sizePolicy().hasHeightForWidth())
         self.label_44.setSizePolicy(sizePolicy)
-        self.label_44.setFont(font1)
+        self.label_44.setFont(font2)
         self.label_44.setStyleSheet(u"QWidget{\n"
 "	color: white;\n"
 "}")
@@ -1244,7 +1245,7 @@ class Ui_MainWindow(object):
 
         self.widget_28 = QWidget(self.widget_27)
         self.widget_28.setObjectName(u"widget_28")
-        self.widget_28.setFont(font1)
+        self.widget_28.setFont(font2)
         self.widget_28.setStyleSheet(u"QWidget{\n"
 "	color: white;\n"
 "}")
@@ -1267,7 +1268,7 @@ class Ui_MainWindow(object):
         self.radio_login_basic.setObjectName(u"radio_login_basic")
         sizePolicy4.setHeightForWidth(self.radio_login_basic.sizePolicy().hasHeightForWidth())
         self.radio_login_basic.setSizePolicy(sizePolicy4)
-        self.radio_login_basic.setFont(font1)
+        self.radio_login_basic.setFont(font2)
         self.radio_login_basic.setChecked(True)
 
         self.horizontalLayout_27.addWidget(self.radio_login_basic)
@@ -1276,7 +1277,7 @@ class Ui_MainWindow(object):
         self.radio_login_token.setObjectName(u"radio_login_token")
         sizePolicy4.setHeightForWidth(self.radio_login_token.sizePolicy().hasHeightForWidth())
         self.radio_login_token.setSizePolicy(sizePolicy4)
-        self.radio_login_token.setFont(font1)
+        self.radio_login_token.setFont(font2)
 
         self.horizontalLayout_27.addWidget(self.radio_login_token)
 
@@ -1303,7 +1304,7 @@ class Ui_MainWindow(object):
         self.horizontalLayout_23.setContentsMargins(0, 0, 0, 0)
         self.label_45 = QLabel(self.widget_31)
         self.label_45.setObjectName(u"label_45")
-        self.label_45.setFont(font1)
+        self.label_45.setFont(font2)
         self.label_45.setStyleSheet(u"color: white;")
         self.label_45.setAlignment(Qt.AlignCenter)
 
@@ -1311,7 +1312,7 @@ class Ui_MainWindow(object):
 
         self.edit_username = QLineEdit(self.widget_31)
         self.edit_username.setObjectName(u"edit_username")
-        self.edit_username.setFont(font1)
+        self.edit_username.setFont(font2)
         self.edit_username.setStyleSheet(u"QLineEdit {  \n"
 "    border: 2px solid gray;  \n"
 "    border-radius: 10px;  \n"
@@ -1333,7 +1334,7 @@ class Ui_MainWindow(object):
         self.horizontalLayout_24.setContentsMargins(0, 0, 0, 0)
         self.label_46 = QLabel(self.widget_32)
         self.label_46.setObjectName(u"label_46")
-        self.label_46.setFont(font1)
+        self.label_46.setFont(font2)
         self.label_46.setStyleSheet(u"color: white;")
         self.label_46.setAlignment(Qt.AlignCenter)
 
@@ -1341,7 +1342,7 @@ class Ui_MainWindow(object):
 
         self.edit_password = QLineEdit(self.widget_32)
         self.edit_password.setObjectName(u"edit_password")
-        self.edit_password.setFont(font1)
+        self.edit_password.setFont(font2)
         self.edit_password.setStyleSheet(u"QLineEdit {  \n"
 "    border: 2px solid gray;  \n"
 "    border-radius: 10px;  \n"
@@ -1364,7 +1365,7 @@ class Ui_MainWindow(object):
         self.horizontalLayout_25.setContentsMargins(0, 0, 0, 0)
         self.label_47 = QLabel(self.widget_33)
         self.label_47.setObjectName(u"label_47")
-        self.label_47.setFont(font1)
+        self.label_47.setFont(font2)
         self.label_47.setStyleSheet(u"color: white;")
         self.label_47.setAlignment(Qt.AlignCenter)
 
@@ -1373,7 +1374,7 @@ class Ui_MainWindow(object):
         self.edit_url = QLineEdit(self.widget_33)
         self.edit_url.setObjectName(u"edit_url")
         self.edit_url.setMinimumSize(QSize(200, 0))
-        self.edit_url.setFont(font1)
+        self.edit_url.setFont(font2)
         self.edit_url.setStyleSheet(u"QLineEdit {  \n"
 "    border: 2px solid gray;  \n"
 "    border-radius: 10px;  \n"
@@ -1392,14 +1393,14 @@ class Ui_MainWindow(object):
 
         self.widget_34 = QWidget(self.widget_27)
         self.widget_34.setObjectName(u"widget_34")
-        self.widget_34.setFont(font1)
+        self.widget_34.setFont(font2)
         self.horizontalLayout_33 = QHBoxLayout(self.widget_34)
         self.horizontalLayout_33.setSpacing(20)
         self.horizontalLayout_33.setObjectName(u"horizontalLayout_33")
         self.horizontalLayout_33.setContentsMargins(0, 0, 0, 0)
         self.groupBox_6 = QGroupBox(self.widget_34)
         self.groupBox_6.setObjectName(u"groupBox_6")
-        self.groupBox_6.setFont(font1)
+        self.groupBox_6.setFont(font2)
         self.groupBox_6.setStyleSheet(u"#groupBox_6{\n"
 "	color: white;\n"
 "	border: 2px solid white;\n"
@@ -1412,7 +1413,7 @@ class Ui_MainWindow(object):
         self.verticalLayout_22.setObjectName(u"verticalLayout_22")
         self.label_51 = QLabel(self.widget_38)
         self.label_51.setObjectName(u"label_51")
-        self.label_51.setFont(font1)
+        self.label_51.setFont(font2)
         self.label_51.setStyleSheet(u"QLabel {  \n"
 "    color: white;  /* Change 'blue' to your preferred color */  \n"
 "}  ")
@@ -1421,7 +1422,7 @@ class Ui_MainWindow(object):
 
         self.label_52 = QLabel(self.widget_38)
         self.label_52.setObjectName(u"label_52")
-        self.label_52.setFont(font1)
+        self.label_52.setFont(font2)
         self.label_52.setStyleSheet(u"QLabel {  \n"
 "    color: white;  /* Change 'blue' to your preferred color */  \n"
 "}  ")
@@ -1430,7 +1431,7 @@ class Ui_MainWindow(object):
 
         self.label_53 = QLabel(self.widget_38)
         self.label_53.setObjectName(u"label_53")
-        self.label_53.setFont(font1)
+        self.label_53.setFont(font2)
         self.label_53.setStyleSheet(u"QLabel {  \n"
 "    color: white;  /* Change 'blue' to your preferred color */  \n"
 "}  ")
@@ -1439,7 +1440,7 @@ class Ui_MainWindow(object):
 
         self.label_54 = QLabel(self.widget_38)
         self.label_54.setObjectName(u"label_54")
-        self.label_54.setFont(font1)
+        self.label_54.setFont(font2)
         self.label_54.setStyleSheet(u"QLabel {  \n"
 "    color: white;  /* Change 'blue' to your preferred color */  \n"
 "}  ")
@@ -1448,7 +1449,7 @@ class Ui_MainWindow(object):
 
         self.label_55 = QLabel(self.widget_38)
         self.label_55.setObjectName(u"label_55")
-        self.label_55.setFont(font1)
+        self.label_55.setFont(font2)
         self.label_55.setStyleSheet(u"QLabel {  \n"
 "    color: white;  /* Change 'blue' to your preferred color */  \n"
 "}  ")
@@ -1457,7 +1458,7 @@ class Ui_MainWindow(object):
 
         self.label_56 = QLabel(self.widget_38)
         self.label_56.setObjectName(u"label_56")
-        self.label_56.setFont(font1)
+        self.label_56.setFont(font2)
         self.label_56.setStyleSheet(u"QLabel {  \n"
 "    color: white;  /* Change 'blue' to your preferred color */  \n"
 "}  ")
@@ -1473,7 +1474,7 @@ class Ui_MainWindow(object):
         self.verticalLayout_23.setObjectName(u"verticalLayout_23")
         self.edit_api_tag = QLineEdit(self.widget_39)
         self.edit_api_tag.setObjectName(u"edit_api_tag")
-        self.edit_api_tag.setFont(font1)
+        self.edit_api_tag.setFont(font2)
         self.edit_api_tag.setStyleSheet(u"QLineEdit {  \n"
 "    border: 2px solid gray;  \n"
 "    border-radius: 10px;  \n"
@@ -1486,7 +1487,7 @@ class Ui_MainWindow(object):
 
         self.edit_api_ant = QLineEdit(self.widget_39)
         self.edit_api_ant.setObjectName(u"edit_api_ant")
-        self.edit_api_ant.setFont(font1)
+        self.edit_api_ant.setFont(font2)
         self.edit_api_ant.setStyleSheet(u"QLineEdit {  \n"
 "    border: 2px solid gray;  \n"
 "    border-radius: 10px;  \n"
@@ -1499,7 +1500,7 @@ class Ui_MainWindow(object):
 
         self.edit_api_lat = QLineEdit(self.widget_39)
         self.edit_api_lat.setObjectName(u"edit_api_lat")
-        self.edit_api_lat.setFont(font1)
+        self.edit_api_lat.setFont(font2)
         self.edit_api_lat.setStyleSheet(u"QLineEdit {  \n"
 "    border: 2px solid gray;  \n"
 "    border-radius: 10px;  \n"
@@ -1512,7 +1513,7 @@ class Ui_MainWindow(object):
 
         self.edit_api_lng = QLineEdit(self.widget_39)
         self.edit_api_lng.setObjectName(u"edit_api_lng")
-        self.edit_api_lng.setFont(font1)
+        self.edit_api_lng.setFont(font2)
         self.edit_api_lng.setStyleSheet(u"QLineEdit {  \n"
 "    border: 2px solid gray;  \n"
 "    border-radius: 10px;  \n"
@@ -1525,7 +1526,7 @@ class Ui_MainWindow(object):
 
         self.edit_api_heading = QLineEdit(self.widget_39)
         self.edit_api_heading.setObjectName(u"edit_api_heading")
-        self.edit_api_heading.setFont(font1)
+        self.edit_api_heading.setFont(font2)
         self.edit_api_heading.setStyleSheet(u"QLineEdit {  \n"
 "    border: 2px solid gray;  \n"
 "    border-radius: 10px;  \n"
@@ -1538,7 +1539,7 @@ class Ui_MainWindow(object):
 
         self.edit_api_speed = QLineEdit(self.widget_39)
         self.edit_api_speed.setObjectName(u"edit_api_speed")
-        self.edit_api_speed.setFont(font1)
+        self.edit_api_speed.setFont(font2)
         self.edit_api_speed.setStyleSheet(u"QLineEdit {  \n"
 "    border: 2px solid gray;  \n"
 "    border-radius: 10px;  \n"
@@ -1557,7 +1558,7 @@ class Ui_MainWindow(object):
 
         self.groupBox_7 = QGroupBox(self.widget_34)
         self.groupBox_7.setObjectName(u"groupBox_7")
-        self.groupBox_7.setFont(font1)
+        self.groupBox_7.setFont(font2)
         self.groupBox_7.setStyleSheet(u"#groupBox_7{\n"
 "	color: white;\n"
 "	border: 2px solid white;\n"
@@ -1575,7 +1576,7 @@ class Ui_MainWindow(object):
         self.label_59.setObjectName(u"label_59")
         sizePolicy.setHeightForWidth(self.label_59.sizePolicy().hasHeightForWidth())
         self.label_59.setSizePolicy(sizePolicy)
-        self.label_59.setFont(font1)
+        self.label_59.setFont(font2)
         self.label_59.setStyleSheet(u"QLabel {  \n"
 "    color: white;  /* Change 'blue' to your preferred color */  \n"
 "}  ")
@@ -1584,7 +1585,7 @@ class Ui_MainWindow(object):
 
         self.edit_api_rssi = QLineEdit(self.widget_43)
         self.edit_api_rssi.setObjectName(u"edit_api_rssi")
-        self.edit_api_rssi.setFont(font1)
+        self.edit_api_rssi.setFont(font2)
         self.edit_api_rssi.setStyleSheet(u"QLineEdit {  \n"
 "    border: 2px solid gray;  \n"
 "    border-radius: 10px;  \n"
@@ -1629,7 +1630,7 @@ class Ui_MainWindow(object):
         self.label_57.setObjectName(u"label_57")
         sizePolicy.setHeightForWidth(self.label_57.sizePolicy().hasHeightForWidth())
         self.label_57.setSizePolicy(sizePolicy)
-        self.label_57.setFont(font1)
+        self.label_57.setFont(font2)
         self.label_57.setStyleSheet(u"QLabel {  \n"
 "    color: white;  /* Change 'blue' to your preferred color */  \n"
 "}  ")
@@ -1638,7 +1639,7 @@ class Ui_MainWindow(object):
 
         self.edit_api_heading_3 = QLineEdit(self.widget_40)
         self.edit_api_heading_3.setObjectName(u"edit_api_heading_3")
-        self.edit_api_heading_3.setFont(font1)
+        self.edit_api_heading_3.setFont(font2)
         self.edit_api_heading_3.setStyleSheet(u"QLineEdit {  \n"
 "    border: 2px solid gray;  \n"
 "    border-radius: 10px;  \n"
@@ -1651,7 +1652,7 @@ class Ui_MainWindow(object):
 
         self.edit_api_heading_2 = QLineEdit(self.widget_40)
         self.edit_api_heading_2.setObjectName(u"edit_api_heading_2")
-        self.edit_api_heading_2.setFont(font1)
+        self.edit_api_heading_2.setFont(font2)
         self.edit_api_heading_2.setStyleSheet(u"QLineEdit {  \n"
 "    border: 2px solid gray;  \n"
 "    border-radius: 10px;  \n"
@@ -1664,7 +1665,7 @@ class Ui_MainWindow(object):
 
         self.edit_api_heading_4 = QLineEdit(self.widget_40)
         self.edit_api_heading_4.setObjectName(u"edit_api_heading_4")
-        self.edit_api_heading_4.setFont(font1)
+        self.edit_api_heading_4.setFont(font2)
         self.edit_api_heading_4.setStyleSheet(u"QLineEdit {  \n"
 "    border: 2px solid gray;  \n"
 "    border-radius: 10px;  \n"
@@ -1677,7 +1678,7 @@ class Ui_MainWindow(object):
 
         self.edit_api_lng_2 = QLineEdit(self.widget_40)
         self.edit_api_lng_2.setObjectName(u"edit_api_lng_2")
-        self.edit_api_lng_2.setFont(font1)
+        self.edit_api_lng_2.setFont(font2)
         self.edit_api_lng_2.setStyleSheet(u"QLineEdit {  \n"
 "    border: 2px solid gray;  \n"
 "    border-radius: 10px;  \n"
@@ -1699,7 +1700,7 @@ class Ui_MainWindow(object):
         self.label_63.setObjectName(u"label_63")
         sizePolicy.setHeightForWidth(self.label_63.sizePolicy().hasHeightForWidth())
         self.label_63.setSizePolicy(sizePolicy)
-        self.label_63.setFont(font1)
+        self.label_63.setFont(font2)
         self.label_63.setStyleSheet(u"QLabel {  \n"
 "    color: white;  /* Change 'blue' to your preferred color */  \n"
 "}  ")
@@ -1708,7 +1709,7 @@ class Ui_MainWindow(object):
 
         self.edit_api_heading_5 = QLineEdit(self.widget_41)
         self.edit_api_heading_5.setObjectName(u"edit_api_heading_5")
-        self.edit_api_heading_5.setFont(font1)
+        self.edit_api_heading_5.setFont(font2)
         self.edit_api_heading_5.setStyleSheet(u"QLineEdit {  \n"
 "    border: 2px solid gray;  \n"
 "    border-radius: 10px;  \n"
@@ -1721,7 +1722,7 @@ class Ui_MainWindow(object):
 
         self.edit_api_ant_2 = QLineEdit(self.widget_41)
         self.edit_api_ant_2.setObjectName(u"edit_api_ant_2")
-        self.edit_api_ant_2.setFont(font1)
+        self.edit_api_ant_2.setFont(font2)
         self.edit_api_ant_2.setStyleSheet(u"QLineEdit {  \n"
 "    border: 2px solid gray;  \n"
 "    border-radius: 10px;  \n"
@@ -1734,7 +1735,7 @@ class Ui_MainWindow(object):
 
         self.edit_api_lat_2 = QLineEdit(self.widget_41)
         self.edit_api_lat_2.setObjectName(u"edit_api_lat_2")
-        self.edit_api_lat_2.setFont(font1)
+        self.edit_api_lat_2.setFont(font2)
         self.edit_api_lat_2.setStyleSheet(u"QLineEdit {  \n"
 "    border: 2px solid gray;  \n"
 "    border-radius: 10px;  \n"
@@ -1747,7 +1748,7 @@ class Ui_MainWindow(object):
 
         self.edit_api_speed_2 = QLineEdit(self.widget_41)
         self.edit_api_speed_2.setObjectName(u"edit_api_speed_2")
-        self.edit_api_speed_2.setFont(font1)
+        self.edit_api_speed_2.setFont(font2)
         self.edit_api_speed_2.setStyleSheet(u"QLineEdit {  \n"
 "    border: 2px solid gray;  \n"
 "    border-radius: 10px;  \n"
@@ -1839,19 +1840,15 @@ class Ui_MainWindow(object):
         ___qtablewidgetitem7.setText(QCoreApplication.translate("MainWindow", u"4", None));
         ___qtablewidgetitem8 = self.tableWidget.verticalHeaderItem(5)
         ___qtablewidgetitem8.setText(QCoreApplication.translate("MainWindow", u"5", None));
-        ___qtablewidgetitem9 = self.tableWidget.verticalHeaderItem(6)
-        ___qtablewidgetitem9.setText(QCoreApplication.translate("MainWindow", u"6", None));
-        ___qtablewidgetitem10 = self.tableWidget.verticalHeaderItem(7)
-        ___qtablewidgetitem10.setText(QCoreApplication.translate("MainWindow", u"8", None));
 
         __sortingEnabled = self.tableWidget.isSortingEnabled()
         self.tableWidget.setSortingEnabled(False)
-        ___qtablewidgetitem11 = self.tableWidget.item(0, 0)
-        ___qtablewidgetitem11.setText(QCoreApplication.translate("MainWindow", u"sadfasdfasdf", None));
-        ___qtablewidgetitem12 = self.tableWidget.item(0, 1)
-        ___qtablewidgetitem12.setText(QCoreApplication.translate("MainWindow", u"0 0", None));
-        ___qtablewidgetitem13 = self.tableWidget.item(1, 0)
-        ___qtablewidgetitem13.setText(QCoreApplication.translate("MainWindow", u"a", None));
+        ___qtablewidgetitem9 = self.tableWidget.item(0, 0)
+        ___qtablewidgetitem9.setText(QCoreApplication.translate("MainWindow", u"004837065827700000000333 - 1", None));
+        ___qtablewidgetitem10 = self.tableWidget.item(0, 1)
+        ___qtablewidgetitem10.setText(QCoreApplication.translate("MainWindow", u"0 0", None));
+        ___qtablewidgetitem11 = self.tableWidget.item(0, 2)
+        ___qtablewidgetitem11.setText(QCoreApplication.translate("MainWindow", u"5/20/2024 11:09:35 PM", None));
         self.tableWidget.setSortingEnabled(__sortingEnabled)
 
         self.label.setText(QCoreApplication.translate("MainWindow", u"RFID Health Status", None))

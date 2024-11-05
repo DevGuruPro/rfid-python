@@ -119,20 +119,21 @@
               <string notr="true">QTableWidget {  
   	 background-color: rgba(40, 40, 40, 180); 
     gridline-color: #d1d1d1;  
-    font: 14px;  
+    font: 24px;
 }  
 QHeaderView::section {  
     background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1,   
                                       stop:0 #777777, stop:1 #000000);
     color: white;  
-    padding: 4px;
-	font: bold;
+    padding: 5px;
+	font: 24px bold;
     border: 1px solid #555;  
 }  
 QTableWidget::item {
 	background-color: rgba(40, 40, 40, 150);  
 	color: white;
-    border: 1px solid #202020;  
+    border: 1px solid #202020;
+ 	padding: 5px  
 }  
 /*QTableWidget::item:selected {  
     background-color: #336699;  
@@ -145,6 +146,9 @@ QTableWidget::item {
              <property name="textElideMode">
               <enum>Qt::ElideLeft</enum>
              </property>
+             <property name="rowCount">
+              <number>6</number>
+             </property>
              <attribute name="horizontalHeaderVisible">
               <bool>true</bool>
              </attribute>
@@ -155,13 +159,13 @@ QTableWidget::item {
               <bool>true</bool>
              </attribute>
              <attribute name="horizontalHeaderMinimumSectionSize">
-              <number>150</number>
+              <number>100</number>
              </attribute>
              <attribute name="verticalHeaderVisible">
               <bool>false</bool>
              </attribute>
              <attribute name="verticalHeaderDefaultSectionSize">
-              <number>30</number>
+              <number>60</number>
              </attribute>
              <row>
               <property name="text">
@@ -193,19 +197,16 @@ QTableWidget::item {
                <string>5</string>
               </property>
              </row>
-             <row>
-              <property name="text">
-               <string>6</string>
-              </property>
-             </row>
-             <row>
-              <property name="text">
-               <string>8</string>
-              </property>
-             </row>
              <column>
               <property name="text">
                <string>RFID</string>
+              </property>
+              <property name="font">
+               <font>
+                <pointsize>8</pointsize>
+                <weight>50</weight>
+                <bold>false</bold>
+               </font>
               </property>
              </column>
              <column>
@@ -220,7 +221,7 @@ QTableWidget::item {
              </column>
              <item row="0" column="0">
               <property name="text">
-               <string>sadfasdfasdf</string>
+               <string>004837065827700000000333 - 1</string>
               </property>
               <property name="flags">
                <set>NoItemFlags</set>
@@ -231,9 +232,14 @@ QTableWidget::item {
                <string>0 0</string>
               </property>
              </item>
+             <item row="0" column="2">
+              <property name="text">
+               <string>5/20/2024 11:09:35 PM</string>
+              </property>
+             </item>
              <item row="1" column="0">
               <property name="text">
-               <string>a</string>
+               <string/>
               </property>
              </item>
             </widget>
