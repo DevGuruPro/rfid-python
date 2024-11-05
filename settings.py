@@ -16,9 +16,10 @@ if not os.path.exists(CONFIG_FILE):
     with open(CONFIG_FILE, 'w') as jp:
         json.dump(DEFAULT_CONFIG, jp, indent=2)
 
+LOGIN_URL = "https://rfidngpsinventory.com/rfid/user/userLogin"
 
-SERIAL_PORT = '/dev/ttyAMA0'
-BAUD_RATE = 115200
+SERIAL_PORT_GPS = '/dev/ttyAMA0'
+BAUD_RATE_GPS = 115200
 
 
 try:

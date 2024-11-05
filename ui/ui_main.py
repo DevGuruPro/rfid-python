@@ -171,6 +171,11 @@ class Ui_MainWindow(object):
 
         self.label_2 = QLabel(self.widget)
         self.label_2.setObjectName(u"label_2")
+        sizePolicy = QSizePolicy(QSizePolicy.Policy.Maximum, QSizePolicy.Policy.Preferred)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.label_2.sizePolicy().hasHeightForWidth())
+        self.label_2.setSizePolicy(sizePolicy)
         self.label_2.setStyleSheet(u"padding: 5px;\n"
 "border: 1px solid black;")
 
@@ -237,6 +242,8 @@ class Ui_MainWindow(object):
 
         self.label_10 = QLabel(self.widget_2)
         self.label_10.setObjectName(u"label_10")
+        sizePolicy.setHeightForWidth(self.label_10.sizePolicy().hasHeightForWidth())
+        self.label_10.setSizePolicy(sizePolicy)
         self.label_10.setStyleSheet(u"padding: 5px;\n"
 "border: 1px solid black;")
 
@@ -307,11 +314,11 @@ class Ui_MainWindow(object):
         self.verticalLayout_9.setContentsMargins(20, -1, 20, 15)
         self.widget_8 = QWidget(self.groupBox_2)
         self.widget_8.setObjectName(u"widget_8")
-        sizePolicy = QSizePolicy(QSizePolicy.Policy.Maximum, QSizePolicy.Policy.Maximum)
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.widget_8.sizePolicy().hasHeightForWidth())
-        self.widget_8.setSizePolicy(sizePolicy)
+        sizePolicy1 = QSizePolicy(QSizePolicy.Policy.Maximum, QSizePolicy.Policy.Maximum)
+        sizePolicy1.setHorizontalStretch(0)
+        sizePolicy1.setVerticalStretch(0)
+        sizePolicy1.setHeightForWidth(self.widget_8.sizePolicy().hasHeightForWidth())
+        self.widget_8.setSizePolicy(sizePolicy1)
         self.verticalLayout_13 = QVBoxLayout(self.widget_8)
         self.verticalLayout_13.setObjectName(u"verticalLayout_13")
         self.verticalLayout_13.setContentsMargins(9, 0, 9, 0)
@@ -329,15 +336,15 @@ class Ui_MainWindow(object):
 
         self.widget_9 = QWidget(self.groupBox_2)
         self.widget_9.setObjectName(u"widget_9")
-        sizePolicy.setHeightForWidth(self.widget_9.sizePolicy().hasHeightForWidth())
-        self.widget_9.setSizePolicy(sizePolicy)
+        sizePolicy1.setHeightForWidth(self.widget_9.sizePolicy().hasHeightForWidth())
+        self.widget_9.setSizePolicy(sizePolicy1)
         self.verticalLayout_12 = QVBoxLayout(self.widget_9)
         self.verticalLayout_12.setObjectName(u"verticalLayout_12")
         self.verticalLayout_12.setContentsMargins(0, 0, 50, 0)
         self.groupBox_3 = QGroupBox(self.widget_9)
         self.groupBox_3.setObjectName(u"groupBox_3")
-        sizePolicy.setHeightForWidth(self.groupBox_3.sizePolicy().hasHeightForWidth())
-        self.groupBox_3.setSizePolicy(sizePolicy)
+        sizePolicy1.setHeightForWidth(self.groupBox_3.sizePolicy().hasHeightForWidth())
+        self.groupBox_3.setSizePolicy(sizePolicy1)
         self.groupBox_3.setStyleSheet(u"QGroupBox {  \n"
 "    border: 0px;\n"
 "}  ")
@@ -371,11 +378,11 @@ class Ui_MainWindow(object):
 
         self.widget_10 = QWidget(self.groupBox_2)
         self.widget_10.setObjectName(u"widget_10")
-        sizePolicy1 = QSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Maximum)
-        sizePolicy1.setHorizontalStretch(0)
-        sizePolicy1.setVerticalStretch(0)
-        sizePolicy1.setHeightForWidth(self.widget_10.sizePolicy().hasHeightForWidth())
-        self.widget_10.setSizePolicy(sizePolicy1)
+        sizePolicy2 = QSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Maximum)
+        sizePolicy2.setHorizontalStretch(0)
+        sizePolicy2.setVerticalStretch(0)
+        sizePolicy2.setHeightForWidth(self.widget_10.sizePolicy().hasHeightForWidth())
+        self.widget_10.setSizePolicy(sizePolicy2)
         self.horizontalLayout_2 = QHBoxLayout(self.widget_10)
         self.horizontalLayout_2.setObjectName(u"horizontalLayout_2")
         self.horizontalLayout_2.setContentsMargins(0, 0, 0, 0)
@@ -453,11 +460,11 @@ class Ui_MainWindow(object):
 
         self.widget_12 = QWidget(self.widget_10)
         self.widget_12.setObjectName(u"widget_12")
-        sizePolicy2 = QSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Preferred)
-        sizePolicy2.setHorizontalStretch(0)
-        sizePolicy2.setVerticalStretch(0)
-        sizePolicy2.setHeightForWidth(self.widget_12.sizePolicy().hasHeightForWidth())
-        self.widget_12.setSizePolicy(sizePolicy2)
+        sizePolicy3 = QSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Preferred)
+        sizePolicy3.setHorizontalStretch(0)
+        sizePolicy3.setVerticalStretch(0)
+        sizePolicy3.setHeightForWidth(self.widget_12.sizePolicy().hasHeightForWidth())
+        self.widget_12.setSizePolicy(sizePolicy3)
         self.verticalLayout_11 = QVBoxLayout(self.widget_12)
         self.verticalLayout_11.setSpacing(10)
         self.verticalLayout_11.setObjectName(u"verticalLayout_11")
@@ -564,8 +571,8 @@ class Ui_MainWindow(object):
 
         self.groupBox = QGroupBox(self.widget_3)
         self.groupBox.setObjectName(u"groupBox")
-        sizePolicy2.setHeightForWidth(self.groupBox.sizePolicy().hasHeightForWidth())
-        self.groupBox.setSizePolicy(sizePolicy2)
+        sizePolicy3.setHeightForWidth(self.groupBox.sizePolicy().hasHeightForWidth())
+        self.groupBox.setSizePolicy(sizePolicy3)
         self.groupBox.setFont(font2)
         self.groupBox.setStyleSheet(u"QGroupBox::title {  \n"
 "    color: white;  /* Change 'blue' to any color you want */  \n"
@@ -575,18 +582,15 @@ class Ui_MainWindow(object):
         self.horizontalLayout_11.setContentsMargins(20, -1, 20, -1)
         self.widget_37 = QWidget(self.groupBox)
         self.widget_37.setObjectName(u"widget_37")
-        sizePolicy1.setHeightForWidth(self.widget_37.sizePolicy().hasHeightForWidth())
-        self.widget_37.setSizePolicy(sizePolicy1)
+        sizePolicy2.setHeightForWidth(self.widget_37.sizePolicy().hasHeightForWidth())
+        self.widget_37.setSizePolicy(sizePolicy2)
         self.horizontalLayout_4 = QHBoxLayout(self.widget_37)
         self.horizontalLayout_4.setObjectName(u"horizontalLayout_4")
         self.horizontalLayout_4.setContentsMargins(0, 0, 0, 0)
         self.widget_7 = QWidget(self.widget_37)
         self.widget_7.setObjectName(u"widget_7")
-        sizePolicy3 = QSizePolicy(QSizePolicy.Policy.Maximum, QSizePolicy.Policy.Preferred)
-        sizePolicy3.setHorizontalStretch(0)
-        sizePolicy3.setVerticalStretch(0)
-        sizePolicy3.setHeightForWidth(self.widget_7.sizePolicy().hasHeightForWidth())
-        self.widget_7.setSizePolicy(sizePolicy3)
+        sizePolicy.setHeightForWidth(self.widget_7.sizePolicy().hasHeightForWidth())
+        self.widget_7.setSizePolicy(sizePolicy)
         self.verticalLayout_7 = QVBoxLayout(self.widget_7)
         self.verticalLayout_7.setSpacing(15)
         self.verticalLayout_7.setObjectName(u"verticalLayout_7")
@@ -667,8 +671,8 @@ class Ui_MainWindow(object):
 
         self.widget_6 = QWidget(self.widget_37)
         self.widget_6.setObjectName(u"widget_6")
-        sizePolicy1.setHeightForWidth(self.widget_6.sizePolicy().hasHeightForWidth())
-        self.widget_6.setSizePolicy(sizePolicy1)
+        sizePolicy2.setHeightForWidth(self.widget_6.sizePolicy().hasHeightForWidth())
+        self.widget_6.setSizePolicy(sizePolicy2)
         self.verticalLayout_8 = QVBoxLayout(self.widget_6)
         self.verticalLayout_8.setSpacing(15)
         self.verticalLayout_8.setObjectName(u"verticalLayout_8")
@@ -787,8 +791,8 @@ class Ui_MainWindow(object):
 
         self.widget_20 = QWidget(self.widget_3)
         self.widget_20.setObjectName(u"widget_20")
-        sizePolicy2.setHeightForWidth(self.widget_20.sizePolicy().hasHeightForWidth())
-        self.widget_20.setSizePolicy(sizePolicy2)
+        sizePolicy3.setHeightForWidth(self.widget_20.sizePolicy().hasHeightForWidth())
+        self.widget_20.setSizePolicy(sizePolicy3)
         self.verticalLayout_16 = QVBoxLayout(self.widget_20)
         self.verticalLayout_16.setSpacing(10)
         self.verticalLayout_16.setObjectName(u"verticalLayout_16")
@@ -817,16 +821,16 @@ class Ui_MainWindow(object):
         self.horizontalLayout_19.setContentsMargins(10, 0, 10, 0)
         self.widget_22 = QWidget(self.widget_24)
         self.widget_22.setObjectName(u"widget_22")
-        sizePolicy3.setHeightForWidth(self.widget_22.sizePolicy().hasHeightForWidth())
-        self.widget_22.setSizePolicy(sizePolicy3)
+        sizePolicy.setHeightForWidth(self.widget_22.sizePolicy().hasHeightForWidth())
+        self.widget_22.setSizePolicy(sizePolicy)
         self.verticalLayout_17 = QVBoxLayout(self.widget_22)
         self.verticalLayout_17.setSpacing(20)
         self.verticalLayout_17.setObjectName(u"verticalLayout_17")
         self.verticalLayout_17.setContentsMargins(0, 0, 0, 0)
         self.label_42 = QLabel(self.widget_22)
         self.label_42.setObjectName(u"label_42")
-        sizePolicy1.setHeightForWidth(self.label_42.sizePolicy().hasHeightForWidth())
-        self.label_42.setSizePolicy(sizePolicy1)
+        sizePolicy2.setHeightForWidth(self.label_42.sizePolicy().hasHeightForWidth())
+        self.label_42.setSizePolicy(sizePolicy2)
         self.label_42.setFont(font3)
         self.label_42.setStyleSheet(u"QLabel {  \n"
 "    color: white;  /* Change 'blue' to your preferred color */  \n"
@@ -836,8 +840,8 @@ class Ui_MainWindow(object):
 
         self.label_43 = QLabel(self.widget_22)
         self.label_43.setObjectName(u"label_43")
-        sizePolicy1.setHeightForWidth(self.label_43.sizePolicy().hasHeightForWidth())
-        self.label_43.setSizePolicy(sizePolicy1)
+        sizePolicy2.setHeightForWidth(self.label_43.sizePolicy().hasHeightForWidth())
+        self.label_43.setSizePolicy(sizePolicy2)
         self.label_43.setFont(font3)
         self.label_43.setStyleSheet(u"QLabel {  \n"
 "    color: white;  /* Change 'blue' to your preferred color */  \n"
@@ -945,15 +949,15 @@ class Ui_MainWindow(object):
 
         self.widget_17 = QWidget(self.widget_16)
         self.widget_17.setObjectName(u"widget_17")
-        sizePolicy1.setHeightForWidth(self.widget_17.sizePolicy().hasHeightForWidth())
-        self.widget_17.setSizePolicy(sizePolicy1)
+        sizePolicy2.setHeightForWidth(self.widget_17.sizePolicy().hasHeightForWidth())
+        self.widget_17.setSizePolicy(sizePolicy2)
         self.horizontalLayout_15 = QHBoxLayout(self.widget_17)
         self.horizontalLayout_15.setObjectName(u"horizontalLayout_15")
         self.horizontalLayout_15.setContentsMargins(10, 0, 10, 0)
         self.widget_18 = QWidget(self.widget_17)
         self.widget_18.setObjectName(u"widget_18")
-        sizePolicy.setHeightForWidth(self.widget_18.sizePolicy().hasHeightForWidth())
-        self.widget_18.setSizePolicy(sizePolicy)
+        sizePolicy1.setHeightForWidth(self.widget_18.sizePolicy().hasHeightForWidth())
+        self.widget_18.setSizePolicy(sizePolicy1)
         self.horizontalLayout_16 = QHBoxLayout(self.widget_18)
         self.horizontalLayout_16.setObjectName(u"horizontalLayout_16")
         self.horizontalLayout_16.setContentsMargins(0, 0, 0, 0)
@@ -984,8 +988,8 @@ class Ui_MainWindow(object):
 
         self.widget_19 = QWidget(self.widget_17)
         self.widget_19.setObjectName(u"widget_19")
-        sizePolicy.setHeightForWidth(self.widget_19.sizePolicy().hasHeightForWidth())
-        self.widget_19.setSizePolicy(sizePolicy)
+        sizePolicy1.setHeightForWidth(self.widget_19.sizePolicy().hasHeightForWidth())
+        self.widget_19.setSizePolicy(sizePolicy1)
         self.horizontalLayout_17 = QHBoxLayout(self.widget_19)
         self.horizontalLayout_17.setObjectName(u"horizontalLayout_17")
         self.label_41 = QLabel(self.widget_19)
@@ -1036,15 +1040,15 @@ class Ui_MainWindow(object):
 
         self.widget_14 = QWidget(self.widget_5)
         self.widget_14.setObjectName(u"widget_14")
-        sizePolicy1.setHeightForWidth(self.widget_14.sizePolicy().hasHeightForWidth())
-        self.widget_14.setSizePolicy(sizePolicy1)
+        sizePolicy2.setHeightForWidth(self.widget_14.sizePolicy().hasHeightForWidth())
+        self.widget_14.setSizePolicy(sizePolicy2)
         self.horizontalLayout_13 = QHBoxLayout(self.widget_14)
         self.horizontalLayout_13.setObjectName(u"horizontalLayout_13")
         self.horizontalLayout_13.setContentsMargins(10, 0, 10, 0)
         self.widget_13 = QWidget(self.widget_14)
         self.widget_13.setObjectName(u"widget_13")
-        sizePolicy.setHeightForWidth(self.widget_13.sizePolicy().hasHeightForWidth())
-        self.widget_13.setSizePolicy(sizePolicy)
+        sizePolicy1.setHeightForWidth(self.widget_13.sizePolicy().hasHeightForWidth())
+        self.widget_13.setSizePolicy(sizePolicy1)
         self.horizontalLayout = QHBoxLayout(self.widget_13)
         self.horizontalLayout.setObjectName(u"horizontalLayout")
         self.label_38 = QLabel(self.widget_13)
@@ -1074,8 +1078,8 @@ class Ui_MainWindow(object):
 
         self.widget_15 = QWidget(self.widget_14)
         self.widget_15.setObjectName(u"widget_15")
-        sizePolicy.setHeightForWidth(self.widget_15.sizePolicy().hasHeightForWidth())
-        self.widget_15.setSizePolicy(sizePolicy)
+        sizePolicy1.setHeightForWidth(self.widget_15.sizePolicy().hasHeightForWidth())
+        self.widget_15.setSizePolicy(sizePolicy1)
         self.horizontalLayout_14 = QHBoxLayout(self.widget_15)
         self.horizontalLayout_14.setObjectName(u"horizontalLayout_14")
         self.label_39 = QLabel(self.widget_15)
@@ -1143,8 +1147,8 @@ class Ui_MainWindow(object):
         self.horizontalLayout_29.setContentsMargins(20, 0, 20, 0)
         self.label_48 = QLabel(self.widget_35)
         self.label_48.setObjectName(u"label_48")
-        sizePolicy.setHeightForWidth(self.label_48.sizePolicy().hasHeightForWidth())
-        self.label_48.setSizePolicy(sizePolicy)
+        sizePolicy1.setHeightForWidth(self.label_48.sizePolicy().hasHeightForWidth())
+        self.label_48.setSizePolicy(sizePolicy1)
         self.label_48.setFont(font)
         self.label_48.setStyleSheet(u"QWidget{\n"
 "	color: white;\n"
@@ -1230,8 +1234,8 @@ class Ui_MainWindow(object):
         self.horizontalLayout_22.setContentsMargins(0, 0, 0, 0)
         self.label_44 = QLabel(self.widget_29)
         self.label_44.setObjectName(u"label_44")
-        sizePolicy.setHeightForWidth(self.label_44.sizePolicy().hasHeightForWidth())
-        self.label_44.setSizePolicy(sizePolicy)
+        sizePolicy1.setHeightForWidth(self.label_44.sizePolicy().hasHeightForWidth())
+        self.label_44.setSizePolicy(sizePolicy1)
         self.label_44.setFont(font2)
         self.label_44.setStyleSheet(u"QWidget{\n"
 "	color: white;\n"
@@ -1255,8 +1259,8 @@ class Ui_MainWindow(object):
         self.horizontalLayout_21.setContentsMargins(200, 0, 200, 0)
         self.groupBox_4 = QGroupBox(self.widget_28)
         self.groupBox_4.setObjectName(u"groupBox_4")
-        sizePolicy.setHeightForWidth(self.groupBox_4.sizePolicy().hasHeightForWidth())
-        self.groupBox_4.setSizePolicy(sizePolicy)
+        sizePolicy1.setHeightForWidth(self.groupBox_4.sizePolicy().hasHeightForWidth())
+        self.groupBox_4.setSizePolicy(sizePolicy1)
         self.groupBox_4.setStyleSheet(u"QGroupBox {  \n"
 "    border: 0px;\n"
 "}  ")
@@ -1574,8 +1578,8 @@ class Ui_MainWindow(object):
         self.horizontalLayout_36.setContentsMargins(0, 0, 0, 0)
         self.label_59 = QLabel(self.widget_43)
         self.label_59.setObjectName(u"label_59")
-        sizePolicy.setHeightForWidth(self.label_59.sizePolicy().hasHeightForWidth())
-        self.label_59.setSizePolicy(sizePolicy)
+        sizePolicy1.setHeightForWidth(self.label_59.sizePolicy().hasHeightForWidth())
+        self.label_59.setSizePolicy(sizePolicy1)
         self.label_59.setFont(font2)
         self.label_59.setStyleSheet(u"QLabel {  \n"
 "    color: white;  /* Change 'blue' to your preferred color */  \n"
@@ -1607,8 +1611,8 @@ class Ui_MainWindow(object):
         self.verticalLayout_29.setContentsMargins(0, 0, 0, 0)
         self.label_60 = QLabel(self.widget_44)
         self.label_60.setObjectName(u"label_60")
-        sizePolicy.setHeightForWidth(self.label_60.sizePolicy().hasHeightForWidth())
-        self.label_60.setSizePolicy(sizePolicy)
+        sizePolicy1.setHeightForWidth(self.label_60.sizePolicy().hasHeightForWidth())
+        self.label_60.setSizePolicy(sizePolicy1)
         self.label_60.setPixmap(QPixmap(u":/img/api_json_request.png"))
         self.label_60.setScaledContents(True)
 
@@ -1628,8 +1632,8 @@ class Ui_MainWindow(object):
         self.verticalLayout_24.setObjectName(u"verticalLayout_24")
         self.label_57 = QLabel(self.widget_40)
         self.label_57.setObjectName(u"label_57")
-        sizePolicy.setHeightForWidth(self.label_57.sizePolicy().hasHeightForWidth())
-        self.label_57.setSizePolicy(sizePolicy)
+        sizePolicy1.setHeightForWidth(self.label_57.sizePolicy().hasHeightForWidth())
+        self.label_57.setSizePolicy(sizePolicy1)
         self.label_57.setFont(font2)
         self.label_57.setStyleSheet(u"QLabel {  \n"
 "    color: white;  /* Change 'blue' to your preferred color */  \n"
@@ -1698,8 +1702,8 @@ class Ui_MainWindow(object):
         self.verticalLayout_25.setObjectName(u"verticalLayout_25")
         self.label_63 = QLabel(self.widget_41)
         self.label_63.setObjectName(u"label_63")
-        sizePolicy.setHeightForWidth(self.label_63.sizePolicy().hasHeightForWidth())
-        self.label_63.setSizePolicy(sizePolicy)
+        sizePolicy1.setHeightForWidth(self.label_63.sizePolicy().hasHeightForWidth())
+        self.label_63.setSizePolicy(sizePolicy1)
         self.label_63.setFont(font2)
         self.label_63.setStyleSheet(u"QLabel {  \n"
 "    color: white;  /* Change 'blue' to your preferred color */  \n"
@@ -1780,6 +1784,7 @@ class Ui_MainWindow(object):
         self.pushButton = QPushButton(self.widget_36)
         self.pushButton.setObjectName(u"pushButton")
         self.pushButton.setMaximumSize(QSize(100, 16777215))
+        self.pushButton.setFont(font2)
         self.pushButton.setStyleSheet(u"QPushButton {\n"
 "	background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1,   \n"
 "                                      stop:0 #222222, stop:1 #aaaaaa);\n"

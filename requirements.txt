@@ -1,1 +1,4 @@
-PySide6
+PySide6~=6.7.2
+requests~=2.32.3
+pynmea2~=1.19.0
+pyproj~=3.6.1
