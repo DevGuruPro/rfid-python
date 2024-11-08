@@ -1,10 +1,14 @@
+import sched
 import sys
+import threading
+import time
 
 from PySide6.QtGui import Qt
-from PySide6.QtWidgets import QMainWindow, QApplication, QHeaderView, QTableWidget, QTableWidgetItem
+from PySide6.QtWidgets import QMainWindow, QApplication, QHeaderView, QTableWidget, QTableWidgetItem, QLabel
 
 from settings import SERIAL_PORT_GPS, BAUD_RATE_GPS
 from ui.ui_main import Ui_MainWindow
+from utils.commons import extract_from_gps
 
 from utils.gps import GPS
 
@@ -27,10 +31,27 @@ class MainWnd(QMainWindow):
                 item.setFlags(item.flags() & ~Qt.ItemFlag.ItemIsSelectable & ~Qt.ItemFlag.ItemIsEditable
                               & ~Qt.ItemFlag.ItemIsEnabled)
                 self.ui.tableWidget.setItem(row, column, item)
-
+        # self.ui.tableWidget.item(0, 0).setText("004837065827700000000333 - 1")
+        # self.ui.tableWidget.item(0, 4).setText("5/20/2024 11:09:35 PM")
         self.gps = GPS(port=SERIAL_PORT_GPS, baud_rate=BAUD_RATE_GPS)
         self.gps.sig_msg.connect(self.show_gps_status)
         self.gps.start()
+
+        self.scheduler_thread = threading.Thread(target=self.start_scheduler)
+        self.scheduler_thread.start()
+        self._stop = threading.Event()
+
+    def start_scheduler(self):
+        scheduler = sched.scheduler(time.time, time.sleep)
+        scheduler.enter(0, 1, self.schedule_function, (scheduler,))
+
+    def schedule_function(self, scheduler):
+        if not self._stop.is_set():
+            self.read_data()
+            scheduler.enter(0.1, 1, self.scheduler_thread, (scheduler,))
+
+    def read_data(self):
+        lat, lon = extract_from_gps(self.gps.get_data())
 
     def show_gps_status(self, status):
         if status:
@@ -52,12 +73,21 @@ class MainWnd(QMainWindow):
 
     def resize_columns_to_fit(self):
         width = self.ui.tableWidget.viewport().width()
-        column_proportions = [0.45, 0.15]
-        wid0 = width * column_proportions[0]
-        wid1 = width * column_proportions[1]
-        self.ui.tableWidget.setColumnWidth(0, wid0)
-        self.ui.tableWidget.setColumnWidth(1, wid1)
-        self.ui.tableWidget.setColumnWidth(2, width - wid0 - wid1)
+        column_proportions = [0.36, 0.1, 0.1, 0.1]
+        wid = 0
+        for i in range(4):
+            self.ui.tableWidget.setColumnWidth(i, width * column_proportions[i])
+            wid = wid + self.ui.tableWidget.columnWidth(i)
+        self.ui.tableWidget.setColumnWidth(4, width-wid)
+        height = self.ui.tableWidget.viewport().height()
+        for i in range(5):
+            self.ui.tableWidget.setRowHeight(i, height/6)
+        self.ui.tableWidget.setRowHeight(5, height-int(height/6)*5)
+
+    def closeEvent(self, event):
+        self.gps.stop()
+        self._stop.set()
+        self.scheduler_thread.join(.1)
 
 
 if __name__ == "__main__":

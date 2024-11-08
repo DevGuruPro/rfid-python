@@ -26,7 +26,7 @@ class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         if not MainWindow.objectName():
             MainWindow.setObjectName(u"MainWindow")
-        MainWindow.resize(797, 537)
+        MainWindow.resize(797, 519)
         self.centralwidget = QWidget(MainWindow)
         self.centralwidget.setObjectName(u"centralwidget")
         self.verticalLayout_20 = QVBoxLayout(self.centralwidget)
@@ -35,7 +35,46 @@ class Ui_MainWindow(object):
         self.verticalLayout_20.setContentsMargins(0, 0, 0, 0)
         self.tabWidget = QTabWidget(self.centralwidget)
         self.tabWidget.setObjectName(u"tabWidget")
-        self.tabWidget.setStyleSheet(u"")
+        sizePolicy = QSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.tabWidget.sizePolicy().hasHeightForWidth())
+        self.tabWidget.setSizePolicy(sizePolicy)
+        self.tabWidget.setCursor(QCursor(Qt.CursorShape.ArrowCursor))
+        self.tabWidget.setStyleSheet(u"QTabWidget::pane {\n"
+"    border: 1px solid #999;  \n"
+"    top: -1px; /* Space between tab bar and frame */  \n"
+"}  \n"
+"\n"
+"QTabBar::tab {  \n"
+"    background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1,   \n"
+"                                      stop:0 #999999, stop:1 #000000);  \n"
+"    border: 1px solid #c4c4c3;  \n"
+"    border-bottom-color: #c2c7cb; /* Same as pane color */  \n"
+"    border-top-left-radius: 5px;  \n"
+"    border-top-right-radius: 5px;  \n"
+"    min-width: 80px;\n"
+"	min-height: 20px;\n"
+"    padding: 10px;\n"
+"	font: 12pt;\n"
+"	font-weight: bold;\n"
+"	color: white;\n"
+"}  \n"
+"\n"
+"QTabBar::tab:selected {  \n"
+"    background-color: #707070;  \n"
+"    border-color: #8f8f91;  \n"
+"    border-bottom-color: #e0e0e0; /* Same as pane color */  \n"
+"}  \n"
+"\n"
+"QTabBar::tab:!selected {  \n"
+"    margin-top: 2px; /* Make non-selected tabs look recessed */  \n"
+"}  \n"
+"\n"
+"QTabBar::tab:hover {  \n"
+"    background: #83878a;  \n"
+"    border-color: #999;  \n"
+"}")
         self.tabWidget.setTabPosition(QTabWidget.North)
         self.tabWidget.setTabShape(QTabWidget.Rounded)
         self.tabWidget.setElideMode(Qt.ElideNone)
@@ -60,8 +99,8 @@ class Ui_MainWindow(object):
         self.verticalLayout_30.setObjectName(u"verticalLayout_30")
         self.verticalLayout_30.setContentsMargins(0, 0, 0, 0)
         self.tableWidget = QTableWidget(self.widget_45)
-        if (self.tableWidget.columnCount() < 3):
-            self.tableWidget.setColumnCount(3)
+        if (self.tableWidget.columnCount() < 5):
+            self.tableWidget.setColumnCount(5)
         font = QFont()
         font.setPointSize(8)
         font.setBold(False)
@@ -72,45 +111,50 @@ class Ui_MainWindow(object):
         self.tableWidget.setHorizontalHeaderItem(1, __qtablewidgetitem1)
         __qtablewidgetitem2 = QTableWidgetItem()
         self.tableWidget.setHorizontalHeaderItem(2, __qtablewidgetitem2)
+        __qtablewidgetitem3 = QTableWidgetItem()
+        self.tableWidget.setHorizontalHeaderItem(3, __qtablewidgetitem3)
+        __qtablewidgetitem4 = QTableWidgetItem()
+        self.tableWidget.setHorizontalHeaderItem(4, __qtablewidgetitem4)
         if (self.tableWidget.rowCount() < 6):
             self.tableWidget.setRowCount(6)
-        __qtablewidgetitem3 = QTableWidgetItem()
-        self.tableWidget.setVerticalHeaderItem(0, __qtablewidgetitem3)
-        __qtablewidgetitem4 = QTableWidgetItem()
-        self.tableWidget.setVerticalHeaderItem(1, __qtablewidgetitem4)
         __qtablewidgetitem5 = QTableWidgetItem()
-        self.tableWidget.setVerticalHeaderItem(2, __qtablewidgetitem5)
+        self.tableWidget.setVerticalHeaderItem(0, __qtablewidgetitem5)
         __qtablewidgetitem6 = QTableWidgetItem()
-        self.tableWidget.setVerticalHeaderItem(3, __qtablewidgetitem6)
+        self.tableWidget.setVerticalHeaderItem(1, __qtablewidgetitem6)
         __qtablewidgetitem7 = QTableWidgetItem()
-        self.tableWidget.setVerticalHeaderItem(4, __qtablewidgetitem7)
+        self.tableWidget.setVerticalHeaderItem(2, __qtablewidgetitem7)
         __qtablewidgetitem8 = QTableWidgetItem()
-        self.tableWidget.setVerticalHeaderItem(5, __qtablewidgetitem8)
+        self.tableWidget.setVerticalHeaderItem(3, __qtablewidgetitem8)
         __qtablewidgetitem9 = QTableWidgetItem()
-        __qtablewidgetitem9.setFlags(Qt.NoItemFlags);
-        self.tableWidget.setItem(0, 0, __qtablewidgetitem9)
+        self.tableWidget.setVerticalHeaderItem(4, __qtablewidgetitem9)
         __qtablewidgetitem10 = QTableWidgetItem()
-        self.tableWidget.setItem(0, 1, __qtablewidgetitem10)
+        self.tableWidget.setVerticalHeaderItem(5, __qtablewidgetitem10)
         __qtablewidgetitem11 = QTableWidgetItem()
-        self.tableWidget.setItem(0, 2, __qtablewidgetitem11)
+        __qtablewidgetitem11.setFlags(Qt.NoItemFlags);
+        self.tableWidget.setItem(0, 0, __qtablewidgetitem11)
         __qtablewidgetitem12 = QTableWidgetItem()
-        self.tableWidget.setItem(1, 0, __qtablewidgetitem12)
+        self.tableWidget.setItem(0, 3, __qtablewidgetitem12)
+        __qtablewidgetitem13 = QTableWidgetItem()
+        self.tableWidget.setItem(0, 4, __qtablewidgetitem13)
+        __qtablewidgetitem14 = QTableWidgetItem()
+        self.tableWidget.setItem(1, 0, __qtablewidgetitem14)
         self.tableWidget.setObjectName(u"tableWidget")
         font1 = QFont()
+        font1.setPointSize(14)
         font1.setBold(False)
         font1.setItalic(False)
         self.tableWidget.setFont(font1)
         self.tableWidget.setStyleSheet(u"QTableWidget {  \n"
 "  	 background-color: rgba(40, 40, 40, 180); \n"
 "    gridline-color: #d1d1d1;  \n"
-"    font: 24px;\n"
+"    font: 14pt;\n"
 "}  \n"
 "QHeaderView::section {  \n"
 "    background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1,   \n"
 "                                      stop:0 #777777, stop:1 #000000);\n"
 "    color: white;  \n"
 "    padding: 5px;\n"
-"	font: 24px bold;\n"
+"	font: 16pt bold;\n"
 "    border: 1px solid #555;  \n"
 "}  \n"
 "QTableWidget::item {\n"
@@ -143,6 +187,7 @@ class Ui_MainWindow(object):
         self.gridLayout.setObjectName(u"gridLayout")
         self.widget = QWidget(self.rfid_tab)
         self.widget.setObjectName(u"widget")
+        self.widget.setStyleSheet(u"font-size: 10pt;")
         self.verticalLayout_2 = QVBoxLayout(self.widget)
         self.verticalLayout_2.setSpacing(0)
         self.verticalLayout_2.setObjectName(u"verticalLayout_2")
@@ -171,11 +216,11 @@ class Ui_MainWindow(object):
 
         self.label_2 = QLabel(self.widget)
         self.label_2.setObjectName(u"label_2")
-        sizePolicy = QSizePolicy(QSizePolicy.Policy.Maximum, QSizePolicy.Policy.Preferred)
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.label_2.sizePolicy().hasHeightForWidth())
-        self.label_2.setSizePolicy(sizePolicy)
+        sizePolicy1 = QSizePolicy(QSizePolicy.Policy.Maximum, QSizePolicy.Policy.Preferred)
+        sizePolicy1.setHorizontalStretch(0)
+        sizePolicy1.setVerticalStretch(0)
+        sizePolicy1.setHeightForWidth(self.label_2.sizePolicy().hasHeightForWidth())
+        self.label_2.setSizePolicy(sizePolicy1)
         self.label_2.setStyleSheet(u"padding: 5px;\n"
 "border: 1px solid black;")
 
@@ -217,6 +262,7 @@ class Ui_MainWindow(object):
 
         self.widget_2 = QWidget(self.rfid_tab)
         self.widget_2.setObjectName(u"widget_2")
+        self.widget_2.setStyleSheet(u"font-size: 10pt;")
         self.verticalLayout_3 = QVBoxLayout(self.widget_2)
         self.verticalLayout_3.setSpacing(0)
         self.verticalLayout_3.setObjectName(u"verticalLayout_3")
@@ -242,8 +288,8 @@ class Ui_MainWindow(object):
 
         self.label_10 = QLabel(self.widget_2)
         self.label_10.setObjectName(u"label_10")
-        sizePolicy.setHeightForWidth(self.label_10.sizePolicy().hasHeightForWidth())
-        self.label_10.setSizePolicy(sizePolicy)
+        sizePolicy1.setHeightForWidth(self.label_10.sizePolicy().hasHeightForWidth())
+        self.label_10.setSizePolicy(sizePolicy1)
         self.label_10.setStyleSheet(u"padding: 5px;\n"
 "border: 1px solid black;")
 
@@ -314,11 +360,11 @@ class Ui_MainWindow(object):
         self.verticalLayout_9.setContentsMargins(20, -1, 20, 15)
         self.widget_8 = QWidget(self.groupBox_2)
         self.widget_8.setObjectName(u"widget_8")
-        sizePolicy1 = QSizePolicy(QSizePolicy.Policy.Maximum, QSizePolicy.Policy.Maximum)
-        sizePolicy1.setHorizontalStretch(0)
-        sizePolicy1.setVerticalStretch(0)
-        sizePolicy1.setHeightForWidth(self.widget_8.sizePolicy().hasHeightForWidth())
-        self.widget_8.setSizePolicy(sizePolicy1)
+        sizePolicy2 = QSizePolicy(QSizePolicy.Policy.Maximum, QSizePolicy.Policy.Maximum)
+        sizePolicy2.setHorizontalStretch(0)
+        sizePolicy2.setVerticalStretch(0)
+        sizePolicy2.setHeightForWidth(self.widget_8.sizePolicy().hasHeightForWidth())
+        self.widget_8.setSizePolicy(sizePolicy2)
         self.verticalLayout_13 = QVBoxLayout(self.widget_8)
         self.verticalLayout_13.setObjectName(u"verticalLayout_13")
         self.verticalLayout_13.setContentsMargins(9, 0, 9, 0)
@@ -336,15 +382,15 @@ class Ui_MainWindow(object):
 
         self.widget_9 = QWidget(self.groupBox_2)
         self.widget_9.setObjectName(u"widget_9")
-        sizePolicy1.setHeightForWidth(self.widget_9.sizePolicy().hasHeightForWidth())
-        self.widget_9.setSizePolicy(sizePolicy1)
+        sizePolicy2.setHeightForWidth(self.widget_9.sizePolicy().hasHeightForWidth())
+        self.widget_9.setSizePolicy(sizePolicy2)
         self.verticalLayout_12 = QVBoxLayout(self.widget_9)
         self.verticalLayout_12.setObjectName(u"verticalLayout_12")
         self.verticalLayout_12.setContentsMargins(0, 0, 50, 0)
         self.groupBox_3 = QGroupBox(self.widget_9)
         self.groupBox_3.setObjectName(u"groupBox_3")
-        sizePolicy1.setHeightForWidth(self.groupBox_3.sizePolicy().hasHeightForWidth())
-        self.groupBox_3.setSizePolicy(sizePolicy1)
+        sizePolicy2.setHeightForWidth(self.groupBox_3.sizePolicy().hasHeightForWidth())
+        self.groupBox_3.setSizePolicy(sizePolicy2)
         self.groupBox_3.setStyleSheet(u"QGroupBox {  \n"
 "    border: 0px;\n"
 "}  ")
@@ -378,11 +424,11 @@ class Ui_MainWindow(object):
 
         self.widget_10 = QWidget(self.groupBox_2)
         self.widget_10.setObjectName(u"widget_10")
-        sizePolicy2 = QSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Maximum)
-        sizePolicy2.setHorizontalStretch(0)
-        sizePolicy2.setVerticalStretch(0)
-        sizePolicy2.setHeightForWidth(self.widget_10.sizePolicy().hasHeightForWidth())
-        self.widget_10.setSizePolicy(sizePolicy2)
+        sizePolicy3 = QSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Maximum)
+        sizePolicy3.setHorizontalStretch(0)
+        sizePolicy3.setVerticalStretch(0)
+        sizePolicy3.setHeightForWidth(self.widget_10.sizePolicy().hasHeightForWidth())
+        self.widget_10.setSizePolicy(sizePolicy3)
         self.horizontalLayout_2 = QHBoxLayout(self.widget_10)
         self.horizontalLayout_2.setObjectName(u"horizontalLayout_2")
         self.horizontalLayout_2.setContentsMargins(0, 0, 0, 0)
@@ -460,103 +506,61 @@ class Ui_MainWindow(object):
 
         self.widget_12 = QWidget(self.widget_10)
         self.widget_12.setObjectName(u"widget_12")
-        sizePolicy3 = QSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Preferred)
-        sizePolicy3.setHorizontalStretch(0)
-        sizePolicy3.setVerticalStretch(0)
-        sizePolicy3.setHeightForWidth(self.widget_12.sizePolicy().hasHeightForWidth())
-        self.widget_12.setSizePolicy(sizePolicy3)
+        sizePolicy4 = QSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Preferred)
+        sizePolicy4.setHorizontalStretch(0)
+        sizePolicy4.setVerticalStretch(0)
+        sizePolicy4.setHeightForWidth(self.widget_12.sizePolicy().hasHeightForWidth())
+        self.widget_12.setSizePolicy(sizePolicy4)
+        self.widget_12.setStyleSheet(u"QLineEdit {  \n"
+"    border: 2px solid gray;  \n"
+"    border-radius: 10px;  \n"
+"    padding: 2 8 2 8 px;  \n"
+"    background: white;  \n"
+"    selection-background-color: darkgray;  \n"
+"} ")
         self.verticalLayout_11 = QVBoxLayout(self.widget_12)
-        self.verticalLayout_11.setSpacing(10)
+        self.verticalLayout_11.setSpacing(8)
         self.verticalLayout_11.setObjectName(u"verticalLayout_11")
         self.verticalLayout_11.setContentsMargins(-1, 0, -1, 0)
         self.edit_gps_noti = QLineEdit(self.widget_12)
         self.edit_gps_noti.setObjectName(u"edit_gps_noti")
         self.edit_gps_noti.setFont(font2)
-        self.edit_gps_noti.setStyleSheet(u"QLineEdit {  \n"
-"    border: 2px solid gray;  \n"
-"    border-radius: 10px;  \n"
-"    padding: 0 8px;  \n"
-"    background: white;  \n"
-"    selection-background-color: darkgray;  \n"
-"}  ")
 
         self.verticalLayout_11.addWidget(self.edit_gps_noti)
 
         self.edit_gps_hand = QLineEdit(self.widget_12)
         self.edit_gps_hand.setObjectName(u"edit_gps_hand")
         self.edit_gps_hand.setFont(font2)
-        self.edit_gps_hand.setStyleSheet(u"QLineEdit {  \n"
-"    border: 2px solid gray;  \n"
-"    border-radius: 10px;  \n"
-"    padding: 0 8px;  \n"
-"    background: white;  \n"
-"    selection-background-color: darkgray;  \n"
-"}  ")
 
         self.verticalLayout_11.addWidget(self.edit_gps_hand)
 
         self.edit_gps_port = QLineEdit(self.widget_12)
         self.edit_gps_port.setObjectName(u"edit_gps_port")
         self.edit_gps_port.setFont(font2)
-        self.edit_gps_port.setStyleSheet(u"QLineEdit {  \n"
-"    border: 2px solid gray;  \n"
-"    border-radius: 10px;  \n"
-"    padding: 0 8px;  \n"
-"    background: white;  \n"
-"    selection-background-color: darkgray;  \n"
-"}  ")
 
         self.verticalLayout_11.addWidget(self.edit_gps_port)
 
         self.edit_gps_dbits = QLineEdit(self.widget_12)
         self.edit_gps_dbits.setObjectName(u"edit_gps_dbits")
         self.edit_gps_dbits.setFont(font2)
-        self.edit_gps_dbits.setStyleSheet(u"QLineEdit {  \n"
-"    border: 2px solid gray;  \n"
-"    border-radius: 10px;  \n"
-"    padding: 0 8px;  \n"
-"    background: white;  \n"
-"    selection-background-color: darkgray;  \n"
-"}  ")
 
         self.verticalLayout_11.addWidget(self.edit_gps_dbits)
 
         self.edit_gps_sbits = QLineEdit(self.widget_12)
         self.edit_gps_sbits.setObjectName(u"edit_gps_sbits")
         self.edit_gps_sbits.setFont(font2)
-        self.edit_gps_sbits.setStyleSheet(u"QLineEdit {  \n"
-"    border: 2px solid gray;  \n"
-"    border-radius: 10px;  \n"
-"    padding: 0 8px;  \n"
-"    background: white;  \n"
-"    selection-background-color: darkgray;  \n"
-"}  ")
 
         self.verticalLayout_11.addWidget(self.edit_gps_sbits)
 
         self.edit_gps_parity = QLineEdit(self.widget_12)
         self.edit_gps_parity.setObjectName(u"edit_gps_parity")
         self.edit_gps_parity.setFont(font2)
-        self.edit_gps_parity.setStyleSheet(u"QLineEdit {  \n"
-"    border: 2px solid gray;  \n"
-"    border-radius: 10px;  \n"
-"    padding: 0 8px;  \n"
-"    background: white;  \n"
-"    selection-background-color: darkgray;  \n"
-"}  ")
 
         self.verticalLayout_11.addWidget(self.edit_gps_parity)
 
         self.edit_gps_baud = QLineEdit(self.widget_12)
         self.edit_gps_baud.setObjectName(u"edit_gps_baud")
         self.edit_gps_baud.setFont(font2)
-        self.edit_gps_baud.setStyleSheet(u"QLineEdit {  \n"
-"    border: 2px solid gray;  \n"
-"    border-radius: 10px;  \n"
-"    padding: 0 8px;  \n"
-"    background: white;  \n"
-"    selection-background-color: darkgray;  \n"
-"}  ")
 
         self.verticalLayout_11.addWidget(self.edit_gps_baud)
 
@@ -571,26 +575,28 @@ class Ui_MainWindow(object):
 
         self.groupBox = QGroupBox(self.widget_3)
         self.groupBox.setObjectName(u"groupBox")
-        sizePolicy3.setHeightForWidth(self.groupBox.sizePolicy().hasHeightForWidth())
-        self.groupBox.setSizePolicy(sizePolicy3)
+        sizePolicy4.setHeightForWidth(self.groupBox.sizePolicy().hasHeightForWidth())
+        self.groupBox.setSizePolicy(sizePolicy4)
         self.groupBox.setFont(font2)
         self.groupBox.setStyleSheet(u"QGroupBox::title {  \n"
 "    color: white;  /* Change 'blue' to any color you want */  \n"
-"}")
+"}\n"
+"\n"
+"")
         self.horizontalLayout_11 = QHBoxLayout(self.groupBox)
         self.horizontalLayout_11.setObjectName(u"horizontalLayout_11")
         self.horizontalLayout_11.setContentsMargins(20, -1, 20, -1)
         self.widget_37 = QWidget(self.groupBox)
         self.widget_37.setObjectName(u"widget_37")
-        sizePolicy2.setHeightForWidth(self.widget_37.sizePolicy().hasHeightForWidth())
-        self.widget_37.setSizePolicy(sizePolicy2)
+        sizePolicy3.setHeightForWidth(self.widget_37.sizePolicy().hasHeightForWidth())
+        self.widget_37.setSizePolicy(sizePolicy3)
         self.horizontalLayout_4 = QHBoxLayout(self.widget_37)
         self.horizontalLayout_4.setObjectName(u"horizontalLayout_4")
         self.horizontalLayout_4.setContentsMargins(0, 0, 0, 0)
         self.widget_7 = QWidget(self.widget_37)
         self.widget_7.setObjectName(u"widget_7")
-        sizePolicy.setHeightForWidth(self.widget_7.sizePolicy().hasHeightForWidth())
-        self.widget_7.setSizePolicy(sizePolicy)
+        sizePolicy1.setHeightForWidth(self.widget_7.sizePolicy().hasHeightForWidth())
+        self.widget_7.setSizePolicy(sizePolicy1)
         self.verticalLayout_7 = QVBoxLayout(self.widget_7)
         self.verticalLayout_7.setSpacing(15)
         self.verticalLayout_7.setObjectName(u"verticalLayout_7")
@@ -671,112 +677,63 @@ class Ui_MainWindow(object):
 
         self.widget_6 = QWidget(self.widget_37)
         self.widget_6.setObjectName(u"widget_6")
-        sizePolicy2.setHeightForWidth(self.widget_6.sizePolicy().hasHeightForWidth())
-        self.widget_6.setSizePolicy(sizePolicy2)
+        sizePolicy3.setHeightForWidth(self.widget_6.sizePolicy().hasHeightForWidth())
+        self.widget_6.setSizePolicy(sizePolicy3)
+        self.widget_6.setStyleSheet(u"QLineEdit {  \n"
+"    border: 2px solid gray;  \n"
+"    border-radius: 10px;  \n"
+"    padding: 2 8 2 8 px;  \n"
+"    background: white;  \n"
+"    selection-background-color: darkgray;  \n"
+"}  ")
         self.verticalLayout_8 = QVBoxLayout(self.widget_6)
-        self.verticalLayout_8.setSpacing(15)
+        self.verticalLayout_8.setSpacing(8)
         self.verticalLayout_8.setObjectName(u"verticalLayout_8")
         self.edit_rfid_noti = QLineEdit(self.widget_6)
         self.edit_rfid_noti.setObjectName(u"edit_rfid_noti")
         self.edit_rfid_noti.setFont(font2)
-        self.edit_rfid_noti.setStyleSheet(u"QLineEdit {  \n"
-"    border: 2px solid gray;  \n"
-"    border-radius: 10px;  \n"
-"    padding: 0 8px;  \n"
-"    background: white;  \n"
-"    selection-background-color: darkgray;  \n"
-"}  ")
 
         self.verticalLayout_8.addWidget(self.edit_rfid_noti)
 
         self.edit_rfid_host = QLineEdit(self.widget_6)
         self.edit_rfid_host.setObjectName(u"edit_rfid_host")
         self.edit_rfid_host.setFont(font2)
-        self.edit_rfid_host.setStyleSheet(u"QLineEdit {  \n"
-"    border: 2px solid gray;  \n"
-"    border-radius: 10px;  \n"
-"    padding: 0 8px;  \n"
-"    background: white;  \n"
-"    selection-background-color: darkgray;  \n"
-"}  ")
 
         self.verticalLayout_8.addWidget(self.edit_rfid_host)
 
         self.edit_rfid_ras1 = QLineEdit(self.widget_6)
         self.edit_rfid_ras1.setObjectName(u"edit_rfid_ras1")
         self.edit_rfid_ras1.setFont(font2)
-        self.edit_rfid_ras1.setStyleSheet(u"QLineEdit {  \n"
-"    border: 2px solid gray;  \n"
-"    border-radius: 10px;  \n"
-"    padding: 0 8px;  \n"
-"    background: white;  \n"
-"    selection-background-color: darkgray;  \n"
-"}  ")
 
         self.verticalLayout_8.addWidget(self.edit_rfid_ras1)
 
         self.edit_rfid_ras2 = QLineEdit(self.widget_6)
         self.edit_rfid_ras2.setObjectName(u"edit_rfid_ras2")
         self.edit_rfid_ras2.setFont(font2)
-        self.edit_rfid_ras2.setStyleSheet(u"QLineEdit {  \n"
-"    border: 2px solid gray;  \n"
-"    border-radius: 10px;  \n"
-"    padding: 0 8px;  \n"
-"    background: white;  \n"
-"    selection-background-color: darkgray;  \n"
-"}  ")
 
         self.verticalLayout_8.addWidget(self.edit_rfid_ras2)
 
         self.edit_rfid_las1 = QLineEdit(self.widget_6)
         self.edit_rfid_las1.setObjectName(u"edit_rfid_las1")
         self.edit_rfid_las1.setFont(font2)
-        self.edit_rfid_las1.setStyleSheet(u"QLineEdit {  \n"
-"    border: 2px solid gray;  \n"
-"    border-radius: 10px;  \n"
-"    padding: 0 8px;  \n"
-"    background: white;  \n"
-"    selection-background-color: darkgray;  \n"
-"}  ")
 
         self.verticalLayout_8.addWidget(self.edit_rfid_las1)
 
         self.edit_rfid_las2 = QLineEdit(self.widget_6)
         self.edit_rfid_las2.setObjectName(u"edit_rfid_las2")
         self.edit_rfid_las2.setFont(font2)
-        self.edit_rfid_las2.setStyleSheet(u"QLineEdit {  \n"
-"    border: 2px solid gray;  \n"
-"    border-radius: 10px;  \n"
-"    padding: 0 8px;  \n"
-"    background: white;  \n"
-"    selection-background-color: darkgray;  \n"
-"}  ")
 
         self.verticalLayout_8.addWidget(self.edit_rfid_las2)
 
         self.edit_rfid_ra1 = QLineEdit(self.widget_6)
         self.edit_rfid_ra1.setObjectName(u"edit_rfid_ra1")
         self.edit_rfid_ra1.setFont(font2)
-        self.edit_rfid_ra1.setStyleSheet(u"QLineEdit {  \n"
-"    border: 2px solid gray;  \n"
-"    border-radius: 10px;  \n"
-"    padding: 0 8px;  \n"
-"    background: white;  \n"
-"    selection-background-color: darkgray;  \n"
-"}  ")
 
         self.verticalLayout_8.addWidget(self.edit_rfid_ra1)
 
         self.edit_rfid_ra2 = QLineEdit(self.widget_6)
         self.edit_rfid_ra2.setObjectName(u"edit_rfid_ra2")
         self.edit_rfid_ra2.setFont(font2)
-        self.edit_rfid_ra2.setStyleSheet(u"QLineEdit {  \n"
-"    border: 2px solid gray;  \n"
-"    border-radius: 10px;  \n"
-"    padding: 0 8px;  \n"
-"    background: white;  \n"
-"    selection-background-color: darkgray;  \n"
-"}  ")
 
         self.verticalLayout_8.addWidget(self.edit_rfid_ra2)
 
@@ -791,8 +748,8 @@ class Ui_MainWindow(object):
 
         self.widget_20 = QWidget(self.widget_3)
         self.widget_20.setObjectName(u"widget_20")
-        sizePolicy3.setHeightForWidth(self.widget_20.sizePolicy().hasHeightForWidth())
-        self.widget_20.setSizePolicy(sizePolicy3)
+        sizePolicy4.setHeightForWidth(self.widget_20.sizePolicy().hasHeightForWidth())
+        self.widget_20.setSizePolicy(sizePolicy4)
         self.verticalLayout_16 = QVBoxLayout(self.widget_20)
         self.verticalLayout_16.setSpacing(10)
         self.verticalLayout_16.setObjectName(u"verticalLayout_16")
@@ -821,16 +778,16 @@ class Ui_MainWindow(object):
         self.horizontalLayout_19.setContentsMargins(10, 0, 10, 0)
         self.widget_22 = QWidget(self.widget_24)
         self.widget_22.setObjectName(u"widget_22")
-        sizePolicy.setHeightForWidth(self.widget_22.sizePolicy().hasHeightForWidth())
-        self.widget_22.setSizePolicy(sizePolicy)
+        sizePolicy1.setHeightForWidth(self.widget_22.sizePolicy().hasHeightForWidth())
+        self.widget_22.setSizePolicy(sizePolicy1)
         self.verticalLayout_17 = QVBoxLayout(self.widget_22)
         self.verticalLayout_17.setSpacing(20)
         self.verticalLayout_17.setObjectName(u"verticalLayout_17")
         self.verticalLayout_17.setContentsMargins(0, 0, 0, 0)
         self.label_42 = QLabel(self.widget_22)
         self.label_42.setObjectName(u"label_42")
-        sizePolicy2.setHeightForWidth(self.label_42.sizePolicy().hasHeightForWidth())
-        self.label_42.setSizePolicy(sizePolicy2)
+        sizePolicy3.setHeightForWidth(self.label_42.sizePolicy().hasHeightForWidth())
+        self.label_42.setSizePolicy(sizePolicy3)
         self.label_42.setFont(font3)
         self.label_42.setStyleSheet(u"QLabel {  \n"
 "    color: white;  /* Change 'blue' to your preferred color */  \n"
@@ -840,8 +797,8 @@ class Ui_MainWindow(object):
 
         self.label_43 = QLabel(self.widget_22)
         self.label_43.setObjectName(u"label_43")
-        sizePolicy2.setHeightForWidth(self.label_43.sizePolicy().hasHeightForWidth())
-        self.label_43.setSizePolicy(sizePolicy2)
+        sizePolicy3.setHeightForWidth(self.label_43.sizePolicy().hasHeightForWidth())
+        self.label_43.setSizePolicy(sizePolicy3)
         self.label_43.setFont(font3)
         self.label_43.setStyleSheet(u"QLabel {  \n"
 "    color: white;  /* Change 'blue' to your preferred color */  \n"
@@ -949,15 +906,15 @@ class Ui_MainWindow(object):
 
         self.widget_17 = QWidget(self.widget_16)
         self.widget_17.setObjectName(u"widget_17")
-        sizePolicy2.setHeightForWidth(self.widget_17.sizePolicy().hasHeightForWidth())
-        self.widget_17.setSizePolicy(sizePolicy2)
+        sizePolicy3.setHeightForWidth(self.widget_17.sizePolicy().hasHeightForWidth())
+        self.widget_17.setSizePolicy(sizePolicy3)
         self.horizontalLayout_15 = QHBoxLayout(self.widget_17)
         self.horizontalLayout_15.setObjectName(u"horizontalLayout_15")
         self.horizontalLayout_15.setContentsMargins(10, 0, 10, 0)
         self.widget_18 = QWidget(self.widget_17)
         self.widget_18.setObjectName(u"widget_18")
-        sizePolicy1.setHeightForWidth(self.widget_18.sizePolicy().hasHeightForWidth())
-        self.widget_18.setSizePolicy(sizePolicy1)
+        sizePolicy2.setHeightForWidth(self.widget_18.sizePolicy().hasHeightForWidth())
+        self.widget_18.setSizePolicy(sizePolicy2)
         self.horizontalLayout_16 = QHBoxLayout(self.widget_18)
         self.horizontalLayout_16.setObjectName(u"horizontalLayout_16")
         self.horizontalLayout_16.setContentsMargins(0, 0, 0, 0)
@@ -988,8 +945,8 @@ class Ui_MainWindow(object):
 
         self.widget_19 = QWidget(self.widget_17)
         self.widget_19.setObjectName(u"widget_19")
-        sizePolicy1.setHeightForWidth(self.widget_19.sizePolicy().hasHeightForWidth())
-        self.widget_19.setSizePolicy(sizePolicy1)
+        sizePolicy2.setHeightForWidth(self.widget_19.sizePolicy().hasHeightForWidth())
+        self.widget_19.setSizePolicy(sizePolicy2)
         self.horizontalLayout_17 = QHBoxLayout(self.widget_19)
         self.horizontalLayout_17.setObjectName(u"horizontalLayout_17")
         self.label_41 = QLabel(self.widget_19)
@@ -1040,15 +997,15 @@ class Ui_MainWindow(object):
 
         self.widget_14 = QWidget(self.widget_5)
         self.widget_14.setObjectName(u"widget_14")
-        sizePolicy2.setHeightForWidth(self.widget_14.sizePolicy().hasHeightForWidth())
-        self.widget_14.setSizePolicy(sizePolicy2)
+        sizePolicy3.setHeightForWidth(self.widget_14.sizePolicy().hasHeightForWidth())
+        self.widget_14.setSizePolicy(sizePolicy3)
         self.horizontalLayout_13 = QHBoxLayout(self.widget_14)
         self.horizontalLayout_13.setObjectName(u"horizontalLayout_13")
         self.horizontalLayout_13.setContentsMargins(10, 0, 10, 0)
         self.widget_13 = QWidget(self.widget_14)
         self.widget_13.setObjectName(u"widget_13")
-        sizePolicy1.setHeightForWidth(self.widget_13.sizePolicy().hasHeightForWidth())
-        self.widget_13.setSizePolicy(sizePolicy1)
+        sizePolicy2.setHeightForWidth(self.widget_13.sizePolicy().hasHeightForWidth())
+        self.widget_13.setSizePolicy(sizePolicy2)
         self.horizontalLayout = QHBoxLayout(self.widget_13)
         self.horizontalLayout.setObjectName(u"horizontalLayout")
         self.label_38 = QLabel(self.widget_13)
@@ -1078,8 +1035,8 @@ class Ui_MainWindow(object):
 
         self.widget_15 = QWidget(self.widget_14)
         self.widget_15.setObjectName(u"widget_15")
-        sizePolicy1.setHeightForWidth(self.widget_15.sizePolicy().hasHeightForWidth())
-        self.widget_15.setSizePolicy(sizePolicy1)
+        sizePolicy2.setHeightForWidth(self.widget_15.sizePolicy().hasHeightForWidth())
+        self.widget_15.setSizePolicy(sizePolicy2)
         self.horizontalLayout_14 = QHBoxLayout(self.widget_15)
         self.horizontalLayout_14.setObjectName(u"horizontalLayout_14")
         self.label_39 = QLabel(self.widget_15)
@@ -1133,9 +1090,19 @@ class Ui_MainWindow(object):
         self.widget_27.setObjectName(u"widget_27")
         self.widget_27.setStyleSheet(u"#widget_27{\n"
 "	background-color: rgba(40, 40, 40, 220);  \n"
-"}")
+"}\n"
+"\n"
+"QLineEdit {  \n"
+"    border: 2px solid gray;  \n"
+"    border-radius: 10px;  \n"
+"    padding: 1 8 1 8 px;  \n"
+"    background: white;  \n"
+"    selection-background-color: darkgray;  \n"
+"	font-size: 8pt;\n"
+"	font-weight: bold;\n"
+"} ")
         self.verticalLayout_4 = QVBoxLayout(self.widget_27)
-        self.verticalLayout_4.setSpacing(10)
+        self.verticalLayout_4.setSpacing(5)
         self.verticalLayout_4.setObjectName(u"verticalLayout_4")
         self.verticalLayout_4.setContentsMargins(20, 10, 20, 10)
         self.widget_35 = QWidget(self.widget_27)
@@ -1147,8 +1114,8 @@ class Ui_MainWindow(object):
         self.horizontalLayout_29.setContentsMargins(20, 0, 20, 0)
         self.label_48 = QLabel(self.widget_35)
         self.label_48.setObjectName(u"label_48")
-        sizePolicy1.setHeightForWidth(self.label_48.sizePolicy().hasHeightForWidth())
-        self.label_48.setSizePolicy(sizePolicy1)
+        sizePolicy2.setHeightForWidth(self.label_48.sizePolicy().hasHeightForWidth())
+        self.label_48.setSizePolicy(sizePolicy2)
         self.label_48.setFont(font)
         self.label_48.setStyleSheet(u"QWidget{\n"
 "	color: white;\n"
@@ -1186,11 +1153,11 @@ class Ui_MainWindow(object):
         self.horizontalLayout_28.setContentsMargins(0, 0, 0, 0)
         self.radio_api_default = QRadioButton(self.groupBox_5)
         self.radio_api_default.setObjectName(u"radio_api_default")
-        sizePolicy4 = QSizePolicy(QSizePolicy.Policy.Maximum, QSizePolicy.Policy.Fixed)
-        sizePolicy4.setHorizontalStretch(0)
-        sizePolicy4.setVerticalStretch(0)
-        sizePolicy4.setHeightForWidth(self.radio_api_default.sizePolicy().hasHeightForWidth())
-        self.radio_api_default.setSizePolicy(sizePolicy4)
+        sizePolicy5 = QSizePolicy(QSizePolicy.Policy.Maximum, QSizePolicy.Policy.Fixed)
+        sizePolicy5.setHorizontalStretch(0)
+        sizePolicy5.setVerticalStretch(0)
+        sizePolicy5.setHeightForWidth(self.radio_api_default.sizePolicy().hasHeightForWidth())
+        self.radio_api_default.setSizePolicy(sizePolicy5)
         self.radio_api_default.setFont(font2)
         self.radio_api_default.setChecked(True)
 
@@ -1198,16 +1165,16 @@ class Ui_MainWindow(object):
 
         self.radio_api_custom = QRadioButton(self.groupBox_5)
         self.radio_api_custom.setObjectName(u"radio_api_custom")
-        sizePolicy4.setHeightForWidth(self.radio_api_custom.sizePolicy().hasHeightForWidth())
-        self.radio_api_custom.setSizePolicy(sizePolicy4)
+        sizePolicy5.setHeightForWidth(self.radio_api_custom.sizePolicy().hasHeightForWidth())
+        self.radio_api_custom.setSizePolicy(sizePolicy5)
         self.radio_api_custom.setFont(font2)
 
         self.horizontalLayout_28.addWidget(self.radio_api_custom)
 
         self.radio_api_both = QRadioButton(self.groupBox_5)
         self.radio_api_both.setObjectName(u"radio_api_both")
-        sizePolicy4.setHeightForWidth(self.radio_api_both.sizePolicy().hasHeightForWidth())
-        self.radio_api_both.setSizePolicy(sizePolicy4)
+        sizePolicy5.setHeightForWidth(self.radio_api_both.sizePolicy().hasHeightForWidth())
+        self.radio_api_both.setSizePolicy(sizePolicy5)
         self.radio_api_both.setFont(font2)
 
         self.horizontalLayout_28.addWidget(self.radio_api_both)
@@ -1234,8 +1201,8 @@ class Ui_MainWindow(object):
         self.horizontalLayout_22.setContentsMargins(0, 0, 0, 0)
         self.label_44 = QLabel(self.widget_29)
         self.label_44.setObjectName(u"label_44")
-        sizePolicy1.setHeightForWidth(self.label_44.sizePolicy().hasHeightForWidth())
-        self.label_44.setSizePolicy(sizePolicy1)
+        sizePolicy2.setHeightForWidth(self.label_44.sizePolicy().hasHeightForWidth())
+        self.label_44.setSizePolicy(sizePolicy2)
         self.label_44.setFont(font2)
         self.label_44.setStyleSheet(u"QWidget{\n"
 "	color: white;\n"
@@ -1259,8 +1226,8 @@ class Ui_MainWindow(object):
         self.horizontalLayout_21.setContentsMargins(200, 0, 200, 0)
         self.groupBox_4 = QGroupBox(self.widget_28)
         self.groupBox_4.setObjectName(u"groupBox_4")
-        sizePolicy1.setHeightForWidth(self.groupBox_4.sizePolicy().hasHeightForWidth())
-        self.groupBox_4.setSizePolicy(sizePolicy1)
+        sizePolicy2.setHeightForWidth(self.groupBox_4.sizePolicy().hasHeightForWidth())
+        self.groupBox_4.setSizePolicy(sizePolicy2)
         self.groupBox_4.setStyleSheet(u"QGroupBox {  \n"
 "    border: 0px;\n"
 "}  ")
@@ -1270,8 +1237,8 @@ class Ui_MainWindow(object):
         self.horizontalLayout_27.setContentsMargins(0, 0, 0, 0)
         self.radio_login_basic = QRadioButton(self.groupBox_4)
         self.radio_login_basic.setObjectName(u"radio_login_basic")
-        sizePolicy4.setHeightForWidth(self.radio_login_basic.sizePolicy().hasHeightForWidth())
-        self.radio_login_basic.setSizePolicy(sizePolicy4)
+        sizePolicy5.setHeightForWidth(self.radio_login_basic.sizePolicy().hasHeightForWidth())
+        self.radio_login_basic.setSizePolicy(sizePolicy5)
         self.radio_login_basic.setFont(font2)
         self.radio_login_basic.setChecked(True)
 
@@ -1279,8 +1246,8 @@ class Ui_MainWindow(object):
 
         self.radio_login_token = QRadioButton(self.groupBox_4)
         self.radio_login_token.setObjectName(u"radio_login_token")
-        sizePolicy4.setHeightForWidth(self.radio_login_token.sizePolicy().hasHeightForWidth())
-        self.radio_login_token.setSizePolicy(sizePolicy4)
+        sizePolicy5.setHeightForWidth(self.radio_login_token.sizePolicy().hasHeightForWidth())
+        self.radio_login_token.setSizePolicy(sizePolicy5)
         self.radio_login_token.setFont(font2)
 
         self.horizontalLayout_27.addWidget(self.radio_login_token)
@@ -1293,9 +1260,6 @@ class Ui_MainWindow(object):
 
         self.widget_30 = QWidget(self.widget_27)
         self.widget_30.setObjectName(u"widget_30")
-        self.widget_30.setStyleSheet(u"#widget_30{\n"
-"	border: 2px solid white;\n"
-"}")
         self.horizontalLayout_26 = QHBoxLayout(self.widget_30)
         self.horizontalLayout_26.setSpacing(20)
         self.horizontalLayout_26.setObjectName(u"horizontalLayout_26")
@@ -1316,14 +1280,10 @@ class Ui_MainWindow(object):
 
         self.edit_username = QLineEdit(self.widget_31)
         self.edit_username.setObjectName(u"edit_username")
-        self.edit_username.setFont(font2)
-        self.edit_username.setStyleSheet(u"QLineEdit {  \n"
-"    border: 2px solid gray;  \n"
-"    border-radius: 10px;  \n"
-"    padding: 0 8px;  \n"
-"    background: white;  \n"
-"    selection-background-color: darkgray;  \n"
-"}  ")
+        font4 = QFont()
+        font4.setPointSize(8)
+        font4.setBold(True)
+        self.edit_username.setFont(font4)
 
         self.horizontalLayout_23.addWidget(self.edit_username)
 
@@ -1346,14 +1306,7 @@ class Ui_MainWindow(object):
 
         self.edit_password = QLineEdit(self.widget_32)
         self.edit_password.setObjectName(u"edit_password")
-        self.edit_password.setFont(font2)
-        self.edit_password.setStyleSheet(u"QLineEdit {  \n"
-"    border: 2px solid gray;  \n"
-"    border-radius: 10px;  \n"
-"    padding: 0 8px;  \n"
-"    background: white;  \n"
-"    selection-background-color: darkgray;  \n"
-"}  ")
+        self.edit_password.setFont(font4)
         self.edit_password.setEchoMode(QLineEdit.Password)
 
         self.horizontalLayout_24.addWidget(self.edit_password)
@@ -1378,14 +1331,7 @@ class Ui_MainWindow(object):
         self.edit_url = QLineEdit(self.widget_33)
         self.edit_url.setObjectName(u"edit_url")
         self.edit_url.setMinimumSize(QSize(200, 0))
-        self.edit_url.setFont(font2)
-        self.edit_url.setStyleSheet(u"QLineEdit {  \n"
-"    border: 2px solid gray;  \n"
-"    border-radius: 10px;  \n"
-"    padding: 0 8px;  \n"
-"    background: white;  \n"
-"    selection-background-color: darkgray;  \n"
-"}  ")
+        self.edit_url.setFont(font4)
 
         self.horizontalLayout_25.addWidget(self.edit_url)
 
@@ -1478,79 +1424,37 @@ class Ui_MainWindow(object):
         self.verticalLayout_23.setObjectName(u"verticalLayout_23")
         self.edit_api_tag = QLineEdit(self.widget_39)
         self.edit_api_tag.setObjectName(u"edit_api_tag")
-        self.edit_api_tag.setFont(font2)
-        self.edit_api_tag.setStyleSheet(u"QLineEdit {  \n"
-"    border: 2px solid gray;  \n"
-"    border-radius: 10px;  \n"
-"    padding: 0 8px;  \n"
-"    background: white;  \n"
-"    selection-background-color: darkgray;  \n"
-"}  ")
+        self.edit_api_tag.setFont(font4)
 
         self.verticalLayout_23.addWidget(self.edit_api_tag)
 
         self.edit_api_ant = QLineEdit(self.widget_39)
         self.edit_api_ant.setObjectName(u"edit_api_ant")
-        self.edit_api_ant.setFont(font2)
-        self.edit_api_ant.setStyleSheet(u"QLineEdit {  \n"
-"    border: 2px solid gray;  \n"
-"    border-radius: 10px;  \n"
-"    padding: 0 8px;  \n"
-"    background: white;  \n"
-"    selection-background-color: darkgray;  \n"
-"}  ")
+        self.edit_api_ant.setFont(font4)
 
         self.verticalLayout_23.addWidget(self.edit_api_ant)
 
         self.edit_api_lat = QLineEdit(self.widget_39)
         self.edit_api_lat.setObjectName(u"edit_api_lat")
-        self.edit_api_lat.setFont(font2)
-        self.edit_api_lat.setStyleSheet(u"QLineEdit {  \n"
-"    border: 2px solid gray;  \n"
-"    border-radius: 10px;  \n"
-"    padding: 0 8px;  \n"
-"    background: white;  \n"
-"    selection-background-color: darkgray;  \n"
-"}  ")
+        self.edit_api_lat.setFont(font4)
 
         self.verticalLayout_23.addWidget(self.edit_api_lat)
 
         self.edit_api_lng = QLineEdit(self.widget_39)
         self.edit_api_lng.setObjectName(u"edit_api_lng")
-        self.edit_api_lng.setFont(font2)
-        self.edit_api_lng.setStyleSheet(u"QLineEdit {  \n"
-"    border: 2px solid gray;  \n"
-"    border-radius: 10px;  \n"
-"    padding: 0 8px;  \n"
-"    background: white;  \n"
-"    selection-background-color: darkgray;  \n"
-"}  ")
+        self.edit_api_lng.setFont(font4)
 
         self.verticalLayout_23.addWidget(self.edit_api_lng)
 
         self.edit_api_heading = QLineEdit(self.widget_39)
         self.edit_api_heading.setObjectName(u"edit_api_heading")
-        self.edit_api_heading.setFont(font2)
-        self.edit_api_heading.setStyleSheet(u"QLineEdit {  \n"
-"    border: 2px solid gray;  \n"
-"    border-radius: 10px;  \n"
-"    padding: 0 8px;  \n"
-"    background: white;  \n"
-"    selection-background-color: darkgray;  \n"
-"}  ")
+        self.edit_api_heading.setFont(font4)
 
         self.verticalLayout_23.addWidget(self.edit_api_heading)
 
         self.edit_api_speed = QLineEdit(self.widget_39)
         self.edit_api_speed.setObjectName(u"edit_api_speed")
-        self.edit_api_speed.setFont(font2)
-        self.edit_api_speed.setStyleSheet(u"QLineEdit {  \n"
-"    border: 2px solid gray;  \n"
-"    border-radius: 10px;  \n"
-"    padding: 0 8px;  \n"
-"    background: white;  \n"
-"    selection-background-color: darkgray;  \n"
-"}  ")
+        self.edit_api_speed.setFont(font4)
 
         self.verticalLayout_23.addWidget(self.edit_api_speed)
 
@@ -1578,8 +1482,8 @@ class Ui_MainWindow(object):
         self.horizontalLayout_36.setContentsMargins(0, 0, 0, 0)
         self.label_59 = QLabel(self.widget_43)
         self.label_59.setObjectName(u"label_59")
-        sizePolicy1.setHeightForWidth(self.label_59.sizePolicy().hasHeightForWidth())
-        self.label_59.setSizePolicy(sizePolicy1)
+        sizePolicy2.setHeightForWidth(self.label_59.sizePolicy().hasHeightForWidth())
+        self.label_59.setSizePolicy(sizePolicy2)
         self.label_59.setFont(font2)
         self.label_59.setStyleSheet(u"QLabel {  \n"
 "    color: white;  /* Change 'blue' to your preferred color */  \n"
@@ -1589,14 +1493,7 @@ class Ui_MainWindow(object):
 
         self.edit_api_rssi = QLineEdit(self.widget_43)
         self.edit_api_rssi.setObjectName(u"edit_api_rssi")
-        self.edit_api_rssi.setFont(font2)
-        self.edit_api_rssi.setStyleSheet(u"QLineEdit {  \n"
-"    border: 2px solid gray;  \n"
-"    border-radius: 10px;  \n"
-"    padding: 0 8px;  \n"
-"    background: white;  \n"
-"    selection-background-color: darkgray;  \n"
-"}  ")
+        self.edit_api_rssi.setFont(font4)
 
         self.horizontalLayout_36.addWidget(self.edit_api_rssi)
 
@@ -1611,8 +1508,8 @@ class Ui_MainWindow(object):
         self.verticalLayout_29.setContentsMargins(0, 0, 0, 0)
         self.label_60 = QLabel(self.widget_44)
         self.label_60.setObjectName(u"label_60")
-        sizePolicy1.setHeightForWidth(self.label_60.sizePolicy().hasHeightForWidth())
-        self.label_60.setSizePolicy(sizePolicy1)
+        sizePolicy2.setHeightForWidth(self.label_60.sizePolicy().hasHeightForWidth())
+        self.label_60.setSizePolicy(sizePolicy2)
         self.label_60.setPixmap(QPixmap(u":/img/api_json_request.png"))
         self.label_60.setScaledContents(True)
 
@@ -1632,8 +1529,8 @@ class Ui_MainWindow(object):
         self.verticalLayout_24.setObjectName(u"verticalLayout_24")
         self.label_57 = QLabel(self.widget_40)
         self.label_57.setObjectName(u"label_57")
-        sizePolicy1.setHeightForWidth(self.label_57.sizePolicy().hasHeightForWidth())
-        self.label_57.setSizePolicy(sizePolicy1)
+        sizePolicy2.setHeightForWidth(self.label_57.sizePolicy().hasHeightForWidth())
+        self.label_57.setSizePolicy(sizePolicy2)
         self.label_57.setFont(font2)
         self.label_57.setStyleSheet(u"QLabel {  \n"
 "    color: white;  /* Change 'blue' to your preferred color */  \n"
@@ -1643,53 +1540,25 @@ class Ui_MainWindow(object):
 
         self.edit_api_heading_3 = QLineEdit(self.widget_40)
         self.edit_api_heading_3.setObjectName(u"edit_api_heading_3")
-        self.edit_api_heading_3.setFont(font2)
-        self.edit_api_heading_3.setStyleSheet(u"QLineEdit {  \n"
-"    border: 2px solid gray;  \n"
-"    border-radius: 10px;  \n"
-"    padding: 0 8px;  \n"
-"    background: white;  \n"
-"    selection-background-color: darkgray;  \n"
-"}  ")
+        self.edit_api_heading_3.setFont(font4)
 
         self.verticalLayout_24.addWidget(self.edit_api_heading_3)
 
         self.edit_api_heading_2 = QLineEdit(self.widget_40)
         self.edit_api_heading_2.setObjectName(u"edit_api_heading_2")
-        self.edit_api_heading_2.setFont(font2)
-        self.edit_api_heading_2.setStyleSheet(u"QLineEdit {  \n"
-"    border: 2px solid gray;  \n"
-"    border-radius: 10px;  \n"
-"    padding: 0 8px;  \n"
-"    background: white;  \n"
-"    selection-background-color: darkgray;  \n"
-"}  ")
+        self.edit_api_heading_2.setFont(font4)
 
         self.verticalLayout_24.addWidget(self.edit_api_heading_2)
 
         self.edit_api_heading_4 = QLineEdit(self.widget_40)
         self.edit_api_heading_4.setObjectName(u"edit_api_heading_4")
-        self.edit_api_heading_4.setFont(font2)
-        self.edit_api_heading_4.setStyleSheet(u"QLineEdit {  \n"
-"    border: 2px solid gray;  \n"
-"    border-radius: 10px;  \n"
-"    padding: 0 8px;  \n"
-"    background: white;  \n"
-"    selection-background-color: darkgray;  \n"
-"}  ")
+        self.edit_api_heading_4.setFont(font4)
 
         self.verticalLayout_24.addWidget(self.edit_api_heading_4)
 
         self.edit_api_lng_2 = QLineEdit(self.widget_40)
         self.edit_api_lng_2.setObjectName(u"edit_api_lng_2")
-        self.edit_api_lng_2.setFont(font2)
-        self.edit_api_lng_2.setStyleSheet(u"QLineEdit {  \n"
-"    border: 2px solid gray;  \n"
-"    border-radius: 10px;  \n"
-"    padding: 0 8px;  \n"
-"    background: white;  \n"
-"    selection-background-color: darkgray;  \n"
-"}  ")
+        self.edit_api_lng_2.setFont(font4)
 
         self.verticalLayout_24.addWidget(self.edit_api_lng_2)
 
@@ -1702,8 +1571,8 @@ class Ui_MainWindow(object):
         self.verticalLayout_25.setObjectName(u"verticalLayout_25")
         self.label_63 = QLabel(self.widget_41)
         self.label_63.setObjectName(u"label_63")
-        sizePolicy1.setHeightForWidth(self.label_63.sizePolicy().hasHeightForWidth())
-        self.label_63.setSizePolicy(sizePolicy1)
+        sizePolicy2.setHeightForWidth(self.label_63.sizePolicy().hasHeightForWidth())
+        self.label_63.setSizePolicy(sizePolicy2)
         self.label_63.setFont(font2)
         self.label_63.setStyleSheet(u"QLabel {  \n"
 "    color: white;  /* Change 'blue' to your preferred color */  \n"
@@ -1713,53 +1582,25 @@ class Ui_MainWindow(object):
 
         self.edit_api_heading_5 = QLineEdit(self.widget_41)
         self.edit_api_heading_5.setObjectName(u"edit_api_heading_5")
-        self.edit_api_heading_5.setFont(font2)
-        self.edit_api_heading_5.setStyleSheet(u"QLineEdit {  \n"
-"    border: 2px solid gray;  \n"
-"    border-radius: 10px;  \n"
-"    padding: 0 8px;  \n"
-"    background: white;  \n"
-"    selection-background-color: darkgray;  \n"
-"}  ")
+        self.edit_api_heading_5.setFont(font4)
 
         self.verticalLayout_25.addWidget(self.edit_api_heading_5)
 
         self.edit_api_ant_2 = QLineEdit(self.widget_41)
         self.edit_api_ant_2.setObjectName(u"edit_api_ant_2")
-        self.edit_api_ant_2.setFont(font2)
-        self.edit_api_ant_2.setStyleSheet(u"QLineEdit {  \n"
-"    border: 2px solid gray;  \n"
-"    border-radius: 10px;  \n"
-"    padding: 0 8px;  \n"
-"    background: white;  \n"
-"    selection-background-color: darkgray;  \n"
-"}  ")
+        self.edit_api_ant_2.setFont(font4)
 
         self.verticalLayout_25.addWidget(self.edit_api_ant_2)
 
         self.edit_api_lat_2 = QLineEdit(self.widget_41)
         self.edit_api_lat_2.setObjectName(u"edit_api_lat_2")
-        self.edit_api_lat_2.setFont(font2)
-        self.edit_api_lat_2.setStyleSheet(u"QLineEdit {  \n"
-"    border: 2px solid gray;  \n"
-"    border-radius: 10px;  \n"
-"    padding: 0 8px;  \n"
-"    background: white;  \n"
-"    selection-background-color: darkgray;  \n"
-"}  ")
+        self.edit_api_lat_2.setFont(font4)
 
         self.verticalLayout_25.addWidget(self.edit_api_lat_2)
 
         self.edit_api_speed_2 = QLineEdit(self.widget_41)
         self.edit_api_speed_2.setObjectName(u"edit_api_speed_2")
-        self.edit_api_speed_2.setFont(font2)
-        self.edit_api_speed_2.setStyleSheet(u"QLineEdit {  \n"
-"    border: 2px solid gray;  \n"
-"    border-radius: 10px;  \n"
-"    padding: 0 8px;  \n"
-"    background: white;  \n"
-"    selection-background-color: darkgray;  \n"
-"}  ")
+        self.edit_api_speed_2.setFont(font4)
 
         self.verticalLayout_25.addWidget(self.edit_api_speed_2)
 
@@ -1830,46 +1671,44 @@ class Ui_MainWindow(object):
         ___qtablewidgetitem = self.tableWidget.horizontalHeaderItem(0)
         ___qtablewidgetitem.setText(QCoreApplication.translate("MainWindow", u"RFID", None));
         ___qtablewidgetitem1 = self.tableWidget.horizontalHeaderItem(1)
-        ___qtablewidgetitem1.setText(QCoreApplication.translate("MainWindow", u"Location", None));
+        ___qtablewidgetitem1.setText(QCoreApplication.translate("MainWindow", u"Antenna", None));
         ___qtablewidgetitem2 = self.tableWidget.horizontalHeaderItem(2)
-        ___qtablewidgetitem2.setText(QCoreApplication.translate("MainWindow", u"Last Updated", None));
-        ___qtablewidgetitem3 = self.tableWidget.verticalHeaderItem(0)
-        ___qtablewidgetitem3.setText(QCoreApplication.translate("MainWindow", u"New Row", None));
-        ___qtablewidgetitem4 = self.tableWidget.verticalHeaderItem(1)
-        ___qtablewidgetitem4.setText(QCoreApplication.translate("MainWindow", u"1", None));
-        ___qtablewidgetitem5 = self.tableWidget.verticalHeaderItem(2)
-        ___qtablewidgetitem5.setText(QCoreApplication.translate("MainWindow", u"2", None));
-        ___qtablewidgetitem6 = self.tableWidget.verticalHeaderItem(3)
-        ___qtablewidgetitem6.setText(QCoreApplication.translate("MainWindow", u"3", None));
-        ___qtablewidgetitem7 = self.tableWidget.verticalHeaderItem(4)
-        ___qtablewidgetitem7.setText(QCoreApplication.translate("MainWindow", u"4", None));
-        ___qtablewidgetitem8 = self.tableWidget.verticalHeaderItem(5)
-        ___qtablewidgetitem8.setText(QCoreApplication.translate("MainWindow", u"5", None));
+        ___qtablewidgetitem2.setText(QCoreApplication.translate("MainWindow", u"RSSI", None));
+        ___qtablewidgetitem3 = self.tableWidget.horizontalHeaderItem(3)
+        ___qtablewidgetitem3.setText(QCoreApplication.translate("MainWindow", u"Location", None));
+        ___qtablewidgetitem4 = self.tableWidget.horizontalHeaderItem(4)
+        ___qtablewidgetitem4.setText(QCoreApplication.translate("MainWindow", u"Last Updated", None));
+        ___qtablewidgetitem5 = self.tableWidget.verticalHeaderItem(0)
+        ___qtablewidgetitem5.setText(QCoreApplication.translate("MainWindow", u"New Row", None));
+        ___qtablewidgetitem6 = self.tableWidget.verticalHeaderItem(1)
+        ___qtablewidgetitem6.setText(QCoreApplication.translate("MainWindow", u"1", None));
+        ___qtablewidgetitem7 = self.tableWidget.verticalHeaderItem(2)
+        ___qtablewidgetitem7.setText(QCoreApplication.translate("MainWindow", u"2", None));
+        ___qtablewidgetitem8 = self.tableWidget.verticalHeaderItem(3)
+        ___qtablewidgetitem8.setText(QCoreApplication.translate("MainWindow", u"3", None));
+        ___qtablewidgetitem9 = self.tableWidget.verticalHeaderItem(4)
+        ___qtablewidgetitem9.setText(QCoreApplication.translate("MainWindow", u"4", None));
+        ___qtablewidgetitem10 = self.tableWidget.verticalHeaderItem(5)
+        ___qtablewidgetitem10.setText(QCoreApplication.translate("MainWindow", u"5", None));
 
         __sortingEnabled = self.tableWidget.isSortingEnabled()
         self.tableWidget.setSortingEnabled(False)
-        ___qtablewidgetitem9 = self.tableWidget.item(0, 0)
-        ___qtablewidgetitem9.setText(QCoreApplication.translate("MainWindow", u"004837065827700000000333 - 1", None));
-        ___qtablewidgetitem10 = self.tableWidget.item(0, 1)
-        ___qtablewidgetitem10.setText(QCoreApplication.translate("MainWindow", u"0 0", None));
-        ___qtablewidgetitem11 = self.tableWidget.item(0, 2)
-        ___qtablewidgetitem11.setText(QCoreApplication.translate("MainWindow", u"5/20/2024 11:09:35 PM", None));
         self.tableWidget.setSortingEnabled(__sortingEnabled)
 
         self.label.setText(QCoreApplication.translate("MainWindow", u"RFID Health Status", None))
-        self.last_rfid_read.setText(QCoreApplication.translate("MainWindow", u"TextLabel", None))
+        self.last_rfid_read.setText("")
         self.label_2.setText(QCoreApplication.translate("MainWindow", u"RFID Connection Status", None))
-        self.rfid_connection_status.setText(QCoreApplication.translate("MainWindow", u"TextLabel", None))
+        self.rfid_connection_status.setText("")
         self.label_4.setText(QCoreApplication.translate("MainWindow", u"Last RFID Tag Read", None))
         self.label_6.setText(QCoreApplication.translate("MainWindow", u"Last RFID Read Time", None))
-        self.last_rfid_time.setText(QCoreApplication.translate("MainWindow", u"TextLabel", None))
+        self.last_rfid_time.setText("")
         self.label_8.setText(QCoreApplication.translate("MainWindow", u"GPS Health Status", None))
-        self.last_gps_read.setText(QCoreApplication.translate("MainWindow", u"TextLabel", None))
+        self.last_gps_read.setText("")
         self.label_10.setText(QCoreApplication.translate("MainWindow", u"GPS Connection Status", None))
-        self.gps_connection_status.setText(QCoreApplication.translate("MainWindow", u"TextLabel", None))
+        self.gps_connection_status.setText("")
         self.label_12.setText(QCoreApplication.translate("MainWindow", u"Last GPS Read", None))
         self.label_13.setText(QCoreApplication.translate("MainWindow", u"Last GPS Read Time", None))
-        self.last_gps_time.setText(QCoreApplication.translate("MainWindow", u"TextLabel", None))
+        self.last_gps_time.setText("")
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.rfid_tab), QCoreApplication.translate("MainWindow", u"RFID", None))
         self.groupBox_2.setTitle(QCoreApplication.translate("MainWindow", u"GPS", None))
         self.checkBox.setText(QCoreApplication.translate("MainWindow", u"Enable GPS", None))
@@ -1883,6 +1722,7 @@ class Ui_MainWindow(object):
         self.label_35.setText(QCoreApplication.translate("MainWindow", u"GPS StopBits", None))
         self.label_36.setText(QCoreApplication.translate("MainWindow", u"GPS Parity", None))
         self.label_37.setText(QCoreApplication.translate("MainWindow", u"GPS BaudRate", None))
+        self.edit_gps_noti.setText("")
         self.groupBox.setTitle(QCoreApplication.translate("MainWindow", u"RFID", None))
         self.label_15.setText(QCoreApplication.translate("MainWindow", u"Notify RFID", None))
         self.label_24.setText(QCoreApplication.translate("MainWindow", u"RFID Host", None))
@@ -1892,6 +1732,9 @@ class Ui_MainWindow(object):
         self.label_28.setText(QCoreApplication.translate("MainWindow", u"RFID LSA2", None))
         self.label_29.setText(QCoreApplication.translate("MainWindow", u"RFID RA1", None))
         self.label_30.setText(QCoreApplication.translate("MainWindow", u"RFID RA2", None))
+        self.edit_rfid_noti.setText(QCoreApplication.translate("MainWindow", u"-1", None))
+        self.edit_rfid_host.setText(QCoreApplication.translate("MainWindow", u"169.254.10.1", None))
+        self.edit_rfid_ras1.setText("")
         self.checkBox_4.setText(QCoreApplication.translate("MainWindow", u"Enable Tag Range Limit", None))
         self.label_42.setText(QCoreApplication.translate("MainWindow", u"Start Tag Value", None))
         self.label_43.setText(QCoreApplication.translate("MainWindow", u"End Tag Value", None))
@@ -1914,6 +1757,7 @@ class Ui_MainWindow(object):
         self.radio_login_basic.setText(QCoreApplication.translate("MainWindow", u"Basic", None))
         self.radio_login_token.setText(QCoreApplication.translate("MainWindow", u"Token", None))
         self.label_45.setText(QCoreApplication.translate("MainWindow", u"UserName", None))
+        self.edit_username.setText("")
         self.label_46.setText(QCoreApplication.translate("MainWindow", u"Password", None))
         self.label_47.setText(QCoreApplication.translate("MainWindow", u"Login Url", None))
         self.groupBox_6.setTitle(QCoreApplication.translate("MainWindow", u"Default", None))
@@ -1923,10 +1767,13 @@ class Ui_MainWindow(object):
         self.label_54.setText(QCoreApplication.translate("MainWindow", u"lng", None))
         self.label_55.setText(QCoreApplication.translate("MainWindow", u"heading", None))
         self.label_56.setText(QCoreApplication.translate("MainWindow", u"speed", None))
+        self.edit_api_tag.setText("")
         self.groupBox_7.setTitle(QCoreApplication.translate("MainWindow", u"Client", None))
         self.label_59.setText(QCoreApplication.translate("MainWindow", u"rssi", None))
+        self.edit_api_rssi.setText("")
         self.label_60.setText("")
         self.label_57.setText(QCoreApplication.translate("MainWindow", u"Custom Tag", None))
+        self.edit_api_heading_3.setText("")
         self.label_63.setText(QCoreApplication.translate("MainWindow", u"Custom Value", None))
         self.pushButton.setText(QCoreApplication.translate("MainWindow", u"Save", None))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.api_tab), QCoreApplication.translate("MainWindow", u"API Integration", None))

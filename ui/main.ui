@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>797</width>
-    <height>537</height>
+    <height>519</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -32,8 +32,50 @@
     </property>
     <item>
      <widget class="QTabWidget" name="tabWidget">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="cursor">
+       <cursorShape>ArrowCursor</cursorShape>
+      </property>
       <property name="styleSheet">
-       <string notr="true"/>
+       <string notr="true">QTabWidget::pane {
+    border: 1px solid #999;  
+    top: -1px; /* Space between tab bar and frame */  
+}  
+
+QTabBar::tab {  
+    background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1,   
+                                      stop:0 #999999, stop:1 #000000);  
+    border: 1px solid #c4c4c3;  
+    border-bottom-color: #c2c7cb; /* Same as pane color */  
+    border-top-left-radius: 5px;  
+    border-top-right-radius: 5px;  
+    min-width: 80px;
+	min-height: 20px;
+    padding: 10px;
+	font: 12pt;
+	font-weight: bold;
+	color: white;
+}  
+
+QTabBar::tab:selected {  
+    background-color: #707070;  
+    border-color: #8f8f91;  
+    border-bottom-color: #e0e0e0; /* Same as pane color */  
+}  
+
+QTabBar::tab:!selected {  
+    margin-top: 2px; /* Make non-selected tabs look recessed */  
+}  
+
+QTabBar::tab:hover {  
+    background: #83878a;  
+    border-color: #999;  
+}</string>
       </property>
       <property name="tabPosition">
        <enum>QTabWidget::North</enum>
@@ -109,7 +151,7 @@
             <widget class="QTableWidget" name="tableWidget">
              <property name="font">
               <font>
-               <pointsize>-1</pointsize>
+               <pointsize>14</pointsize>
                <weight>50</weight>
                <italic>false</italic>
                <bold>false</bold>
@@ -119,14 +161,14 @@
               <string notr="true">QTableWidget {  
   	 background-color: rgba(40, 40, 40, 180); 
     gridline-color: #d1d1d1;  
-    font: 24px;
+    font: 14pt;
 }  
 QHeaderView::section {  
     background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1,   
                                       stop:0 #777777, stop:1 #000000);
     color: white;  
     padding: 5px;
-	font: 24px bold;
+	font: 16pt bold;
     border: 1px solid #555;  
 }  
 QTableWidget::item {
@@ -211,6 +253,16 @@ QTableWidget::item {
              </column>
              <column>
               <property name="text">
+               <string>Antenna</string>
+              </property>
+             </column>
+             <column>
+              <property name="text">
+               <string>RSSI</string>
+              </property>
+             </column>
+             <column>
+              <property name="text">
                <string>Location</string>
               </property>
              </column>
@@ -221,20 +273,20 @@ QTableWidget::item {
              </column>
              <item row="0" column="0">
               <property name="text">
-               <string>004837065827700000000333 - 1</string>
+               <string/>
               </property>
               <property name="flags">
                <set>NoItemFlags</set>
               </property>
              </item>
-             <item row="0" column="1">
+             <item row="0" column="3">
               <property name="text">
-               <string>0 0</string>
+               <string/>
               </property>
              </item>
-             <item row="0" column="2">
+             <item row="0" column="4">
               <property name="text">
-               <string>5/20/2024 11:09:35 PM</string>
+               <string/>
               </property>
              </item>
              <item row="1" column="0">
@@ -254,6 +306,9 @@ QTableWidget::item {
           </property>
           <item row="0" column="0">
            <widget class="QWidget" name="widget" native="true">
+            <property name="styleSheet">
+             <string notr="true">font-size: 10pt;</string>
+            </property>
             <layout class="QVBoxLayout" name="verticalLayout_2">
              <property name="spacing">
               <number>0</number>
@@ -301,7 +356,7 @@ border: 1px solid black;</string>
 border: 1px solid black;</string>
                  </property>
                  <property name="text">
-                  <string>TextLabel</string>
+                  <string/>
                  </property>
                 </widget>
                </item>
@@ -329,7 +384,7 @@ border: 1px solid black;</string>
 border: 1px solid black;</string>
                  </property>
                  <property name="text">
-                  <string>TextLabel</string>
+                  <string/>
                  </property>
                 </widget>
                </item>
@@ -362,7 +417,7 @@ border: 1px solid black;</string>
 border: 1px solid black;</string>
                  </property>
                  <property name="text">
-                  <string>TextLabel</string>
+                  <string/>
                  </property>
                 </widget>
                </item>
@@ -373,6 +428,9 @@ border: 1px solid black;</string>
           </item>
           <item row="0" column="1">
            <widget class="QWidget" name="widget_2" native="true">
+            <property name="styleSheet">
+             <string notr="true">font-size: 10pt;</string>
+            </property>
             <layout class="QVBoxLayout" name="verticalLayout_3">
              <property name="spacing">
               <number>0</number>
@@ -420,7 +478,7 @@ border: 1px solid black;</string>
 border: 1px solid black;</string>
                  </property>
                  <property name="text">
-                  <string>TextLabel</string>
+                  <string/>
                  </property>
                 </widget>
                </item>
@@ -448,7 +506,7 @@ border: 1px solid black;</string>
 border: 1px solid black;</string>
                  </property>
                  <property name="text">
-                  <string>TextLabel</string>
+                  <string/>
                  </property>
                 </widget>
                </item>
@@ -481,7 +539,7 @@ border: 1px solid black;</string>
 border: 1px solid black;</string>
                  </property>
                  <property name="text">
-                  <string>TextLabel</string>
+                  <string/>
                  </property>
                 </widget>
                </item>
@@ -868,9 +926,18 @@ border: 1px solid black;</string>
                      <verstretch>0</verstretch>
                     </sizepolicy>
                    </property>
+                   <property name="styleSheet">
+                    <string notr="true">QLineEdit {  
+    border: 2px solid gray;  
+    border-radius: 10px;  
+    padding: 2 8 2 8 px;  
+    background: white;  
+    selection-background-color: darkgray;  
+} </string>
+                   </property>
                    <layout class="QVBoxLayout" name="verticalLayout_11">
                     <property name="spacing">
-                     <number>10</number>
+                     <number>8</number>
                     </property>
                     <property name="topMargin">
                      <number>0</number>
@@ -887,14 +954,8 @@ border: 1px solid black;</string>
                         <bold>true</bold>
                        </font>
                       </property>
-                      <property name="styleSheet">
-                       <string notr="true">QLineEdit {  
-    border: 2px solid gray;  
-    border-radius: 10px;  
-    padding: 0 8px;  
-    background: white;  
-    selection-background-color: darkgray;  
-}  </string>
+                      <property name="text">
+                       <string/>
                       </property>
                      </widget>
                     </item>
@@ -907,15 +968,6 @@ border: 1px solid black;</string>
                         <bold>true</bold>
                        </font>
                       </property>
-                      <property name="styleSheet">
-                       <string notr="true">QLineEdit {  
-    border: 2px solid gray;  
-    border-radius: 10px;  
-    padding: 0 8px;  
-    background: white;  
-    selection-background-color: darkgray;  
-}  </string>
-                      </property>
                      </widget>
                     </item>
                     <item>
@@ -926,15 +978,6 @@ border: 1px solid black;</string>
                         <weight>75</weight>
                         <bold>true</bold>
                        </font>
-                      </property>
-                      <property name="styleSheet">
-                       <string notr="true">QLineEdit {  
-    border: 2px solid gray;  
-    border-radius: 10px;  
-    padding: 0 8px;  
-    background: white;  
-    selection-background-color: darkgray;  
-}  </string>
                       </property>
                      </widget>
                     </item>
@@ -947,15 +990,6 @@ border: 1px solid black;</string>
                         <bold>true</bold>
                        </font>
                       </property>
-                      <property name="styleSheet">
-                       <string notr="true">QLineEdit {  
-    border: 2px solid gray;  
-    border-radius: 10px;  
-    padding: 0 8px;  
-    background: white;  
-    selection-background-color: darkgray;  
-}  </string>
-                      </property>
                      </widget>
                     </item>
                     <item>
@@ -966,15 +1000,6 @@ border: 1px solid black;</string>
                         <weight>75</weight>
                         <bold>true</bold>
                        </font>
-                      </property>
-                      <property name="styleSheet">
-                       <string notr="true">QLineEdit {  
-    border: 2px solid gray;  
-    border-radius: 10px;  
-    padding: 0 8px;  
-    background: white;  
-    selection-background-color: darkgray;  
-}  </string>
                       </property>
                      </widget>
                     </item>
@@ -987,15 +1012,6 @@ border: 1px solid black;</string>
                         <bold>true</bold>
                        </font>
                       </property>
-                      <property name="styleSheet">
-                       <string notr="true">QLineEdit {  
-    border: 2px solid gray;  
-    border-radius: 10px;  
-    padding: 0 8px;  
-    background: white;  
-    selection-background-color: darkgray;  
-}  </string>
-                      </property>
                      </widget>
                     </item>
                     <item>
@@ -1006,15 +1022,6 @@ border: 1px solid black;</string>
                         <weight>75</weight>
                         <bold>true</bold>
                        </font>
-                      </property>
-                      <property name="styleSheet">
-                       <string notr="true">QLineEdit {  
-    border: 2px solid gray;  
-    border-radius: 10px;  
-    padding: 0 8px;  
-    background: white;  
-    selection-background-color: darkgray;  
-}  </string>
                       </property>
                      </widget>
                     </item>
@@ -1045,7 +1052,9 @@ border: 1px solid black;</string>
              <property name="styleSheet">
               <string notr="true">QGroupBox::title {  
     color: white;  /* Change 'blue' to any color you want */  
-}</string>
+}
+
+</string>
              </property>
              <property name="title">
               <string>RFID</string>
@@ -1253,9 +1262,18 @@ border: 1px solid black;</string>
                      <verstretch>0</verstretch>
                     </sizepolicy>
                    </property>
+                   <property name="styleSheet">
+                    <string notr="true">QLineEdit {  
+    border: 2px solid gray;  
+    border-radius: 10px;  
+    padding: 2 8 2 8 px;  
+    background: white;  
+    selection-background-color: darkgray;  
+}  </string>
+                   </property>
                    <layout class="QVBoxLayout" name="verticalLayout_8">
                     <property name="spacing">
-                     <number>15</number>
+                     <number>8</number>
                     </property>
                     <item>
                      <widget class="QLineEdit" name="edit_rfid_noti">
@@ -1266,14 +1284,8 @@ border: 1px solid black;</string>
                         <bold>true</bold>
                        </font>
                       </property>
-                      <property name="styleSheet">
-                       <string notr="true">QLineEdit {  
-    border: 2px solid gray;  
-    border-radius: 10px;  
-    padding: 0 8px;  
-    background: white;  
-    selection-background-color: darkgray;  
-}  </string>
+                      <property name="text">
+                       <string>-1</string>
                       </property>
                      </widget>
                     </item>
@@ -1286,14 +1298,8 @@ border: 1px solid black;</string>
                         <bold>true</bold>
                        </font>
                       </property>
-                      <property name="styleSheet">
-                       <string notr="true">QLineEdit {  
-    border: 2px solid gray;  
-    border-radius: 10px;  
-    padding: 0 8px;  
-    background: white;  
-    selection-background-color: darkgray;  
-}  </string>
+                      <property name="text">
+                       <string>169.254.10.1</string>
                       </property>
                      </widget>
                     </item>
@@ -1306,14 +1312,8 @@ border: 1px solid black;</string>
                         <bold>true</bold>
                        </font>
                       </property>
-                      <property name="styleSheet">
-                       <string notr="true">QLineEdit {  
-    border: 2px solid gray;  
-    border-radius: 10px;  
-    padding: 0 8px;  
-    background: white;  
-    selection-background-color: darkgray;  
-}  </string>
+                      <property name="text">
+                       <string/>
                       </property>
                      </widget>
                     </item>
@@ -1326,15 +1326,6 @@ border: 1px solid black;</string>
                         <bold>true</bold>
                        </font>
                       </property>
-                      <property name="styleSheet">
-                       <string notr="true">QLineEdit {  
-    border: 2px solid gray;  
-    border-radius: 10px;  
-    padding: 0 8px;  
-    background: white;  
-    selection-background-color: darkgray;  
-}  </string>
-                      </property>
                      </widget>
                     </item>
                     <item>
@@ -1345,15 +1336,6 @@ border: 1px solid black;</string>
                         <weight>75</weight>
                         <bold>true</bold>
                        </font>
-                      </property>
-                      <property name="styleSheet">
-                       <string notr="true">QLineEdit {  
-    border: 2px solid gray;  
-    border-radius: 10px;  
-    padding: 0 8px;  
-    background: white;  
-    selection-background-color: darkgray;  
-}  </string>
                       </property>
                      </widget>
                     </item>
@@ -1366,15 +1348,6 @@ border: 1px solid black;</string>
                         <bold>true</bold>
                        </font>
                       </property>
-                      <property name="styleSheet">
-                       <string notr="true">QLineEdit {  
-    border: 2px solid gray;  
-    border-radius: 10px;  
-    padding: 0 8px;  
-    background: white;  
-    selection-background-color: darkgray;  
-}  </string>
-                      </property>
                      </widget>
                     </item>
                     <item>
@@ -1386,15 +1359,6 @@ border: 1px solid black;</string>
                         <bold>true</bold>
                        </font>
                       </property>
-                      <property name="styleSheet">
-                       <string notr="true">QLineEdit {  
-    border: 2px solid gray;  
-    border-radius: 10px;  
-    padding: 0 8px;  
-    background: white;  
-    selection-background-color: darkgray;  
-}  </string>
-                      </property>
                      </widget>
                     </item>
                     <item>
@@ -1405,15 +1369,6 @@ border: 1px solid black;</string>
                         <weight>75</weight>
                         <bold>true</bold>
                        </font>
-                      </property>
-                      <property name="styleSheet">
-                       <string notr="true">QLineEdit {  
-    border: 2px solid gray;  
-    border-radius: 10px;  
-    padding: 0 8px;  
-    background: white;  
-    selection-background-color: darkgray;  
-}  </string>
                       </property>
                      </widget>
                     </item>
@@ -2085,11 +2040,21 @@ QPushButton:pressed {
           <property name="styleSheet">
            <string notr="true">#widget_27{
 	background-color: rgba(40, 40, 40, 220);  
-}</string>
+}
+
+QLineEdit {  
+    border: 2px solid gray;  
+    border-radius: 10px;  
+    padding: 1 8 1 8 px;  
+    background: white;  
+    selection-background-color: darkgray;  
+	font-size: 8pt;
+	font-weight: bold;
+} </string>
           </property>
           <layout class="QVBoxLayout" name="verticalLayout_4">
            <property name="spacing">
-            <number>10</number>
+            <number>5</number>
            </property>
            <property name="leftMargin">
             <number>20</number>
@@ -2462,11 +2427,6 @@ tag mapping with available data points. Use custom fields for any data points no
            </item>
            <item>
             <widget class="QWidget" name="widget_30" native="true">
-             <property name="styleSheet">
-              <string notr="true">#widget_30{
-	border: 2px solid white;
-}</string>
-             </property>
              <layout class="QHBoxLayout" name="horizontalLayout_26">
               <property name="spacing">
                <number>20</number>
@@ -2525,19 +2485,13 @@ tag mapping with available data points. Use custom fields for any data points no
                   <widget class="QLineEdit" name="edit_username">
                    <property name="font">
                     <font>
-                     <pointsize>10</pointsize>
+                     <pointsize>8</pointsize>
                      <weight>75</weight>
                      <bold>true</bold>
                     </font>
                    </property>
-                   <property name="styleSheet">
-                    <string notr="true">QLineEdit {  
-    border: 2px solid gray;  
-    border-radius: 10px;  
-    padding: 0 8px;  
-    background: white;  
-    selection-background-color: darkgray;  
-}  </string>
+                   <property name="text">
+                    <string/>
                    </property>
                   </widget>
                  </item>
@@ -2586,19 +2540,10 @@ tag mapping with available data points. Use custom fields for any data points no
                   <widget class="QLineEdit" name="edit_password">
                    <property name="font">
                     <font>
-                     <pointsize>10</pointsize>
+                     <pointsize>8</pointsize>
                      <weight>75</weight>
                      <bold>true</bold>
                     </font>
-                   </property>
-                   <property name="styleSheet">
-                    <string notr="true">QLineEdit {  
-    border: 2px solid gray;  
-    border-radius: 10px;  
-    padding: 0 8px;  
-    background: white;  
-    selection-background-color: darkgray;  
-}  </string>
                    </property>
                    <property name="echoMode">
                     <enum>QLineEdit::Password</enum>
@@ -2656,19 +2601,10 @@ tag mapping with available data points. Use custom fields for any data points no
                    </property>
                    <property name="font">
                     <font>
-                     <pointsize>10</pointsize>
+                     <pointsize>8</pointsize>
                      <weight>75</weight>
                      <bold>true</bold>
                     </font>
-                   </property>
-                   <property name="styleSheet">
-                    <string notr="true">QLineEdit {  
-    border: 2px solid gray;  
-    border-radius: 10px;  
-    padding: 0 8px;  
-    background: white;  
-    selection-background-color: darkgray;  
-}  </string>
                    </property>
                   </widget>
                  </item>
@@ -2849,19 +2785,13 @@ tag mapping with available data points. Use custom fields for any data points no
                      <widget class="QLineEdit" name="edit_api_tag">
                       <property name="font">
                        <font>
-                        <pointsize>10</pointsize>
+                        <pointsize>8</pointsize>
                         <weight>75</weight>
                         <bold>true</bold>
                        </font>
                       </property>
-                      <property name="styleSheet">
-                       <string notr="true">QLineEdit {  
-    border: 2px solid gray;  
-    border-radius: 10px;  
-    padding: 0 8px;  
-    background: white;  
-    selection-background-color: darkgray;  
-}  </string>
+                      <property name="text">
+                       <string/>
                       </property>
                      </widget>
                     </item>
@@ -2869,19 +2799,10 @@ tag mapping with available data points. Use custom fields for any data points no
                      <widget class="QLineEdit" name="edit_api_ant">
                       <property name="font">
                        <font>
-                        <pointsize>10</pointsize>
+                        <pointsize>8</pointsize>
                         <weight>75</weight>
                         <bold>true</bold>
                        </font>
-                      </property>
-                      <property name="styleSheet">
-                       <string notr="true">QLineEdit {  
-    border: 2px solid gray;  
-    border-radius: 10px;  
-    padding: 0 8px;  
-    background: white;  
-    selection-background-color: darkgray;  
-}  </string>
                       </property>
                      </widget>
                     </item>
@@ -2889,19 +2810,10 @@ tag mapping with available data points. Use custom fields for any data points no
                      <widget class="QLineEdit" name="edit_api_lat">
                       <property name="font">
                        <font>
-                        <pointsize>10</pointsize>
+                        <pointsize>8</pointsize>
                         <weight>75</weight>
                         <bold>true</bold>
                        </font>
-                      </property>
-                      <property name="styleSheet">
-                       <string notr="true">QLineEdit {  
-    border: 2px solid gray;  
-    border-radius: 10px;  
-    padding: 0 8px;  
-    background: white;  
-    selection-background-color: darkgray;  
-}  </string>
                       </property>
                      </widget>
                     </item>
@@ -2909,19 +2821,10 @@ tag mapping with available data points. Use custom fields for any data points no
                      <widget class="QLineEdit" name="edit_api_lng">
                       <property name="font">
                        <font>
-                        <pointsize>10</pointsize>
+                        <pointsize>8</pointsize>
                         <weight>75</weight>
                         <bold>true</bold>
                        </font>
-                      </property>
-                      <property name="styleSheet">
-                       <string notr="true">QLineEdit {  
-    border: 2px solid gray;  
-    border-radius: 10px;  
-    padding: 0 8px;  
-    background: white;  
-    selection-background-color: darkgray;  
-}  </string>
                       </property>
                      </widget>
                     </item>
@@ -2929,19 +2832,10 @@ tag mapping with available data points. Use custom fields for any data points no
                      <widget class="QLineEdit" name="edit_api_heading">
                       <property name="font">
                        <font>
-                        <pointsize>10</pointsize>
+                        <pointsize>8</pointsize>
                         <weight>75</weight>
                         <bold>true</bold>
                        </font>
-                      </property>
-                      <property name="styleSheet">
-                       <string notr="true">QLineEdit {  
-    border: 2px solid gray;  
-    border-radius: 10px;  
-    padding: 0 8px;  
-    background: white;  
-    selection-background-color: darkgray;  
-}  </string>
                       </property>
                      </widget>
                     </item>
@@ -2949,19 +2843,10 @@ tag mapping with available data points. Use custom fields for any data points no
                      <widget class="QLineEdit" name="edit_api_speed">
                       <property name="font">
                        <font>
-                        <pointsize>10</pointsize>
+                        <pointsize>8</pointsize>
                         <weight>75</weight>
                         <bold>true</bold>
                        </font>
-                      </property>
-                      <property name="styleSheet">
-                       <string notr="true">QLineEdit {  
-    border: 2px solid gray;  
-    border-radius: 10px;  
-    padding: 0 8px;  
-    background: white;  
-    selection-background-color: darkgray;  
-}  </string>
                       </property>
                      </widget>
                     </item>
@@ -3040,19 +2925,13 @@ tag mapping with available data points. Use custom fields for any data points no
                      <widget class="QLineEdit" name="edit_api_rssi">
                       <property name="font">
                        <font>
-                        <pointsize>10</pointsize>
+                        <pointsize>8</pointsize>
                         <weight>75</weight>
                         <bold>true</bold>
                        </font>
                       </property>
-                      <property name="styleSheet">
-                       <string notr="true">QLineEdit {  
-    border: 2px solid gray;  
-    border-radius: 10px;  
-    padding: 0 8px;  
-    background: white;  
-    selection-background-color: darkgray;  
-}  </string>
+                      <property name="text">
+                       <string/>
                       </property>
                      </widget>
                     </item>
@@ -3146,19 +3025,13 @@ tag mapping with available data points. Use custom fields for any data points no
                         <widget class="QLineEdit" name="edit_api_heading_3">
                          <property name="font">
                           <font>
-                           <pointsize>10</pointsize>
+                           <pointsize>8</pointsize>
                            <weight>75</weight>
                            <bold>true</bold>
                           </font>
                          </property>
-                         <property name="styleSheet">
-                          <string notr="true">QLineEdit {  
-    border: 2px solid gray;  
-    border-radius: 10px;  
-    padding: 0 8px;  
-    background: white;  
-    selection-background-color: darkgray;  
-}  </string>
+                         <property name="text">
+                          <string/>
                          </property>
                         </widget>
                        </item>
@@ -3166,19 +3039,10 @@ tag mapping with available data points. Use custom fields for any data points no
                         <widget class="QLineEdit" name="edit_api_heading_2">
                          <property name="font">
                           <font>
-                           <pointsize>10</pointsize>
+                           <pointsize>8</pointsize>
                            <weight>75</weight>
                            <bold>true</bold>
                           </font>
-                         </property>
-                         <property name="styleSheet">
-                          <string notr="true">QLineEdit {  
-    border: 2px solid gray;  
-    border-radius: 10px;  
-    padding: 0 8px;  
-    background: white;  
-    selection-background-color: darkgray;  
-}  </string>
                          </property>
                         </widget>
                        </item>
@@ -3186,19 +3050,10 @@ tag mapping with available data points. Use custom fields for any data points no
                         <widget class="QLineEdit" name="edit_api_heading_4">
                          <property name="font">
                           <font>
-                           <pointsize>10</pointsize>
+                           <pointsize>8</pointsize>
                            <weight>75</weight>
                            <bold>true</bold>
                           </font>
-                         </property>
-                         <property name="styleSheet">
-                          <string notr="true">QLineEdit {  
-    border: 2px solid gray;  
-    border-radius: 10px;  
-    padding: 0 8px;  
-    background: white;  
-    selection-background-color: darkgray;  
-}  </string>
                          </property>
                         </widget>
                        </item>
@@ -3206,19 +3061,10 @@ tag mapping with available data points. Use custom fields for any data points no
                         <widget class="QLineEdit" name="edit_api_lng_2">
                          <property name="font">
                           <font>
-                           <pointsize>10</pointsize>
+                           <pointsize>8</pointsize>
                            <weight>75</weight>
                            <bold>true</bold>
                           </font>
-                         </property>
-                         <property name="styleSheet">
-                          <string notr="true">QLineEdit {  
-    border: 2px solid gray;  
-    border-radius: 10px;  
-    padding: 0 8px;  
-    background: white;  
-    selection-background-color: darkgray;  
-}  </string>
                          </property>
                         </widget>
                        </item>
@@ -3257,19 +3103,10 @@ tag mapping with available data points. Use custom fields for any data points no
                         <widget class="QLineEdit" name="edit_api_heading_5">
                          <property name="font">
                           <font>
-                           <pointsize>10</pointsize>
+                           <pointsize>8</pointsize>
                            <weight>75</weight>
                            <bold>true</bold>
                           </font>
-                         </property>
-                         <property name="styleSheet">
-                          <string notr="true">QLineEdit {  
-    border: 2px solid gray;  
-    border-radius: 10px;  
-    padding: 0 8px;  
-    background: white;  
-    selection-background-color: darkgray;  
-}  </string>
                          </property>
                         </widget>
                        </item>
@@ -3277,19 +3114,10 @@ tag mapping with available data points. Use custom fields for any data points no
                         <widget class="QLineEdit" name="edit_api_ant_2">
                          <property name="font">
                           <font>
-                           <pointsize>10</pointsize>
+                           <pointsize>8</pointsize>
                            <weight>75</weight>
                            <bold>true</bold>
                           </font>
-                         </property>
-                         <property name="styleSheet">
-                          <string notr="true">QLineEdit {  
-    border: 2px solid gray;  
-    border-radius: 10px;  
-    padding: 0 8px;  
-    background: white;  
-    selection-background-color: darkgray;  
-}  </string>
                          </property>
                         </widget>
                        </item>
@@ -3297,19 +3125,10 @@ tag mapping with available data points. Use custom fields for any data points no
                         <widget class="QLineEdit" name="edit_api_lat_2">
                          <property name="font">
                           <font>
-                           <pointsize>10</pointsize>
+                           <pointsize>8</pointsize>
                            <weight>75</weight>
                            <bold>true</bold>
                           </font>
-                         </property>
-                         <property name="styleSheet">
-                          <string notr="true">QLineEdit {  
-    border: 2px solid gray;  
-    border-radius: 10px;  
-    padding: 0 8px;  
-    background: white;  
-    selection-background-color: darkgray;  
-}  </string>
                          </property>
                         </widget>
                        </item>
@@ -3317,19 +3136,10 @@ tag mapping with available data points. Use custom fields for any data points no
                         <widget class="QLineEdit" name="edit_api_speed_2">
                          <property name="font">
                           <font>
-                           <pointsize>10</pointsize>
+                           <pointsize>8</pointsize>
                            <weight>75</weight>
                            <bold>true</bold>
                           </font>
-                         </property>
-                         <property name="styleSheet">
-                          <string notr="true">QLineEdit {  
-    border: 2px solid gray;  
-    border-radius: 10px;  
-    padding: 0 8px;  
-    background: white;  
-    selection-background-color: darkgray;  
-}  </string>
                          </property>
                         </widget>
                        </item>
