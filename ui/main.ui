@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>797</width>
-    <height>519</height>
+    <height>586</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -274,9 +274,6 @@ QTableWidget::item {
              <item row="0" column="0">
               <property name="text">
                <string/>
-              </property>
-              <property name="flags">
-               <set>NoItemFlags</set>
               </property>
              </item>
              <item row="0" column="3">
@@ -583,10 +580,10 @@ border: 1px solid black;</string>
           </property>
           <layout class="QGridLayout" name="gridLayout_4">
            <property name="leftMargin">
-            <number>50</number>
+            <number>40</number>
            </property>
            <property name="rightMargin">
-            <number>50</number>
+            <number>40</number>
            </property>
            <item row="0" column="1">
             <widget class="QGroupBox" name="groupBox_2">
@@ -1037,7 +1034,7 @@ border: 1px solid black;</string>
            <item row="0" column="0">
             <widget class="QGroupBox" name="groupBox">
              <property name="sizePolicy">
-              <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+              <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
                <horstretch>0</horstretch>
                <verstretch>0</verstretch>
               </sizepolicy>
@@ -1051,10 +1048,8 @@ border: 1px solid black;</string>
              </property>
              <property name="styleSheet">
               <string notr="true">QGroupBox::title {  
-    color: white;  /* Change 'blue' to any color you want */  
-}
-
-</string>
+    color: white;  /* Change 'blue' to any color you want */ 
+}</string>
              </property>
              <property name="title">
               <string>RFID</string>
@@ -1304,7 +1299,7 @@ border: 1px solid black;</string>
                      </widget>
                     </item>
                     <item>
-                     <widget class="QLineEdit" name="edit_rfid_ras1">
+                     <widget class="QLineEdit" name="edit_rfid_rsa1">
                       <property name="font">
                        <font>
                         <pointsize>10</pointsize>
@@ -1318,7 +1313,7 @@ border: 1px solid black;</string>
                      </widget>
                     </item>
                     <item>
-                     <widget class="QLineEdit" name="edit_rfid_ras2">
+                     <widget class="QLineEdit" name="edit_rfid_rsa2">
                       <property name="font">
                        <font>
                         <pointsize>10</pointsize>
@@ -1329,7 +1324,7 @@ border: 1px solid black;</string>
                      </widget>
                     </item>
                     <item>
-                     <widget class="QLineEdit" name="edit_rfid_las1">
+                     <widget class="QLineEdit" name="edit_rfid_lsa1">
                       <property name="font">
                        <font>
                         <pointsize>10</pointsize>
@@ -1340,7 +1335,7 @@ border: 1px solid black;</string>
                      </widget>
                     </item>
                     <item>
-                     <widget class="QLineEdit" name="edit_rfid_las2">
+                     <widget class="QLineEdit" name="edit_rfid_lsa2">
                       <property name="font">
                        <font>
                         <pointsize>10</pointsize>
@@ -1406,7 +1401,7 @@ border: 1px solid black;</string>
                <number>0</number>
               </property>
               <item>
-               <widget class="QCheckBox" name="checkBox_4">
+               <widget class="QCheckBox" name="tag_limit">
                 <property name="font">
                  <font>
                   <pointsize>10</pointsize>
@@ -1677,7 +1672,7 @@ QPushButton:pressed {
                   <number>0</number>
                  </property>
                  <item>
-                  <widget class="QCheckBox" name="checkBox_3">
+                  <widget class="QCheckBox" name="speed_limit">
                    <property name="font">
                     <font>
                      <pointsize>10</pointsize>
@@ -1855,7 +1850,7 @@ QPushButton:pressed {
                   <number>0</number>
                  </property>
                  <item>
-                  <widget class="QCheckBox" name="checkBox_2">
+                  <widget class="QCheckBox" name="rssi_limit">
                    <property name="font">
                     <font>
                      <pointsize>10</pointsize>
@@ -2243,6 +2238,9 @@ tag mapping with available data points. Use custom fields for any data points no
                    <property name="text">
                     <string>Both</string>
                    </property>
+                   <property name="checked">
+                    <bool>false</bool>
+                   </property>
                   </widget>
                  </item>
                 </layout>
@@ -2259,15 +2257,8 @@ tag mapping with available data points. Use custom fields for any data points no
             </widget>
            </item>
            <item>
-            <widget class="QWidget" name="widget_29" native="true">
-             <property name="font">
-              <font>
-               <pointsize>10</pointsize>
-               <weight>75</weight>
-               <bold>true</bold>
-              </font>
-             </property>
-             <layout class="QHBoxLayout" name="horizontalLayout_22">
+            <widget class="QWidget" name="widget_46" native="true">
+             <layout class="QHBoxLayout" name="horizontalLayout_7">
               <property name="spacing">
                <number>0</number>
               </property>
@@ -2284,85 +2275,10 @@ tag mapping with available data points. Use custom fields for any data points no
                <number>0</number>
               </property>
               <item>
-               <widget class="QLabel" name="label_44">
-                <property name="sizePolicy">
-                 <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
-                  <horstretch>0</horstretch>
-                  <verstretch>0</verstretch>
-                 </sizepolicy>
-                </property>
-                <property name="font">
-                 <font>
-                  <pointsize>10</pointsize>
-                  <weight>75</weight>
-                  <bold>true</bold>
-                 </font>
-                </property>
-                <property name="styleSheet">
-                 <string notr="true">QWidget{
-	color: white;
-}</string>
-                </property>
-                <property name="text">
-                 <string>Login Type</string>
-                </property>
-                <property name="alignment">
-                 <set>Qt::AlignCenter</set>
-                </property>
-               </widget>
-              </item>
-             </layout>
-            </widget>
-           </item>
-           <item>
-            <widget class="QWidget" name="widget_28" native="true">
-             <property name="font">
-              <font>
-               <pointsize>10</pointsize>
-               <weight>75</weight>
-               <bold>true</bold>
-              </font>
-             </property>
-             <property name="styleSheet">
-              <string notr="true">QWidget{
-	color: white;
-}</string>
-             </property>
-             <layout class="QHBoxLayout" name="horizontalLayout_21">
-              <property name="spacing">
-               <number>0</number>
-              </property>
-              <property name="leftMargin">
-               <number>200</number>
-              </property>
-              <property name="topMargin">
-               <number>0</number>
-              </property>
-              <property name="rightMargin">
-               <number>200</number>
-              </property>
-              <property name="bottomMargin">
-               <number>0</number>
-              </property>
-              <item>
-               <widget class="QGroupBox" name="groupBox_4">
-                <property name="sizePolicy">
-                 <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
-                  <horstretch>0</horstretch>
-                  <verstretch>0</verstretch>
-                 </sizepolicy>
-                </property>
-                <property name="styleSheet">
-                 <string notr="true">QGroupBox {  
-    border: 0px;
-}  </string>
-                </property>
-                <property name="title">
-                 <string/>
-                </property>
-                <layout class="QHBoxLayout" name="horizontalLayout_27">
+               <widget class="QWidget" name="custom_spacebar" native="true">
+                <layout class="QHBoxLayout" name="horizontalLayout_8">
                  <property name="spacing">
-                  <number>50</number>
+                  <number>0</number>
                  </property>
                  <property name="leftMargin">
                   <number>0</number>
@@ -2377,401 +2293,89 @@ tag mapping with available data points. Use custom fields for any data points no
                   <number>0</number>
                  </property>
                  <item>
-                  <widget class="QRadioButton" name="radio_login_basic">
-                   <property name="sizePolicy">
-                    <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
-                     <horstretch>0</horstretch>
-                     <verstretch>0</verstretch>
-                    </sizepolicy>
+                  <spacer name="verticalSpacebar2">
+                   <property name="orientation">
+                    <enum>Qt::Vertical</enum>
                    </property>
-                   <property name="font">
-                    <font>
-                     <pointsize>10</pointsize>
-                     <weight>75</weight>
-                     <bold>true</bold>
-                    </font>
-                   </property>
-                   <property name="text">
-                    <string>Basic</string>
-                   </property>
-                   <property name="checked">
-                    <bool>true</bool>
-                   </property>
-                  </widget>
-                 </item>
-                 <item>
-                  <widget class="QRadioButton" name="radio_login_token">
-                   <property name="sizePolicy">
-                    <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
-                     <horstretch>0</horstretch>
-                     <verstretch>0</verstretch>
-                    </sizepolicy>
-                   </property>
-                   <property name="font">
-                    <font>
-                     <pointsize>10</pointsize>
-                     <weight>75</weight>
-                     <bold>true</bold>
-                    </font>
-                   </property>
-                   <property name="text">
-                    <string>Token</string>
-                   </property>
-                  </widget>
-                 </item>
-                </layout>
-               </widget>
-              </item>
-             </layout>
-            </widget>
-           </item>
-           <item>
-            <widget class="QWidget" name="widget_30" native="true">
-             <layout class="QHBoxLayout" name="horizontalLayout_26">
-              <property name="spacing">
-               <number>20</number>
-              </property>
-              <property name="leftMargin">
-               <number>20</number>
-              </property>
-              <property name="topMargin">
-               <number>10</number>
-              </property>
-              <property name="rightMargin">
-               <number>20</number>
-              </property>
-              <property name="bottomMargin">
-               <number>10</number>
-              </property>
-              <item>
-               <widget class="QWidget" name="widget_31" native="true">
-                <layout class="QHBoxLayout" name="horizontalLayout_23">
-                 <property name="spacing">
-                  <number>10</number>
-                 </property>
-                 <property name="leftMargin">
-                  <number>0</number>
-                 </property>
-                 <property name="topMargin">
-                  <number>0</number>
-                 </property>
-                 <property name="rightMargin">
-                  <number>0</number>
-                 </property>
-                 <property name="bottomMargin">
-                  <number>0</number>
-                 </property>
-                 <item>
-                  <widget class="QLabel" name="label_45">
-                   <property name="font">
-                    <font>
-                     <pointsize>10</pointsize>
-                     <weight>75</weight>
-                     <bold>true</bold>
-                    </font>
-                   </property>
-                   <property name="styleSheet">
-                    <string notr="true">color: white;</string>
-                   </property>
-                   <property name="text">
-                    <string>UserName</string>
-                   </property>
-                   <property name="alignment">
-                    <set>Qt::AlignCenter</set>
-                   </property>
-                  </widget>
-                 </item>
-                 <item>
-                  <widget class="QLineEdit" name="edit_username">
-                   <property name="font">
-                    <font>
-                     <pointsize>8</pointsize>
-                     <weight>75</weight>
-                     <bold>true</bold>
-                    </font>
-                   </property>
-                   <property name="text">
-                    <string/>
-                   </property>
-                  </widget>
-                 </item>
-                </layout>
-               </widget>
-              </item>
-              <item>
-               <widget class="QWidget" name="widget_32" native="true">
-                <layout class="QHBoxLayout" name="horizontalLayout_24">
-                 <property name="spacing">
-                  <number>10</number>
-                 </property>
-                 <property name="leftMargin">
-                  <number>0</number>
-                 </property>
-                 <property name="topMargin">
-                  <number>0</number>
-                 </property>
-                 <property name="rightMargin">
-                  <number>0</number>
-                 </property>
-                 <property name="bottomMargin">
-                  <number>0</number>
-                 </property>
-                 <item>
-                  <widget class="QLabel" name="label_46">
-                   <property name="font">
-                    <font>
-                     <pointsize>10</pointsize>
-                     <weight>75</weight>
-                     <bold>true</bold>
-                    </font>
-                   </property>
-                   <property name="styleSheet">
-                    <string notr="true">color: white;</string>
-                   </property>
-                   <property name="text">
-                    <string>Password</string>
-                   </property>
-                   <property name="alignment">
-                    <set>Qt::AlignCenter</set>
-                   </property>
-                  </widget>
-                 </item>
-                 <item>
-                  <widget class="QLineEdit" name="edit_password">
-                   <property name="font">
-                    <font>
-                     <pointsize>8</pointsize>
-                     <weight>75</weight>
-                     <bold>true</bold>
-                    </font>
-                   </property>
-                   <property name="echoMode">
-                    <enum>QLineEdit::Password</enum>
-                   </property>
-                  </widget>
-                 </item>
-                </layout>
-               </widget>
-              </item>
-              <item>
-               <widget class="QWidget" name="widget_33" native="true">
-                <layout class="QHBoxLayout" name="horizontalLayout_25">
-                 <property name="spacing">
-                  <number>10</number>
-                 </property>
-                 <property name="leftMargin">
-                  <number>0</number>
-                 </property>
-                 <property name="topMargin">
-                  <number>0</number>
-                 </property>
-                 <property name="rightMargin">
-                  <number>0</number>
-                 </property>
-                 <property name="bottomMargin">
-                  <number>0</number>
-                 </property>
-                 <item>
-                  <widget class="QLabel" name="label_47">
-                   <property name="font">
-                    <font>
-                     <pointsize>10</pointsize>
-                     <weight>75</weight>
-                     <bold>true</bold>
-                    </font>
-                   </property>
-                   <property name="styleSheet">
-                    <string notr="true">color: white;</string>
-                   </property>
-                   <property name="text">
-                    <string>Login Url</string>
-                   </property>
-                   <property name="alignment">
-                    <set>Qt::AlignCenter</set>
-                   </property>
-                  </widget>
-                 </item>
-                 <item>
-                  <widget class="QLineEdit" name="edit_url">
-                   <property name="minimumSize">
+                   <property name="sizeHint" stdset="0">
                     <size>
-                     <width>200</width>
-                     <height>0</height>
+                     <width>20</width>
+                     <height>40</height>
                     </size>
                    </property>
+                  </spacer>
+                 </item>
+                </layout>
+               </widget>
+              </item>
+              <item>
+               <widget class="QWidget" name="custom_widget" native="true">
+                <layout class="QVBoxLayout" name="verticalLayout_26">
+                 <property name="spacing">
+                  <number>6</number>
+                 </property>
+                 <property name="leftMargin">
+                  <number>0</number>
+                 </property>
+                 <property name="topMargin">
+                  <number>0</number>
+                 </property>
+                 <property name="rightMargin">
+                  <number>0</number>
+                 </property>
+                 <property name="bottomMargin">
+                  <number>0</number>
+                 </property>
+                 <item>
+                  <widget class="QWidget" name="widget_29" native="true">
                    <property name="font">
                     <font>
-                     <pointsize>8</pointsize>
+                     <pointsize>10</pointsize>
                      <weight>75</weight>
                      <bold>true</bold>
                     </font>
                    </property>
-                  </widget>
-                 </item>
-                </layout>
-               </widget>
-              </item>
-             </layout>
-            </widget>
-           </item>
-           <item>
-            <widget class="QWidget" name="widget_34" native="true">
-             <property name="font">
-              <font>
-               <pointsize>10</pointsize>
-               <weight>75</weight>
-               <bold>true</bold>
-              </font>
-             </property>
-             <layout class="QHBoxLayout" name="horizontalLayout_33">
-              <property name="spacing">
-               <number>20</number>
-              </property>
-              <property name="leftMargin">
-               <number>0</number>
-              </property>
-              <property name="topMargin">
-               <number>0</number>
-              </property>
-              <property name="rightMargin">
-               <number>0</number>
-              </property>
-              <property name="bottomMargin">
-               <number>0</number>
-              </property>
-              <item>
-               <widget class="QGroupBox" name="groupBox_6">
-                <property name="font">
-                 <font>
-                  <pointsize>10</pointsize>
-                  <weight>75</weight>
-                  <bold>true</bold>
-                 </font>
-                </property>
-                <property name="styleSheet">
-                 <string notr="true">#groupBox_6{
+                   <layout class="QHBoxLayout" name="horizontalLayout_22">
+                    <property name="spacing">
+                     <number>0</number>
+                    </property>
+                    <property name="leftMargin">
+                     <number>0</number>
+                    </property>
+                    <property name="topMargin">
+                     <number>0</number>
+                    </property>
+                    <property name="rightMargin">
+                     <number>0</number>
+                    </property>
+                    <property name="bottomMargin">
+                     <number>0</number>
+                    </property>
+                    <item>
+                     <widget class="QLabel" name="label_44">
+                      <property name="sizePolicy">
+                       <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
+                        <horstretch>0</horstretch>
+                        <verstretch>0</verstretch>
+                       </sizepolicy>
+                      </property>
+                      <property name="font">
+                       <font>
+                        <pointsize>10</pointsize>
+                        <weight>75</weight>
+                        <bold>true</bold>
+                       </font>
+                      </property>
+                      <property name="styleSheet">
+                       <string notr="true">QWidget{
 	color: white;
-	border: 2px solid white;
 }</string>
-                </property>
-                <property name="title">
-                 <string>Default</string>
-                </property>
-                <layout class="QHBoxLayout" name="horizontalLayout_34">
-                 <item>
-                  <widget class="QWidget" name="widget_38" native="true">
-                   <layout class="QVBoxLayout" name="verticalLayout_22">
-                    <item>
-                     <widget class="QLabel" name="label_51">
-                      <property name="font">
-                       <font>
-                        <pointsize>10</pointsize>
-                        <weight>75</weight>
-                        <bold>true</bold>
-                       </font>
-                      </property>
-                      <property name="styleSheet">
-                       <string notr="true">QLabel {  
-    color: white;  /* Change 'blue' to your preferred color */  
-}  </string>
                       </property>
                       <property name="text">
-                       <string>Tag</string>
+                       <string>Login Type</string>
                       </property>
-                     </widget>
-                    </item>
-                    <item>
-                     <widget class="QLabel" name="label_52">
-                      <property name="font">
-                       <font>
-                        <pointsize>10</pointsize>
-                        <weight>75</weight>
-                        <bold>true</bold>
-                       </font>
-                      </property>
-                      <property name="styleSheet">
-                       <string notr="true">QLabel {  
-    color: white;  /* Change 'blue' to your preferred color */  
-}  </string>
-                      </property>
-                      <property name="text">
-                       <string>Ant</string>
-                      </property>
-                     </widget>
-                    </item>
-                    <item>
-                     <widget class="QLabel" name="label_53">
-                      <property name="font">
-                       <font>
-                        <pointsize>10</pointsize>
-                        <weight>75</weight>
-                        <bold>true</bold>
-                       </font>
-                      </property>
-                      <property name="styleSheet">
-                       <string notr="true">QLabel {  
-    color: white;  /* Change 'blue' to your preferred color */  
-}  </string>
-                      </property>
-                      <property name="text">
-                       <string>lat</string>
-                      </property>
-                     </widget>
-                    </item>
-                    <item>
-                     <widget class="QLabel" name="label_54">
-                      <property name="font">
-                       <font>
-                        <pointsize>10</pointsize>
-                        <weight>75</weight>
-                        <bold>true</bold>
-                       </font>
-                      </property>
-                      <property name="styleSheet">
-                       <string notr="true">QLabel {  
-    color: white;  /* Change 'blue' to your preferred color */  
-}  </string>
-                      </property>
-                      <property name="text">
-                       <string>lng</string>
-                      </property>
-                     </widget>
-                    </item>
-                    <item>
-                     <widget class="QLabel" name="label_55">
-                      <property name="font">
-                       <font>
-                        <pointsize>10</pointsize>
-                        <weight>75</weight>
-                        <bold>true</bold>
-                       </font>
-                      </property>
-                      <property name="styleSheet">
-                       <string notr="true">QLabel {  
-    color: white;  /* Change 'blue' to your preferred color */  
-}  </string>
-                      </property>
-                      <property name="text">
-                       <string>heading</string>
-                      </property>
-                     </widget>
-                    </item>
-                    <item>
-                     <widget class="QLabel" name="label_56">
-                      <property name="font">
-                       <font>
-                        <pointsize>10</pointsize>
-                        <weight>75</weight>
-                        <bold>true</bold>
-                       </font>
-                      </property>
-                      <property name="styleSheet">
-                       <string notr="true">QLabel {  
-    color: white;  /* Change 'blue' to your preferred color */  
-}  </string>
-                      </property>
-                      <property name="text">
-                       <string>speed</string>
+                      <property name="alignment">
+                       <set>Qt::AlignCenter</set>
                       </property>
                      </widget>
                     </item>
@@ -2779,108 +2383,370 @@ tag mapping with available data points. Use custom fields for any data points no
                   </widget>
                  </item>
                  <item>
-                  <widget class="QWidget" name="widget_39" native="true">
-                   <layout class="QVBoxLayout" name="verticalLayout_23">
+                  <widget class="QWidget" name="widget_28" native="true">
+                   <property name="font">
+                    <font>
+                     <pointsize>10</pointsize>
+                     <weight>75</weight>
+                     <bold>true</bold>
+                    </font>
+                   </property>
+                   <property name="styleSheet">
+                    <string notr="true">QWidget{
+	color: white;
+}</string>
+                   </property>
+                   <layout class="QHBoxLayout" name="horizontalLayout_21">
+                    <property name="spacing">
+                     <number>0</number>
+                    </property>
+                    <property name="leftMargin">
+                     <number>200</number>
+                    </property>
+                    <property name="topMargin">
+                     <number>0</number>
+                    </property>
+                    <property name="rightMargin">
+                     <number>200</number>
+                    </property>
+                    <property name="bottomMargin">
+                     <number>0</number>
+                    </property>
                     <item>
-                     <widget class="QLineEdit" name="edit_api_tag">
-                      <property name="font">
-                       <font>
-                        <pointsize>8</pointsize>
-                        <weight>75</weight>
-                        <bold>true</bold>
-                       </font>
+                     <widget class="QGroupBox" name="groupBox_4">
+                      <property name="sizePolicy">
+                       <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
+                        <horstretch>0</horstretch>
+                        <verstretch>0</verstretch>
+                       </sizepolicy>
                       </property>
-                      <property name="text">
+                      <property name="styleSheet">
+                       <string notr="true">QGroupBox {  
+    border: 0px;
+}  </string>
+                      </property>
+                      <property name="title">
                        <string/>
                       </property>
-                     </widget>
-                    </item>
-                    <item>
-                     <widget class="QLineEdit" name="edit_api_ant">
-                      <property name="font">
-                       <font>
-                        <pointsize>8</pointsize>
-                        <weight>75</weight>
-                        <bold>true</bold>
-                       </font>
-                      </property>
-                     </widget>
-                    </item>
-                    <item>
-                     <widget class="QLineEdit" name="edit_api_lat">
-                      <property name="font">
-                       <font>
-                        <pointsize>8</pointsize>
-                        <weight>75</weight>
-                        <bold>true</bold>
-                       </font>
-                      </property>
-                     </widget>
-                    </item>
-                    <item>
-                     <widget class="QLineEdit" name="edit_api_lng">
-                      <property name="font">
-                       <font>
-                        <pointsize>8</pointsize>
-                        <weight>75</weight>
-                        <bold>true</bold>
-                       </font>
-                      </property>
-                     </widget>
-                    </item>
-                    <item>
-                     <widget class="QLineEdit" name="edit_api_heading">
-                      <property name="font">
-                       <font>
-                        <pointsize>8</pointsize>
-                        <weight>75</weight>
-                        <bold>true</bold>
-                       </font>
-                      </property>
-                     </widget>
-                    </item>
-                    <item>
-                     <widget class="QLineEdit" name="edit_api_speed">
-                      <property name="font">
-                       <font>
-                        <pointsize>8</pointsize>
-                        <weight>75</weight>
-                        <bold>true</bold>
-                       </font>
-                      </property>
+                      <layout class="QHBoxLayout" name="horizontalLayout_27">
+                       <property name="spacing">
+                        <number>50</number>
+                       </property>
+                       <property name="leftMargin">
+                        <number>0</number>
+                       </property>
+                       <property name="topMargin">
+                        <number>0</number>
+                       </property>
+                       <property name="rightMargin">
+                        <number>0</number>
+                       </property>
+                       <property name="bottomMargin">
+                        <number>0</number>
+                       </property>
+                       <item>
+                        <widget class="QRadioButton" name="radio_login_basic">
+                         <property name="sizePolicy">
+                          <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+                           <horstretch>0</horstretch>
+                           <verstretch>0</verstretch>
+                          </sizepolicy>
+                         </property>
+                         <property name="font">
+                          <font>
+                           <pointsize>10</pointsize>
+                           <weight>75</weight>
+                           <bold>true</bold>
+                          </font>
+                         </property>
+                         <property name="text">
+                          <string>Basic</string>
+                         </property>
+                         <property name="checked">
+                          <bool>true</bool>
+                         </property>
+                        </widget>
+                       </item>
+                       <item>
+                        <widget class="QRadioButton" name="radio_login_token">
+                         <property name="sizePolicy">
+                          <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+                           <horstretch>0</horstretch>
+                           <verstretch>0</verstretch>
+                          </sizepolicy>
+                         </property>
+                         <property name="font">
+                          <font>
+                           <pointsize>10</pointsize>
+                           <weight>75</weight>
+                           <bold>true</bold>
+                          </font>
+                         </property>
+                         <property name="text">
+                          <string>Token</string>
+                         </property>
+                        </widget>
+                       </item>
+                      </layout>
                      </widget>
                     </item>
                    </layout>
                   </widget>
                  </item>
-                </layout>
-               </widget>
-              </item>
-              <item>
-               <widget class="QGroupBox" name="groupBox_7">
-                <property name="font">
-                 <font>
-                  <pointsize>10</pointsize>
-                  <weight>75</weight>
-                  <bold>true</bold>
-                 </font>
-                </property>
-                <property name="styleSheet">
-                 <string notr="true">#groupBox_7{
-	color: white;
-	border: 2px solid white;
-}</string>
-                </property>
-                <property name="title">
-                 <string>Client</string>
-                </property>
-                <layout class="QVBoxLayout" name="verticalLayout_28">
-                 <property name="topMargin">
-                  <number>20</number>
-                 </property>
                  <item>
-                  <widget class="QWidget" name="widget_43" native="true">
-                   <layout class="QHBoxLayout" name="horizontalLayout_36">
+                  <widget class="QWidget" name="widget_30" native="true">
+                   <property name="styleSheet">
+                    <string notr="true">#widget_30{
+	color: white;
+	border: 1px solid white; 
+}</string>
+                   </property>
+                   <layout class="QHBoxLayout" name="horizontalLayout_26">
+                    <property name="spacing">
+                     <number>20</number>
+                    </property>
+                    <property name="leftMargin">
+                     <number>20</number>
+                    </property>
+                    <property name="topMargin">
+                     <number>0</number>
+                    </property>
+                    <property name="rightMargin">
+                     <number>20</number>
+                    </property>
+                    <property name="bottomMargin">
+                     <number>0</number>
+                    </property>
+                    <item>
+                     <widget class="QWidget" name="widget_32" native="true">
+                      <layout class="QVBoxLayout" name="verticalLayout_31">
+                       <property name="spacing">
+                        <number>0</number>
+                       </property>
+                       <property name="leftMargin">
+                        <number>0</number>
+                       </property>
+                       <property name="topMargin">
+                        <number>0</number>
+                       </property>
+                       <property name="rightMargin">
+                        <number>0</number>
+                       </property>
+                       <property name="bottomMargin">
+                        <number>0</number>
+                       </property>
+                       <item>
+                        <widget class="QWidget" name="basic_widget" native="true">
+                         <layout class="QHBoxLayout" name="horizontalLayout_5">
+                          <item>
+                           <widget class="QLabel" name="label_45">
+                            <property name="font">
+                             <font>
+                              <pointsize>10</pointsize>
+                              <weight>75</weight>
+                              <bold>true</bold>
+                             </font>
+                            </property>
+                            <property name="styleSheet">
+                             <string notr="true">color: white;</string>
+                            </property>
+                            <property name="text">
+                             <string>UserName</string>
+                            </property>
+                            <property name="alignment">
+                             <set>Qt::AlignCenter</set>
+                            </property>
+                           </widget>
+                          </item>
+                          <item>
+                           <widget class="QWidget" name="widget_31" native="true">
+                            <layout class="QHBoxLayout" name="horizontalLayout_23">
+                             <property name="spacing">
+                              <number>10</number>
+                             </property>
+                             <property name="leftMargin">
+                              <number>0</number>
+                             </property>
+                             <property name="topMargin">
+                              <number>0</number>
+                             </property>
+                             <property name="rightMargin">
+                              <number>0</number>
+                             </property>
+                             <property name="bottomMargin">
+                              <number>0</number>
+                             </property>
+                             <item>
+                              <widget class="QLineEdit" name="edit_username">
+                               <property name="font">
+                                <font>
+                                 <pointsize>8</pointsize>
+                                 <weight>75</weight>
+                                 <bold>true</bold>
+                                </font>
+                               </property>
+                               <property name="text">
+                                <string/>
+                               </property>
+                              </widget>
+                             </item>
+                            </layout>
+                           </widget>
+                          </item>
+                          <item>
+                           <widget class="QLabel" name="label_46">
+                            <property name="font">
+                             <font>
+                              <pointsize>10</pointsize>
+                              <weight>75</weight>
+                              <bold>true</bold>
+                             </font>
+                            </property>
+                            <property name="styleSheet">
+                             <string notr="true">color: white;</string>
+                            </property>
+                            <property name="text">
+                             <string>Password</string>
+                            </property>
+                            <property name="alignment">
+                             <set>Qt::AlignCenter</set>
+                            </property>
+                           </widget>
+                          </item>
+                          <item>
+                           <widget class="QLineEdit" name="edit_password">
+                            <property name="font">
+                             <font>
+                              <pointsize>8</pointsize>
+                              <weight>75</weight>
+                              <bold>true</bold>
+                             </font>
+                            </property>
+                            <property name="echoMode">
+                             <enum>QLineEdit::Password</enum>
+                            </property>
+                           </widget>
+                          </item>
+                         </layout>
+                        </widget>
+                       </item>
+                       <item>
+                        <widget class="QWidget" name="token_widget" native="true">
+                         <layout class="QHBoxLayout" name="horizontalLayout_6">
+                          <property name="spacing">
+                           <number>10</number>
+                          </property>
+                          <item>
+                           <widget class="QLabel" name="label_49">
+                            <property name="font">
+                             <font>
+                              <pointsize>10</pointsize>
+                              <weight>75</weight>
+                              <bold>true</bold>
+                             </font>
+                            </property>
+                            <property name="styleSheet">
+                             <string notr="true">color: white;</string>
+                            </property>
+                            <property name="text">
+                             <string>Token</string>
+                            </property>
+                            <property name="alignment">
+                             <set>Qt::AlignCenter</set>
+                            </property>
+                           </widget>
+                          </item>
+                          <item>
+                           <widget class="QLineEdit" name="edit_token">
+                            <property name="font">
+                             <font>
+                              <pointsize>8</pointsize>
+                              <weight>75</weight>
+                              <bold>true</bold>
+                             </font>
+                            </property>
+                            <property name="echoMode">
+                             <enum>QLineEdit::Password</enum>
+                            </property>
+                           </widget>
+                          </item>
+                         </layout>
+                        </widget>
+                       </item>
+                      </layout>
+                     </widget>
+                    </item>
+                    <item>
+                     <widget class="QWidget" name="widget_33" native="true">
+                      <layout class="QHBoxLayout" name="horizontalLayout_25">
+                       <property name="spacing">
+                        <number>10</number>
+                       </property>
+                       <property name="leftMargin">
+                        <number>0</number>
+                       </property>
+                       <property name="topMargin">
+                        <number>0</number>
+                       </property>
+                       <property name="rightMargin">
+                        <number>0</number>
+                       </property>
+                       <property name="bottomMargin">
+                        <number>0</number>
+                       </property>
+                       <item>
+                        <widget class="QLabel" name="label_47">
+                         <property name="font">
+                          <font>
+                           <pointsize>10</pointsize>
+                           <weight>75</weight>
+                           <bold>true</bold>
+                          </font>
+                         </property>
+                         <property name="styleSheet">
+                          <string notr="true">color: white;</string>
+                         </property>
+                         <property name="text">
+                          <string>Login Url</string>
+                         </property>
+                         <property name="alignment">
+                          <set>Qt::AlignCenter</set>
+                         </property>
+                        </widget>
+                       </item>
+                       <item>
+                        <widget class="QLineEdit" name="edit_url">
+                         <property name="minimumSize">
+                          <size>
+                           <width>200</width>
+                           <height>0</height>
+                          </size>
+                         </property>
+                         <property name="font">
+                          <font>
+                           <pointsize>8</pointsize>
+                           <weight>75</weight>
+                           <bold>true</bold>
+                          </font>
+                         </property>
+                        </widget>
+                       </item>
+                      </layout>
+                     </widget>
+                    </item>
+                   </layout>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QWidget" name="widget_34" native="true">
+                   <property name="font">
+                    <font>
+                     <pointsize>10</pointsize>
+                     <weight>75</weight>
+                     <bold>true</bold>
+                    </font>
+                   </property>
+                   <layout class="QHBoxLayout" name="horizontalLayout_33">
                     <property name="spacing">
                      <number>20</number>
                     </property>
@@ -2897,13 +2763,7 @@ tag mapping with available data points. Use custom fields for any data points no
                      <number>0</number>
                     </property>
                     <item>
-                     <widget class="QLabel" name="label_59">
-                      <property name="sizePolicy">
-                       <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
-                        <horstretch>0</horstretch>
-                        <verstretch>0</verstretch>
-                       </sizepolicy>
-                      </property>
+                     <widget class="QGroupBox" name="groupBox_6">
                       <property name="font">
                        <font>
                         <pointsize>10</pointsize>
@@ -2912,35 +2772,571 @@ tag mapping with available data points. Use custom fields for any data points no
                        </font>
                       </property>
                       <property name="styleSheet">
-                       <string notr="true">QLabel {  
+                       <string notr="true">#groupBox_6{
+	color: white;
+}</string>
+                      </property>
+                      <property name="title">
+                       <string>Default</string>
+                      </property>
+                      <layout class="QHBoxLayout" name="horizontalLayout_34">
+                       <property name="topMargin">
+                        <number>9</number>
+                       </property>
+                       <item>
+                        <widget class="QWidget" name="widget_38" native="true">
+                         <layout class="QVBoxLayout" name="verticalLayout_22">
+                          <item>
+                           <widget class="QLabel" name="label_51">
+                            <property name="sizePolicy">
+                             <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
+                              <horstretch>0</horstretch>
+                              <verstretch>0</verstretch>
+                             </sizepolicy>
+                            </property>
+                            <property name="font">
+                             <font>
+                              <pointsize>10</pointsize>
+                              <weight>75</weight>
+                              <bold>true</bold>
+                             </font>
+                            </property>
+                            <property name="styleSheet">
+                             <string notr="true">QLabel {  
     color: white;  /* Change 'blue' to your preferred color */  
 }  </string>
-                      </property>
-                      <property name="text">
-                       <string>rssi</string>
-                      </property>
+                            </property>
+                            <property name="text">
+                             <string>Tag</string>
+                            </property>
+                           </widget>
+                          </item>
+                          <item>
+                           <widget class="QLabel" name="label_52">
+                            <property name="sizePolicy">
+                             <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
+                              <horstretch>0</horstretch>
+                              <verstretch>0</verstretch>
+                             </sizepolicy>
+                            </property>
+                            <property name="font">
+                             <font>
+                              <pointsize>10</pointsize>
+                              <weight>75</weight>
+                              <bold>true</bold>
+                             </font>
+                            </property>
+                            <property name="styleSheet">
+                             <string notr="true">QLabel {  
+    color: white;  /* Change 'blue' to your preferred color */  
+}  </string>
+                            </property>
+                            <property name="text">
+                             <string>Ant</string>
+                            </property>
+                           </widget>
+                          </item>
+                          <item>
+                           <widget class="QLabel" name="label_53">
+                            <property name="sizePolicy">
+                             <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
+                              <horstretch>0</horstretch>
+                              <verstretch>0</verstretch>
+                             </sizepolicy>
+                            </property>
+                            <property name="font">
+                             <font>
+                              <pointsize>10</pointsize>
+                              <weight>75</weight>
+                              <bold>true</bold>
+                             </font>
+                            </property>
+                            <property name="styleSheet">
+                             <string notr="true">QLabel {  
+    color: white;  /* Change 'blue' to your preferred color */  
+}  </string>
+                            </property>
+                            <property name="text">
+                             <string>lat</string>
+                            </property>
+                           </widget>
+                          </item>
+                          <item>
+                           <widget class="QLabel" name="label_54">
+                            <property name="sizePolicy">
+                             <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
+                              <horstretch>0</horstretch>
+                              <verstretch>0</verstretch>
+                             </sizepolicy>
+                            </property>
+                            <property name="font">
+                             <font>
+                              <pointsize>10</pointsize>
+                              <weight>75</weight>
+                              <bold>true</bold>
+                             </font>
+                            </property>
+                            <property name="styleSheet">
+                             <string notr="true">QLabel {  
+    color: white;  /* Change 'blue' to your preferred color */  
+}  </string>
+                            </property>
+                            <property name="text">
+                             <string>lng</string>
+                            </property>
+                           </widget>
+                          </item>
+                          <item>
+                           <widget class="QLabel" name="label_55">
+                            <property name="sizePolicy">
+                             <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
+                              <horstretch>0</horstretch>
+                              <verstretch>0</verstretch>
+                             </sizepolicy>
+                            </property>
+                            <property name="font">
+                             <font>
+                              <pointsize>10</pointsize>
+                              <weight>75</weight>
+                              <bold>true</bold>
+                             </font>
+                            </property>
+                            <property name="styleSheet">
+                             <string notr="true">QLabel {  
+    color: white;  /* Change 'blue' to your preferred color */  
+}  </string>
+                            </property>
+                            <property name="text">
+                             <string>heading</string>
+                            </property>
+                           </widget>
+                          </item>
+                          <item>
+                           <widget class="QLabel" name="label_56">
+                            <property name="sizePolicy">
+                             <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
+                              <horstretch>0</horstretch>
+                              <verstretch>0</verstretch>
+                             </sizepolicy>
+                            </property>
+                            <property name="font">
+                             <font>
+                              <pointsize>10</pointsize>
+                              <weight>75</weight>
+                              <bold>true</bold>
+                             </font>
+                            </property>
+                            <property name="styleSheet">
+                             <string notr="true">QLabel {  
+    color: white;  /* Change 'blue' to your preferred color */  
+}  </string>
+                            </property>
+                            <property name="text">
+                             <string>speed</string>
+                            </property>
+                           </widget>
+                          </item>
+                         </layout>
+                        </widget>
+                       </item>
+                       <item>
+                        <widget class="QWidget" name="widget_39" native="true">
+                         <layout class="QVBoxLayout" name="verticalLayout_23">
+                          <item>
+                           <widget class="QLineEdit" name="edit_api_tag">
+                            <property name="font">
+                             <font>
+                              <pointsize>8</pointsize>
+                              <weight>75</weight>
+                              <bold>true</bold>
+                             </font>
+                            </property>
+                            <property name="text">
+                             <string/>
+                            </property>
+                           </widget>
+                          </item>
+                          <item>
+                           <widget class="QLineEdit" name="edit_api_ant">
+                            <property name="font">
+                             <font>
+                              <pointsize>8</pointsize>
+                              <weight>75</weight>
+                              <bold>true</bold>
+                             </font>
+                            </property>
+                           </widget>
+                          </item>
+                          <item>
+                           <widget class="QLineEdit" name="edit_api_lat">
+                            <property name="font">
+                             <font>
+                              <pointsize>8</pointsize>
+                              <weight>75</weight>
+                              <bold>true</bold>
+                             </font>
+                            </property>
+                           </widget>
+                          </item>
+                          <item>
+                           <widget class="QLineEdit" name="edit_api_lng">
+                            <property name="font">
+                             <font>
+                              <pointsize>8</pointsize>
+                              <weight>75</weight>
+                              <bold>true</bold>
+                             </font>
+                            </property>
+                           </widget>
+                          </item>
+                          <item>
+                           <widget class="QLineEdit" name="edit_api_heading">
+                            <property name="font">
+                             <font>
+                              <pointsize>8</pointsize>
+                              <weight>75</weight>
+                              <bold>true</bold>
+                             </font>
+                            </property>
+                           </widget>
+                          </item>
+                          <item>
+                           <widget class="QLineEdit" name="edit_api_speed">
+                            <property name="font">
+                             <font>
+                              <pointsize>8</pointsize>
+                              <weight>75</weight>
+                              <bold>true</bold>
+                             </font>
+                            </property>
+                           </widget>
+                          </item>
+                         </layout>
+                        </widget>
+                       </item>
+                      </layout>
                      </widget>
                     </item>
                     <item>
-                     <widget class="QLineEdit" name="edit_api_rssi">
+                     <spacer name="verticalSpacer">
+                      <property name="orientation">
+                       <enum>Qt::Vertical</enum>
+                      </property>
+                      <property name="sizeHint" stdset="0">
+                       <size>
+                        <width>20</width>
+                        <height>40</height>
+                       </size>
+                      </property>
+                     </spacer>
+                    </item>
+                    <item>
+                     <widget class="QGroupBox" name="groupBox_7">
                       <property name="font">
                        <font>
-                        <pointsize>8</pointsize>
+                        <pointsize>10</pointsize>
                         <weight>75</weight>
                         <bold>true</bold>
                        </font>
                       </property>
-                      <property name="text">
-                       <string/>
+                      <property name="styleSheet">
+                       <string notr="true">#groupBox_7{
+	color: white;
+}</string>
                       </property>
+                      <property name="title">
+                       <string>Client</string>
+                      </property>
+                      <layout class="QVBoxLayout" name="verticalLayout_28">
+                       <property name="topMargin">
+                        <number>20</number>
+                       </property>
+                       <item>
+                        <widget class="QWidget" name="widget_43" native="true">
+                         <layout class="QHBoxLayout" name="horizontalLayout_36">
+                          <property name="spacing">
+                           <number>20</number>
+                          </property>
+                          <property name="leftMargin">
+                           <number>20</number>
+                          </property>
+                          <property name="topMargin">
+                           <number>0</number>
+                          </property>
+                          <property name="rightMargin">
+                           <number>10</number>
+                          </property>
+                          <property name="bottomMargin">
+                           <number>0</number>
+                          </property>
+                          <item>
+                           <widget class="QLabel" name="label_59">
+                            <property name="sizePolicy">
+                             <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
+                              <horstretch>0</horstretch>
+                              <verstretch>0</verstretch>
+                             </sizepolicy>
+                            </property>
+                            <property name="font">
+                             <font>
+                              <pointsize>10</pointsize>
+                              <weight>75</weight>
+                              <bold>true</bold>
+                             </font>
+                            </property>
+                            <property name="styleSheet">
+                             <string notr="true">QLabel {  
+    color: white;  /* Change 'blue' to your preferred color */  
+}  </string>
+                            </property>
+                            <property name="text">
+                             <string>rssi</string>
+                            </property>
+                           </widget>
+                          </item>
+                          <item>
+                           <widget class="QLineEdit" name="edit_api_rssi">
+                            <property name="font">
+                             <font>
+                              <pointsize>8</pointsize>
+                              <weight>75</weight>
+                              <bold>true</bold>
+                             </font>
+                            </property>
+                            <property name="text">
+                             <string/>
+                            </property>
+                           </widget>
+                          </item>
+                         </layout>
+                        </widget>
+                       </item>
+                       <item>
+                        <widget class="QWidget" name="widget_44" native="true">
+                         <property name="sizePolicy">
+                          <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
+                           <horstretch>0</horstretch>
+                           <verstretch>0</verstretch>
+                          </sizepolicy>
+                         </property>
+                         <layout class="QVBoxLayout" name="verticalLayout_29">
+                          <property name="spacing">
+                           <number>0</number>
+                          </property>
+                          <property name="leftMargin">
+                           <number>0</number>
+                          </property>
+                          <property name="topMargin">
+                           <number>0</number>
+                          </property>
+                          <property name="rightMargin">
+                           <number>0</number>
+                          </property>
+                          <property name="bottomMargin">
+                           <number>0</number>
+                          </property>
+                          <item>
+                           <widget class="QLabel" name="label_60">
+                            <property name="sizePolicy">
+                             <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
+                              <horstretch>0</horstretch>
+                              <verstretch>0</verstretch>
+                             </sizepolicy>
+                            </property>
+                            <property name="text">
+                             <string/>
+                            </property>
+                            <property name="pixmap">
+                             <pixmap resource="res.qrc">:/img/api_json_request.png</pixmap>
+                            </property>
+                            <property name="scaledContents">
+                             <bool>true</bool>
+                            </property>
+                           </widget>
+                          </item>
+                         </layout>
+                        </widget>
+                       </item>
+                       <item>
+                        <widget class="QWidget" name="widget_42" native="true">
+                         <layout class="QHBoxLayout" name="horizontalLayout_35">
+                          <property name="leftMargin">
+                           <number>0</number>
+                          </property>
+                          <property name="topMargin">
+                           <number>0</number>
+                          </property>
+                          <property name="rightMargin">
+                           <number>0</number>
+                          </property>
+                          <property name="bottomMargin">
+                           <number>0</number>
+                          </property>
+                          <item>
+                           <widget class="QWidget" name="widget_40" native="true">
+                            <layout class="QVBoxLayout" name="verticalLayout_24">
+                             <item>
+                              <widget class="QLabel" name="label_57">
+                               <property name="sizePolicy">
+                                <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
+                                 <horstretch>0</horstretch>
+                                 <verstretch>0</verstretch>
+                                </sizepolicy>
+                               </property>
+                               <property name="font">
+                                <font>
+                                 <pointsize>10</pointsize>
+                                 <weight>75</weight>
+                                 <bold>true</bold>
+                                </font>
+                               </property>
+                               <property name="styleSheet">
+                                <string notr="true">QLabel {  
+    color: white;  /* Change 'blue' to your preferred color */  
+}  </string>
+                               </property>
+                               <property name="text">
+                                <string>Custom Tag</string>
+                               </property>
+                              </widget>
+                             </item>
+                             <item>
+                              <widget class="QLineEdit" name="edit_api_heading_3">
+                               <property name="font">
+                                <font>
+                                 <pointsize>8</pointsize>
+                                 <weight>75</weight>
+                                 <bold>true</bold>
+                                </font>
+                               </property>
+                               <property name="text">
+                                <string/>
+                               </property>
+                              </widget>
+                             </item>
+                             <item>
+                              <widget class="QLineEdit" name="edit_api_heading_2">
+                               <property name="font">
+                                <font>
+                                 <pointsize>8</pointsize>
+                                 <weight>75</weight>
+                                 <bold>true</bold>
+                                </font>
+                               </property>
+                              </widget>
+                             </item>
+                             <item>
+                              <widget class="QLineEdit" name="edit_api_heading_4">
+                               <property name="font">
+                                <font>
+                                 <pointsize>8</pointsize>
+                                 <weight>75</weight>
+                                 <bold>true</bold>
+                                </font>
+                               </property>
+                              </widget>
+                             </item>
+                             <item>
+                              <widget class="QLineEdit" name="edit_api_lng_2">
+                               <property name="font">
+                                <font>
+                                 <pointsize>8</pointsize>
+                                 <weight>75</weight>
+                                 <bold>true</bold>
+                                </font>
+                               </property>
+                              </widget>
+                             </item>
+                            </layout>
+                           </widget>
+                          </item>
+                          <item>
+                           <widget class="QWidget" name="widget_41" native="true">
+                            <layout class="QVBoxLayout" name="verticalLayout_25">
+                             <item>
+                              <widget class="QLabel" name="label_63">
+                               <property name="sizePolicy">
+                                <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
+                                 <horstretch>0</horstretch>
+                                 <verstretch>0</verstretch>
+                                </sizepolicy>
+                               </property>
+                               <property name="font">
+                                <font>
+                                 <pointsize>10</pointsize>
+                                 <weight>75</weight>
+                                 <bold>true</bold>
+                                </font>
+                               </property>
+                               <property name="styleSheet">
+                                <string notr="true">QLabel {  
+    color: white;  /* Change 'blue' to your preferred color */  
+}  </string>
+                               </property>
+                               <property name="text">
+                                <string>Custom Value</string>
+                               </property>
+                              </widget>
+                             </item>
+                             <item>
+                              <widget class="QLineEdit" name="edit_api_heading_5">
+                               <property name="font">
+                                <font>
+                                 <pointsize>8</pointsize>
+                                 <weight>75</weight>
+                                 <bold>true</bold>
+                                </font>
+                               </property>
+                              </widget>
+                             </item>
+                             <item>
+                              <widget class="QLineEdit" name="edit_api_ant_2">
+                               <property name="font">
+                                <font>
+                                 <pointsize>8</pointsize>
+                                 <weight>75</weight>
+                                 <bold>true</bold>
+                                </font>
+                               </property>
+                              </widget>
+                             </item>
+                             <item>
+                              <widget class="QLineEdit" name="edit_api_lat_2">
+                               <property name="font">
+                                <font>
+                                 <pointsize>8</pointsize>
+                                 <weight>75</weight>
+                                 <bold>true</bold>
+                                </font>
+                               </property>
+                              </widget>
+                             </item>
+                             <item>
+                              <widget class="QLineEdit" name="edit_api_speed_2">
+                               <property name="font">
+                                <font>
+                                 <pointsize>8</pointsize>
+                                 <weight>75</weight>
+                                 <bold>true</bold>
+                                </font>
+                               </property>
+                              </widget>
+                             </item>
+                            </layout>
+                           </widget>
+                          </item>
+                         </layout>
+                        </widget>
+                       </item>
+                      </layout>
                      </widget>
                     </item>
                    </layout>
                   </widget>
                  </item>
                  <item>
-                  <widget class="QWidget" name="widget_44" native="true">
-                   <layout class="QVBoxLayout" name="verticalLayout_29">
+                  <widget class="QWidget" name="widget_36" native="true">
+                   <layout class="QHBoxLayout" name="horizontalLayout_3">
                     <property name="spacing">
                      <number>0</number>
                     </property>
@@ -2957,239 +3353,25 @@ tag mapping with available data points. Use custom fields for any data points no
                      <number>0</number>
                     </property>
                     <item>
-                     <widget class="QLabel" name="label_60">
-                      <property name="sizePolicy">
-                       <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
-                        <horstretch>0</horstretch>
-                        <verstretch>0</verstretch>
-                       </sizepolicy>
+                     <widget class="QPushButton" name="api_save_btn">
+                      <property name="maximumSize">
+                       <size>
+                        <width>100</width>
+                        <height>16777215</height>
+                       </size>
                       </property>
-                      <property name="text">
-                       <string/>
+                      <property name="font">
+                       <font>
+                        <pointsize>10</pointsize>
+                        <weight>75</weight>
+                        <bold>true</bold>
+                       </font>
                       </property>
-                      <property name="pixmap">
-                       <pixmap resource="res.qrc">:/img/api_json_request.png</pixmap>
+                      <property name="cursor">
+                       <cursorShape>PointingHandCursor</cursorShape>
                       </property>
-                      <property name="scaledContents">
-                       <bool>true</bool>
-                      </property>
-                     </widget>
-                    </item>
-                   </layout>
-                  </widget>
-                 </item>
-                 <item>
-                  <widget class="QWidget" name="widget_42" native="true">
-                   <layout class="QHBoxLayout" name="horizontalLayout_35">
-                    <property name="leftMargin">
-                     <number>0</number>
-                    </property>
-                    <property name="topMargin">
-                     <number>0</number>
-                    </property>
-                    <property name="rightMargin">
-                     <number>0</number>
-                    </property>
-                    <property name="bottomMargin">
-                     <number>0</number>
-                    </property>
-                    <item>
-                     <widget class="QWidget" name="widget_40" native="true">
-                      <layout class="QVBoxLayout" name="verticalLayout_24">
-                       <item>
-                        <widget class="QLabel" name="label_57">
-                         <property name="sizePolicy">
-                          <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
-                           <horstretch>0</horstretch>
-                           <verstretch>0</verstretch>
-                          </sizepolicy>
-                         </property>
-                         <property name="font">
-                          <font>
-                           <pointsize>10</pointsize>
-                           <weight>75</weight>
-                           <bold>true</bold>
-                          </font>
-                         </property>
-                         <property name="styleSheet">
-                          <string notr="true">QLabel {  
-    color: white;  /* Change 'blue' to your preferred color */  
-}  </string>
-                         </property>
-                         <property name="text">
-                          <string>Custom Tag</string>
-                         </property>
-                        </widget>
-                       </item>
-                       <item>
-                        <widget class="QLineEdit" name="edit_api_heading_3">
-                         <property name="font">
-                          <font>
-                           <pointsize>8</pointsize>
-                           <weight>75</weight>
-                           <bold>true</bold>
-                          </font>
-                         </property>
-                         <property name="text">
-                          <string/>
-                         </property>
-                        </widget>
-                       </item>
-                       <item>
-                        <widget class="QLineEdit" name="edit_api_heading_2">
-                         <property name="font">
-                          <font>
-                           <pointsize>8</pointsize>
-                           <weight>75</weight>
-                           <bold>true</bold>
-                          </font>
-                         </property>
-                        </widget>
-                       </item>
-                       <item>
-                        <widget class="QLineEdit" name="edit_api_heading_4">
-                         <property name="font">
-                          <font>
-                           <pointsize>8</pointsize>
-                           <weight>75</weight>
-                           <bold>true</bold>
-                          </font>
-                         </property>
-                        </widget>
-                       </item>
-                       <item>
-                        <widget class="QLineEdit" name="edit_api_lng_2">
-                         <property name="font">
-                          <font>
-                           <pointsize>8</pointsize>
-                           <weight>75</weight>
-                           <bold>true</bold>
-                          </font>
-                         </property>
-                        </widget>
-                       </item>
-                      </layout>
-                     </widget>
-                    </item>
-                    <item>
-                     <widget class="QWidget" name="widget_41" native="true">
-                      <layout class="QVBoxLayout" name="verticalLayout_25">
-                       <item>
-                        <widget class="QLabel" name="label_63">
-                         <property name="sizePolicy">
-                          <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
-                           <horstretch>0</horstretch>
-                           <verstretch>0</verstretch>
-                          </sizepolicy>
-                         </property>
-                         <property name="font">
-                          <font>
-                           <pointsize>10</pointsize>
-                           <weight>75</weight>
-                           <bold>true</bold>
-                          </font>
-                         </property>
-                         <property name="styleSheet">
-                          <string notr="true">QLabel {  
-    color: white;  /* Change 'blue' to your preferred color */  
-}  </string>
-                         </property>
-                         <property name="text">
-                          <string>Custom Value</string>
-                         </property>
-                        </widget>
-                       </item>
-                       <item>
-                        <widget class="QLineEdit" name="edit_api_heading_5">
-                         <property name="font">
-                          <font>
-                           <pointsize>8</pointsize>
-                           <weight>75</weight>
-                           <bold>true</bold>
-                          </font>
-                         </property>
-                        </widget>
-                       </item>
-                       <item>
-                        <widget class="QLineEdit" name="edit_api_ant_2">
-                         <property name="font">
-                          <font>
-                           <pointsize>8</pointsize>
-                           <weight>75</weight>
-                           <bold>true</bold>
-                          </font>
-                         </property>
-                        </widget>
-                       </item>
-                       <item>
-                        <widget class="QLineEdit" name="edit_api_lat_2">
-                         <property name="font">
-                          <font>
-                           <pointsize>8</pointsize>
-                           <weight>75</weight>
-                           <bold>true</bold>
-                          </font>
-                         </property>
-                        </widget>
-                       </item>
-                       <item>
-                        <widget class="QLineEdit" name="edit_api_speed_2">
-                         <property name="font">
-                          <font>
-                           <pointsize>8</pointsize>
-                           <weight>75</weight>
-                           <bold>true</bold>
-                          </font>
-                         </property>
-                        </widget>
-                       </item>
-                      </layout>
-                     </widget>
-                    </item>
-                   </layout>
-                  </widget>
-                 </item>
-                </layout>
-               </widget>
-              </item>
-             </layout>
-            </widget>
-           </item>
-           <item>
-            <widget class="QWidget" name="widget_36" native="true">
-             <layout class="QHBoxLayout" name="horizontalLayout_3">
-              <property name="spacing">
-               <number>0</number>
-              </property>
-              <property name="leftMargin">
-               <number>0</number>
-              </property>
-              <property name="topMargin">
-               <number>0</number>
-              </property>
-              <property name="rightMargin">
-               <number>0</number>
-              </property>
-              <property name="bottomMargin">
-               <number>0</number>
-              </property>
-              <item>
-               <widget class="QPushButton" name="pushButton">
-                <property name="maximumSize">
-                 <size>
-                  <width>100</width>
-                  <height>16777215</height>
-                 </size>
-                </property>
-                <property name="font">
-                 <font>
-                  <pointsize>10</pointsize>
-                  <weight>75</weight>
-                  <bold>true</bold>
-                 </font>
-                </property>
-                <property name="styleSheet">
-                 <string notr="true">QPushButton {
+                      <property name="styleSheet">
+                       <string notr="true">QPushButton {
 	background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1,   
                                       stop:0 #222222, stop:1 #aaaaaa);
     border: 2px solid white;  
@@ -3206,10 +3388,16 @@ QPushButton:hover {
 QPushButton:pressed {  
     background-color: #909090; /* Darker green when pressed */  
 }  </string>
-                </property>
-                <property name="text">
-                 <string>Save</string>
-                </property>
+                      </property>
+                      <property name="text">
+                       <string>Save</string>
+                      </property>
+                     </widget>
+                    </item>
+                   </layout>
+                  </widget>
+                 </item>
+                </layout>
                </widget>
               </item>
              </layout>

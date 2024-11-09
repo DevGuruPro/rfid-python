@@ -13,6 +13,11 @@
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
+  <property name="styleSheet">
+   <string notr="true">QLabel{
+	color: white;
+}</string>
+  </property>
   <widget class="QWidget" name="centralwidget">
    <property name="styleSheet">
     <string notr="true"/>
@@ -37,7 +42,7 @@
      <widget class="QWidget" name="loginwidget" native="true">
       <property name="styleSheet">
        <string notr="true">#loginwidget{
-	background-color: rgba(128, 128, 128, 200);
+	background-color: rgba(0, 0, 0, 120);
 }</string>
       </property>
       <layout class="QVBoxLayout" name="verticalLayout">
@@ -158,7 +163,8 @@
     border: 2px solid white;  
     border-radius: 10px;  
     min-width: 80px;
-	min-height: 30px;  
+	min-height: 30px;
+	color: white;
 } 
 
 QPushButton:hover {  
@@ -186,6 +192,10 @@ QPushButton:pressed {
          <property name="styleSheet">
           <string notr="true">QGroupBox {  
     border: 0px;
+}
+
+QRadioButton{
+	color: white;
 }  </string>
          </property>
          <property name="title">

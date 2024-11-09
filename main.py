@@ -9,10 +9,11 @@ if __name__ == "__main__":
 
     app = QApplication(sys.argv)
     login_window = LoginWnd()
-    main_window = MainWnd()
 
     def on_first_window_closed():
-        main_window.show()
+        if login_window.passed:
+            main_window = MainWnd()
+            main_window.show()
 
     # We override the closeEvent to trigger the second window to be shown
     def first_window_close_event(event):

@@ -20,6 +20,7 @@ class LoginWnd(QMainWindow):
         # self.setWindowFlags(Qt.WindowType.FramelessWindowHint)  # Qt.WindowType.Popup
         # self.setAttribute(QtCore.Qt.WidgetAttribute.WA_TranslucentBackground)
         self.ui.loginBtn.released.connect(self.login)
+        self.passed = False
 
     def login(self):
         username = self.ui.user_edit.text()
@@ -31,8 +32,10 @@ class LoginWnd(QMainWindow):
         try:
             response = requests.Session().post(LOGIN_URL, json=payload)
             data = response.json()
+            logger.debug(data)
             if data['metadata']['code'] == '200':
                 logger.debug('Login successful!')
+                self.passed = True
                 self.close()
             else:
                 logger.error("Login failed")
@@ -51,7 +54,7 @@ class LoginWnd(QMainWindow):
 
     def paintEvent(self, event):
         painter = QPainter(self)
-        pixmap = QPixmap(":/img/background.jpg")
+        pixmap = QPixmap(":/img/login_background.png")
         painter.drawPixmap(self.rect(), pixmap)
 
 

@@ -18,9 +18,13 @@ if not os.path.exists(CONFIG_FILE):
 
 LOGIN_URL = "https://rfidngpsinventory.com/rfid/user/userLogin"
 
-SERIAL_PORT_GPS = '/dev/ttyAMA0'
+SERIAL_PORT_GPS = 'COM4'
 BAUD_RATE_GPS = 115200
 
+RFID_CARD_READER = '169.254.10.1'
+
+SOUND_FREQUENCY = 1000
+SOUND_DURATION = 800
 
 try:
     from local_settings import *

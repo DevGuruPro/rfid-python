@@ -1,75 +1,146 @@
 import threading
 import time
 
-# import serial
+from PySide6.QtCore import QThread, Signal
+from sllurp.llrp import LLRP_DEFAULT_PORT, LLRPReaderConfig, LLRPReaderClient
 
-from PySide6.QtCore import Signal, QThread
+# from settings import RFID_CARD_READER
+from argparse import ArgumentParser
 
-from utils.logger import logger
+
+def convert_to_unicode(obj):
+    """
+    Tornado dict to json expects unicode strings in dict.
+    """
+    if isinstance(obj, dict):
+        return {
+            convert_to_unicode(key):
+                convert_to_unicode(value) for key, value in obj.items()
+        }
+    elif isinstance(obj, list):
+        return [convert_to_unicode(element) for element in obj]
+    elif isinstance(obj, bytes):
+        return obj.decode('utf-8')
+    else:
+        return obj
+
+
+def parse_args():
+    parser = ArgumentParser(description='Simple RFID Reader Inventory')
+    parser.add_argument('host', help='hostname or IP address of RFID reader', default=['169.254.10.1'],
+                        nargs='*')
+    parser.add_argument('-p', '--port', default=LLRP_DEFAULT_PORT, type=int,
+                        help='port to connect to (default {})'
+                        .format(LLRP_DEFAULT_PORT))
+    parser.add_argument('-n', '--report-every-n-tags', default=1, type=int,
+                        dest='every_n', metavar='N',
+                        help='issue a TagReport every N tags')
+    parser.add_argument('-a', '--antennas', default='1',
+                        help='comma-separated list of antennas to enable')
+    parser.add_argument('-X', '--tx-power', default=0, type=int,
+                        dest='tx_power',
+                        help='Transmit power (default 0=max power)')
+    parser.add_argument('-M', '--modulation', default='M8',
+                        help='modulation (default M8)')
+    parser.add_argument('-T', '--tari', default=0, type=int,
+                        help='Tari value (default 0=auto)')
+    parser.add_argument('-s', '--session', type=int, default=0,
+                        help='Gen2 session (default 2)')
+    parser.add_argument('--mode-identifier', type=int,
+                        help='ModeIdentifier value')
+    parser.add_argument('-P', '--tag-population', type=int, default=4,
+                        help="Tag Population value (default 4)")
+    parser.add_argument('--impinj-search-mode', choices=['1', '2'],
+                        help=('Impinj extension: inventory search mode '
+                              '(1=single, 2=dual)'))
+    parser.add_argument('--impinj-reports', type=bool, default=False,
+                        help='Enable Impinj tag report content (Phase angle, '
+                             'RSSI, Doppler)')
+    return parser.parse_args()
 
 
 class RFID(QThread):
 
-    sig_msg = Signal(bool)
+    sig_msg = Signal(int)
 
-    def __init__(self, port='/dev/ttyAMA0', baud_rate=9600):
+    def __init__(self, args=parse_args()):
         super().__init__()
-        self.port = port
-        self.baud_rate = baud_rate
-        self._ser = None
         self._b_stop = threading.Event()
-        self._data = {}
+        self.tag_data = None
+        self.connectivity = None
+        enabled_antennas = [int(x.strip()) for x in args.antennas.split(',')]
+        factory_args = dict(
+            report_every_n_tags=args.every_n,
+            antennas=enabled_antennas,
+            tx_power=args.tx_power,
+            tari=args.tari,
+            session=args.session,
+            mode_identifier=args.mode_identifier,
+            tag_population=args.tag_population,
+            start_inventory=True,
+            tag_content_selector={
+                'EnableROSpecID': True,
+                'EnableSpecIndex': True,
+                'EnableInventoryParameterSpecID': True,
+                'EnableAntennaID': True,
+                'EnableChannelIndex': True,
+                'EnablePeakRSSI': True,
+                'EnableFirstSeenTimestamp': True,
+                'EnableLastSeenTimestamp': True,
+                'EnableTagSeenCount': True,
+                'EnableAccessSpecID': True,
+                'C1G2EPCMemorySelector': {
+                    'EnableCRC': True,
+                    'EnablePCBits': True,
+                }
+            },
+            impinj_search_mode=args.impinj_search_mode,
+            impinj_tag_content_selector=None,
+        )
 
-    def _connect(self):
-        """Attempts to connect to the GPS module."""
-        try:
-            _ser = serial.Serial(port=self.port, baudrate=self.baud_rate, timeout=1, write_timeout=1)
-            self.sig_msg.emit(True)
-            logger.info("Connected to simplertk2b module.")
-            return _ser
-        except serial.SerialException as e:
-            self.sig_msg.emit(False)
-            logger.error(f"Failed to connect to simplertk2b module: {e}")
-            return None
+        self.reader_clients = []
+        for host in args.host:
+            if ':' in host:
+                host, port = host.split(':', 1)
+                port = int(port)
+            else:
+                port = args.port
+            config = LLRPReaderConfig(factory_args)
+            reader = LLRPReaderClient(host, port, config)
+            reader.add_tag_report_callback(self.tag_seen_callback)
+            self.reader_clients.append(reader)
 
-    def read_serial_data(self):
-        buffer = self._ser.in_waiting
-        if buffer < 80:
-            time.sleep(.2)
-        line = self._ser.readline().decode('utf-8', errors='ignore').strip()
-        print(line)
+    def _connect_reader(self):
+        for reader in self.reader_clients:
+            if not reader.is_alive():
+                try:
+                    reader.connect()
+                except Exception as e:
+                    print(f"Failed to connect to reader {reader}: {e}")
+                    if self.connectivity is True:
+                        self.connectivity = False
+                        self.sig_msg.emit(2)
+                    return
+        if self.connectivity is False:
+            self.connectivity = True
+            self.sig_msg.emit(1)
+
+    def tag_seen_callback(self, reader, tags):
+        """Function to run each time the reader reports seeing tags."""
+        if tags:
+            self.tag_data = convert_to_unicode(tags)
+            self.sig_msg.emit(3)
 
     def run(self):
-        self._ser = self._connect()
-        while self._ser is None:
-            self._connect()
-
         while not self._b_stop.is_set():
-            try:
-                self.read_serial_data()
-            except Exception as er:
-                logger.error(f"Serial reading error : {er}")
-                self._ser.close()
-                time.sleep(.1)
-                self._ser.open()
+            self._connect_reader()
 
     def stop(self):
         self._b_stop.set()
         self.wait()
-        self._close_serial()
-
-    def _close_serial(self):
-        """Closes the serial connection."""
-        if self._ser and self._ser.is_open:
-            self._ser.close()
-            logger.info("Serial connection closed.")
-        self._ser = None
-
-    def get_data(self):
-        """Returns the latest parsed data."""
-        return self._data
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
+    # Load Sllurp config
     rfid = RFID()
     rfid.start()

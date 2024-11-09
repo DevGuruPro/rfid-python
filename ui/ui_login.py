@@ -25,6 +25,9 @@ class Ui_LoginWindow(object):
         if not LoginWindow.objectName():
             LoginWindow.setObjectName(u"LoginWindow")
         LoginWindow.resize(568, 537)
+        LoginWindow.setStyleSheet(u"QLabel{\n"
+"	color: white;\n"
+"}")
         self.centralwidget = QWidget(LoginWindow)
         self.centralwidget.setObjectName(u"centralwidget")
         self.centralwidget.setStyleSheet(u"")
@@ -35,7 +38,7 @@ class Ui_LoginWindow(object):
         self.loginwidget = QWidget(self.centralwidget)
         self.loginwidget.setObjectName(u"loginwidget")
         self.loginwidget.setStyleSheet(u"#loginwidget{\n"
-"	background-color: rgba(128, 128, 128, 200);\n"
+"	background-color: rgba(0, 0, 0, 120);\n"
 "}")
         self.verticalLayout = QVBoxLayout(self.loginwidget)
         self.verticalLayout.setObjectName(u"verticalLayout")
@@ -111,7 +114,8 @@ class Ui_LoginWindow(object):
 "    border: 2px solid white;  \n"
 "    border-radius: 10px;  \n"
 "    min-width: 80px;\n"
-"	min-height: 30px;  \n"
+"	min-height: 30px;\n"
+"	color: white;\n"
 "} \n"
 "\n"
 "QPushButton:hover {  \n"
@@ -134,6 +138,10 @@ class Ui_LoginWindow(object):
         self.groupBox.setObjectName(u"groupBox")
         self.groupBox.setStyleSheet(u"QGroupBox {  \n"
 "    border: 0px;\n"
+"}\n"
+"\n"
+"QRadioButton{\n"
+"	color: white;\n"
 "}  ")
         self.horizontalLayout_2 = QHBoxLayout(self.groupBox)
         self.horizontalLayout_2.setObjectName(u"horizontalLayout_2")
