@@ -1,7 +1,5 @@
 from datetime import datetime
-
 from geopy.distance import geodesic
-
 from utils.logger import logger
 
 
