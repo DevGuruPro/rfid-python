@@ -1,5 +1,4 @@
 import threading
-import time
 
 from PySide6.QtCore import QThread, Signal
 from sllurp.llrp import LLRP_DEFAULT_PORT, LLRPReaderConfig, LLRPReaderClient
