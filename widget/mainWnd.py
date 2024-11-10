@@ -7,13 +7,14 @@ from datetime import datetime
 
 import requests
 import schedule
-import winsound
 import json
 
+from PySide6.QtCore import QUrl
 from PySide6.QtGui import Qt
 from PySide6.QtWidgets import QMainWindow, QApplication, QHeaderView, QTableWidget, QTableWidgetItem
+from PySide6.QtMultimedia import QSoundEffect
 
-from settings import SOUND_FREQUENCY, SOUND_DURATION, HEALTH_UPLOAD_URL, RECORD_UPLOAD_URL
+from settings import HEALTH_UPLOAD_URL, RECORD_UPLOAD_URL
 from ui.ui_main import Ui_MainWindow
 from utils.commons import extract_from_gps, get_date_from_utc, calculate_speed_bearing, find_gps_port, is_ipv4_address
 
@@ -21,9 +22,7 @@ from utils.gps import GPS
 from utils.logger import logger
 from utils.rfid import RFID
 
-
-def beep_sound():
-    winsound.Beep(SOUND_FREQUENCY, SOUND_DURATION)
+import ui.res_rc
 
 
 class MainWnd(QMainWindow):
@@ -59,7 +58,10 @@ class MainWnd(QMainWindow):
         self.scheduler_thread = threading.Thread(target=self.start_scheduler)
         self.scheduler_thread.start()
 
-        self.notify_thread = threading.Thread(target=beep_sound)
+        self.sound_effect = QSoundEffect()
+        self.sound_effect.setSource(QUrl.fromLocalFile(":/alarm.wav"))
+
+        self.notify_thread = threading.Thread(target=self.beep_sound)
 
         self.database = []
         self.notify_rfid = False
@@ -86,6 +88,10 @@ class MainWnd(QMainWindow):
         self.ui.edit_gps_baud.textChanged.connect(self.on_gps_baud_text_changed)
         self.ui.setting_save_btn.released.connect(self.setting_save)
         self.ui.api_save_btn.released.connect(self.api_save)
+
+    def beep_sound(self):
+        relative_path = r"ui\alarm.wav"
+        os.system(f"ffplay -nodisp -autoexit {os.path.join(os.getcwd(), relative_path) }")
 
     def on_rfid_host_text_changed(self, text):
         if is_ipv4_address(text):
@@ -182,6 +188,7 @@ class MainWnd(QMainWindow):
         else:
             self.ui.gps_connection_status.setText("Disconnected")
         if self.notify_gps:
+            self.notify_thread = threading.Thread(target=self.beep_sound)
             self.notify_thread.start()
 
     def monitor_rfid_status(self, status):
@@ -215,6 +222,7 @@ class MainWnd(QMainWindow):
             self.ui.last_gps_read.setText(f"{lat}, {lon}")
             self.ui.last_gps_time.setText(get_date_from_utc(tag['LastSeenTimestampUTC']))
         if self.notify_rfid:
+            self.notify_thread = threading.Thread(target=self.beep_sound)
             self.notify_thread.start()
 
     def upload_to_default(self):
@@ -363,6 +371,6 @@ class MainWnd(QMainWindow):
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
-    # window = MainWnd("aa")
-    # window.show()
+    window = MainWnd("aa","a")
+    window.show()
     sys.exit(app.exec())

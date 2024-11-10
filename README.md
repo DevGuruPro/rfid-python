@@ -12,7 +12,17 @@ Software for reading live tag and gps module.
 
     ```shell
     cd CCKC_EOL
-    pip install -r requirement.txt
+    pip install -r requirement.txt --break-system-packages
+    ```
+- Install dependencies for FFmpeg
+
+  ## Windows
+    Run "setup_ffmpeg.bat".
+  
+  ## Linux or MacOS
+
+    ```
+    sudo apt install ffmpeg
     ```
 
 - And start!
