@@ -2,6 +2,10 @@ import os
 import sys
 import threading
 import time
+import uuid
+from datetime import datetime
+
+import requests
 import schedule
 import winsound
 import json
@@ -9,9 +13,9 @@ import json
 from PySide6.QtGui import Qt
 from PySide6.QtWidgets import QMainWindow, QApplication, QHeaderView, QTableWidget, QTableWidgetItem
 
-from settings import SOUND_FREQUENCY, SOUND_DURATION
+from settings import SOUND_FREQUENCY, SOUND_DURATION, HEALTH_UPLOAD_URL, RECORD_UPLOAD_URL
 from ui.ui_main import Ui_MainWindow
-from utils.commons import extract_from_gps, get_date_from_utc, calculate_speed
+from utils.commons import extract_from_gps, get_date_from_utc, calculate_speed_bearing, find_gps_port
 
 from utils.gps import GPS
 from utils.logger import logger
@@ -24,7 +28,7 @@ def beep_sound():
 
 class MainWnd(QMainWindow):
 
-    def __init__(self):
+    def __init__(self, user_name, token):
         super().__init__()
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
@@ -37,14 +41,14 @@ class MainWnd(QMainWindow):
         for row in range(self.ui.tableWidget.rowCount()):
             for column in range(self.ui.tableWidget.columnCount()):
                 item = QTableWidgetItem("")
-                item.setFlags(item.flags() & ~Qt.ItemFlag.ItemIsSelectable & ~Qt.ItemFlag.ItemIsEditable
-                              & ~Qt.ItemFlag.ItemIsEnabled)
+                item.setFlags(item.flags() & ~Qt.ItemFlag.ItemIsSelectable & ~Qt.ItemFlag.ItemIsEditable &
+                              ~Qt.ItemFlag.ItemIsEnabled)
                 self.ui.tableWidget.setItem(row, column, item)
         # self.ui.tableWidget.item(0, 0).setText("004837065827700000000333 - 1")
         # self.ui.tableWidget.item(0, 4).setText("5/20/2024 11:09:35 PM")
         self._stop = threading.Event()
 
-        self.gps = GPS()
+        self.gps = GPS(find_gps_port())
         self.gps.sig_msg.connect(self.monitor_gps_status)
         # self.gps.start()
 
@@ -60,6 +64,8 @@ class MainWnd(QMainWindow):
         self.database = []
         self.notify_rfid = False
         self.notify_gps = False
+        self.userName = user_name
+        self.token = token
 
         self.ui.radio_api_default.clicked.connect(self.select_api_type)
         self.ui.radio_api_custom.clicked.connect(self.select_api_type)
@@ -143,7 +149,8 @@ class MainWnd(QMainWindow):
 
     def start_scheduler(self):
         schedule.clear()
-        schedule.every(10).seconds.do(self.upload_to_server)
+        schedule.every(10).seconds.do(self.upload_scanned_data)
+        schedule.every(10).minutes.do(self.upload_health_data)
         while not self._stop.is_set():
             schedule.run_pending()
             time.sleep(0.1)
@@ -164,23 +171,23 @@ class MainWnd(QMainWindow):
         elif status == 3:
             tag = self.rfid.tag_data[0]
             lat, lon = extract_from_gps(self.gps.get_data())
+            last_lat, last_lon = self.database[len(self.database)-1][4]
+            speed, bearing = calculate_speed_bearing(last_lat, last_lon, self.database[len(self.database)-1][5],
+                                                     lat, lon, tag['LastSeenTimestampUTC'])
             upload_flag = True
             if self.ui.speed_limit.isChecked():
-                last_lat, last_lon = self.database[len(self.database) - 2][3].split(" ")
-                speed = calculate_speed(last_lat, last_lon, self.database[len(self.database) - 2][4],
-                                        lat, lon, tag['LastSeenTimestampUTC'])
                 if speed < int(self.ui.setting_min_speed.text()) or speed > int(self.ui.setting_max_speed.text()):
                     upload_flag = False
             if upload_flag and self.ui.rssi_limit.isChecked():
-                if (tag['PeakRSSI'] < int(self.ui.setting_min_rssi.text())
-                        or tag['PeakRSSI'] > int(self.ui.setting_min_rssi.text())):
+                if (tag['PeakRSSI'] < int(self.ui.setting_min_rssi.text()) or
+                        tag['PeakRSSI'] > int(self.ui.setting_min_rssi.text())):
                     upload_flag = False
             if upload_flag and self.ui.tag_limit.isChecked():
-                if (int(tag['EPC-96']) < int(self.ui.setting_start_tag.text())
-                        or int(tag['EPC-96']) > int(self.ui.setting_end_tag.text())):
+                if (int(tag['EPC-96']) < int(self.ui.setting_start_tag.text()) or
+                        int(tag['EPC-96']) > int(self.ui.setting_end_tag.text())):
                     upload_flag = False
-            new_data = [upload_flag, tag['EPC-96'], tag['AntennaID'], tag['PeakRSSI'], f"{lat}, {lon}",
-                        tag['LastSeenTimestampUTC']]
+            new_data = [upload_flag, tag['EPC-96'], tag['AntennaID'], tag['PeakRSSI'], (lat, lon),
+                        tag['LastSeenTimestampUTC'], speed, bearing]
             self.database.append(new_data)
             self.ui.last_rfid_read.setText(tag['EPC-96'])
             self.ui.last_rfid_time.setText(get_date_from_utc(tag['LastSeenTimestampUTC']))
@@ -190,7 +197,51 @@ class MainWnd(QMainWindow):
             self.notify_thread.start()
 
     def upload_to_default(self):
-        pass
+        logger.info('Uploading scanned data initiated...')
+        headers = {
+            "Authorization": f"Bearer {self.token}",
+            "Content-Type": "application/json"  # Ensure the payload is interpreted as JSON
+        }
+        start_index = 0
+        batch_index = 0
+        while start_index < len(self.database):
+            db = []
+            index = start_index
+            while len(db) < 1000 and index < len(self.database):
+                item = self.database[index]
+                if not item[0]:
+                    continue
+                data = {
+                    "rfidTag": item[1],
+                    "antenna": f"{item[2]}",
+                    "latitude": item[4][0],
+                    "longitude": item[4][1],
+                    "heading": item[7],
+                    "speed": item[6],
+                    "locationCode": "-",
+                    "username": self.userName
+                }
+                db.append(data)
+                index = index+1
+            payload = {
+                "data": db
+            }
+            i = 0
+            for i in range(3):
+                try:
+                    response = requests.post(RECORD_UPLOAD_URL, headers=headers, json=payload)
+                    data = response.json()
+                    if data['metadata']['code'] == '200':
+                        logger.info(f'Uploading scanned data successfully finished-batch{batch_index}.')
+                        self.database = self.database[:start_index]+self.database[index:]
+                        logger.info(f'Uploaded record removed.')
+                        break
+                except requests.exceptions.RequestException as e:
+                    pass
+            if i != 3:
+                logger.info(f'Uploading scanned data failed-batch{batch_index}.')
+                start_index = index
+            batch_index = batch_index + 1
 
     def upload_to_custom(self):
         if self.ui.radio_login_basic.isChecked():
@@ -198,8 +249,33 @@ class MainWnd(QMainWindow):
         elif self.ui.radio_login_token.isChecked():
             pass
 
-    def upload_to_server(self):
-        logger.info('Uploading now...')
+    def upload_health_data(self):
+        logger.info('Uploading health data initiated...')
+        headers = {
+            "Authorization": f"Bearer {self.token}",
+            "Content-Type": "application/json"  # Ensure the payload is interpreted as JSON
+        }
+        lat, lon = extract_from_gps(self.gps.get_data())
+        payload = {
+            "userName": self.userName,
+            "rfidStatus": "Connected" if self.rfid.connectivity else "Disconnected",
+            "gpsStatus": "Connected" if self.gps.connectivity else "Disconnected",
+            "macAddress": '-'.join(('%012X' % uuid.getnode())[i:i+2] for i in range(0, 12, 2)),
+            "lat": lat,
+            "lng": lon,
+            "dateTime": datetime.now().strftime("%Y-%m-%d")
+        }
+        try:
+            response = requests.post(HEALTH_UPLOAD_URL, headers=headers, json=payload)
+            data = response.json()
+            if data['metadata']['code'] == '200':
+                logger.info('Uploading health data successfully finished.')
+            else:
+                logger.error("Uploading health data failed.")
+        except requests.exceptions.RequestException as e:
+            logger.error("Error occurred while uploading health data, ", e)
+
+    def upload_scanned_data(self):
         if self.ui.radio_api_default.isChecked():
             self.upload_to_default()
         elif self.ui.radio_api_custom.isChecked():
@@ -207,7 +283,6 @@ class MainWnd(QMainWindow):
         elif self.ui.radio_api_both.isChecked():
             self.upload_to_default()
             self.upload_to_custom()
-        logger.info('Uploading Finished.')
         microsecond_timestamp = int(time.time() * 1_000_000)
         while len(self.database):
             if microsecond_timestamp - self.database[0][5] < 600_000_000:
@@ -220,7 +295,9 @@ class MainWnd(QMainWindow):
         for row in range(rc):
             for column in range(self.ui.tableWidget.columnCount()):
                 d = self.database[len(self.database) - rc + row][column + 1]
-                if column == 4:
+                if column == 3:
+                    item = QTableWidgetItem(f"{d[0]}, {d[1]}")
+                elif column == 4:
                     item = QTableWidgetItem(get_date_from_utc(d))
                 else:
                     item = QTableWidgetItem(d)
@@ -257,6 +334,7 @@ class MainWnd(QMainWindow):
         self.gps.stop()
         self.rfid.stop()
         self._stop.set()
+        schedule.clear()
         if self.scheduler_thread.is_alive():
             self.scheduler_thread.join(.1)
         return super().closeEvent(event)
@@ -264,6 +342,6 @@ class MainWnd(QMainWindow):
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
-    window = MainWnd()
+    # window = MainWnd("aa")
     window.show()
     sys.exit(app.exec())

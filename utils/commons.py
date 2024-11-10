@@ -1,7 +1,12 @@
 from datetime import datetime
 from geopy.distance import geodesic
-from utils.logger import logger
 
+from settings import BAUD_RATE_GPS
+from utils.logger import logger
+from geographiclib.geodesic import Geodesic
+
+import serial
+import serial.tools.list_ports
 
 def convert_to_decimal(coord, direction, is_latitude):
     try:
@@ -41,7 +46,7 @@ def extract_from_gps(gps_data):
         return 0, 0
 
 
-def calculate_speed(lat1, lon1, time1, lat2, lon2, time2):
+def calculate_speed_bearing(lat1, lon1, time1, lat2, lon2, time2):
     # Calculate the distance in meters
     distance = geodesic((lat1, lon1), (lat2, lon2)).meters
 
@@ -53,7 +58,7 @@ def calculate_speed(lat1, lon1, time1, lat2, lon2, time2):
         speed = distance / time_diff
     else:
         speed = 0  # If time difference is 0, speed is undefined or considered 0
-    return speed
+    return speed * 2.23694, Geodesic.WGS84.Inverse(lat1, lon1, lat2, lon2)['azi1']
 
 
 def get_date_from_utc(timestamp_microseconds):
@@ -74,3 +79,21 @@ def get_date_from_utc(timestamp_microseconds):
         "AM" if utc_datetime.hour < 12 else "PM"
     )
     return formatted_date
+
+
+def find_gps_port():
+    serial_ports = [port.device for port in serial.tools.list_ports.comports()]
+    for port in serial_ports:
+        try:
+            # Open each port
+            with serial.Serial(port, baudrate=BAUD_RATE_GPS, timeout=1) as ser:
+                # Try reading from the port
+                line = ser.readline().decode('utf-8', errors='ignore').strip()
+                if line.startswith('$G'):
+                    logger.info(f"GPS found on port: {port}")
+                    return port
+        except (OSError, serial.SerialException):
+            pass  # Ignore if the port can't be opened
+
+    logger.info("No GPS port found")
+    return None

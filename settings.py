@@ -17,6 +17,8 @@ if not os.path.exists(CONFIG_FILE):
         json.dump(DEFAULT_CONFIG, jp, indent=2)
 
 LOGIN_URL = "https://rfidngpsinventory.com/rfid/user/userLogin"
+RECORD_UPLOAD_URL = "https://rfidngpsinventory.com/rfid/mobileApp/updateRfidScanning"
+HEALTH_UPLOAD_URL = "https://rfidngpsinventory.com/rfid/dashBoard/rfidapphealth"
 
 SERIAL_PORT_GPS = 'COM4'
 BAUD_RATE_GPS = 115200

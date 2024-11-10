@@ -1,7 +1,7 @@
 import threading
 import time
 
-import serial
+# import serial
 import pynmea2
 
 from PySide6.QtCore import Signal, QThread

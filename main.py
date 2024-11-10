@@ -12,7 +12,7 @@ if __name__ == "__main__":
 
     def on_first_window_closed():
         if login_window.passed:
-            main_window = MainWnd()
+            main_window = MainWnd(login_window.userName, login_window.token)
             main_window.show()
 
     # We override the closeEvent to trigger the second window to be shown

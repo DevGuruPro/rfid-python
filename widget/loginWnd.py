@@ -21,6 +21,8 @@ class LoginWnd(QMainWindow):
         # self.setAttribute(QtCore.Qt.WidgetAttribute.WA_TranslucentBackground)
         self.ui.loginBtn.released.connect(self.login)
         self.passed = False
+        self.token = None
+        self.userName = None
 
     def login(self):
         username = self.ui.user_edit.text()
@@ -32,24 +34,18 @@ class LoginWnd(QMainWindow):
         try:
             response = requests.Session().post(LOGIN_URL, json=payload)
             data = response.json()
-            logger.debug(data)
             if data['metadata']['code'] == '200':
                 logger.debug('Login successful!')
+                self.token = data['result']['acessToken']
+                self.userName = data['result']['userNameId']
                 self.passed = True
                 self.close()
             else:
                 logger.error("Login failed")
                 QMessageBox.critical(self, 'Login', "Login Failed. Please input correct credentials.",
                                      QMessageBox.StandardButton.Ok)
-        except ConnectionError as ce:
-            logger.error("Connection error occurred:", ce)
-            QMessageBox.critical(self, 'Login', "Connection Error.", QMessageBox.StandardButton.Ok)
-        except Timeout as te:
-            logger.error("Request timed out:", te)
-            QMessageBox.critical(self, 'Login', "Request timed out..",
-                                 QMessageBox.StandardButton.Ok)
-        except RequestException as re:
-            logger.error("An error occurred:", re)
+        except requests.exceptions.RequestException as e:
+            logger.error("Login Error, ", e)
             QMessageBox.critical(self, 'Login', "Login Error.", QMessageBox.StandardButton.Ok)
 
     def paintEvent(self, event):
