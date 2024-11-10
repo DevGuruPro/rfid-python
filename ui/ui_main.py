@@ -169,7 +169,7 @@ class Ui_MainWindow(object):
         self.tableWidget.setSelectionMode(QAbstractItemView.NoSelection)
         self.tableWidget.setTextElideMode(Qt.ElideLeft)
         self.tableWidget.setRowCount(6)
-        self.tableWidget.horizontalHeader().setVisible(True)
+        self.tableWidget.horizontalHeader().setVisible(False)
         self.tableWidget.horizontalHeader().setMinimumSectionSize(100)
         self.tableWidget.horizontalHeader().setDefaultSectionSize(200)
         self.tableWidget.horizontalHeader().setHighlightSections(True)
@@ -396,24 +396,25 @@ class Ui_MainWindow(object):
         self.horizontalLayout_12 = QHBoxLayout(self.groupBox_3)
         self.horizontalLayout_12.setObjectName(u"horizontalLayout_12")
         self.horizontalLayout_12.setContentsMargins(-1, 0, -1, 0)
-        self.radioButton = QRadioButton(self.groupBox_3)
-        self.radioButton.setObjectName(u"radioButton")
-        self.radioButton.setFont(font2)
-        self.radioButton.setStyleSheet(u"QRadioButton{\n"
+        self.radio_external_gps = QRadioButton(self.groupBox_3)
+        self.radio_external_gps.setObjectName(u"radio_external_gps")
+        self.radio_external_gps.setFont(font2)
+        self.radio_external_gps.setStyleSheet(u"QRadioButton{\n"
 "	color: white; \n"
 "}")
-        self.radioButton.setChecked(True)
+        self.radio_external_gps.setChecked(False)
 
-        self.horizontalLayout_12.addWidget(self.radioButton)
+        self.horizontalLayout_12.addWidget(self.radio_external_gps)
 
-        self.radioButton_2 = QRadioButton(self.groupBox_3)
-        self.radioButton_2.setObjectName(u"radioButton_2")
-        self.radioButton_2.setFont(font2)
-        self.radioButton_2.setStyleSheet(u"QRadioButton{\n"
+        self.radio_internet_gps = QRadioButton(self.groupBox_3)
+        self.radio_internet_gps.setObjectName(u"radio_internet_gps")
+        self.radio_internet_gps.setFont(font2)
+        self.radio_internet_gps.setStyleSheet(u"QRadioButton{\n"
 "	color: white; \n"
 "}")
+        self.radio_internet_gps.setChecked(True)
 
-        self.horizontalLayout_12.addWidget(self.radioButton_2)
+        self.horizontalLayout_12.addWidget(self.radio_internet_gps)
 
 
         self.verticalLayout_12.addWidget(self.groupBox_3)
@@ -1741,7 +1742,7 @@ class Ui_MainWindow(object):
 
         self.retranslateUi(MainWindow)
 
-        self.tabWidget.setCurrentIndex(0)
+        self.tabWidget.setCurrentIndex(1)
 
 
         QMetaObject.connectSlotsByName(MainWindow)
@@ -1794,8 +1795,8 @@ class Ui_MainWindow(object):
         self.groupBox_2.setTitle(QCoreApplication.translate("MainWindow", u"GPS", None))
         self.checkBox.setText(QCoreApplication.translate("MainWindow", u"Enable GPS", None))
         self.groupBox_3.setTitle("")
-        self.radioButton.setText(QCoreApplication.translate("MainWindow", u"GPS", None))
-        self.radioButton_2.setText(QCoreApplication.translate("MainWindow", u"Internet GPS", None))
+        self.radio_external_gps.setText(QCoreApplication.translate("MainWindow", u"GPS", None))
+        self.radio_internet_gps.setText(QCoreApplication.translate("MainWindow", u"Internet GPS", None))
         self.label_31.setText(QCoreApplication.translate("MainWindow", u"Notify GPS", None))
         self.label_32.setText(QCoreApplication.translate("MainWindow", u"GPS HandShake", None))
         self.label_33.setText(QCoreApplication.translate("MainWindow", u"GPS Port", None))

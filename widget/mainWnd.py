@@ -15,7 +15,7 @@ from PySide6.QtWidgets import QMainWindow, QApplication, QHeaderView, QTableWidg
 
 from settings import SOUND_FREQUENCY, SOUND_DURATION, HEALTH_UPLOAD_URL, RECORD_UPLOAD_URL
 from ui.ui_main import Ui_MainWindow
-from utils.commons import extract_from_gps, get_date_from_utc, calculate_speed_bearing, find_gps_port
+from utils.commons import extract_from_gps, get_date_from_utc, calculate_speed_bearing, find_gps_port, is_ipv4_address
 
 from utils.gps import GPS
 from utils.logger import logger
@@ -50,11 +50,11 @@ class MainWnd(QMainWindow):
 
         self.gps = GPS(find_gps_port())
         self.gps.sig_msg.connect(self.monitor_gps_status)
-        # self.gps.start()
+        self.gps.start()
 
         self.rfid = RFID()
         self.rfid.sig_msg.connect(self.monitor_rfid_status)
-        # self.rfid.start()
+        self.rfid.start()
 
         self.scheduler_thread = threading.Thread(target=self.start_scheduler)
         self.scheduler_thread.start()
@@ -73,13 +73,26 @@ class MainWnd(QMainWindow):
 
         self.ui.radio_login_basic.clicked.connect(self.select_login_type)
         self.ui.radio_login_token.clicked.connect(self.select_login_type)
+
+        self.ui.radio_external_gps.clicked.connect(self.select_gps_type)
+        self.ui.radio_internet_gps.clicked.connect(self.select_gps_type)
+
         self.ui.token_widget.hide()
         self.ui.custom_widget.hide()
 
         self.ui.edit_rfid_noti.textChanged.connect(self.on_rfid_text_changed)
         self.ui.edit_gps_noti.textChanged.connect(self.on_gps_text_changed)
+        self.ui.edit_rfid_host.textChanged.connect(self.on_rfid_host_text_changed)
+        self.ui.edit_gps_baud.textChanged.connect(self.on_gps_baud_text_changed)
         self.ui.setting_save_btn.released.connect(self.setting_save)
         self.ui.api_save_btn.released.connect(self.api_save)
+
+    def on_rfid_host_text_changed(self, text):
+        if is_ipv4_address(text):
+            self.rfid.set_reader(text)
+
+    def on_gps_baud_text_changed(self, text):
+        self.gps.set_baud_rate(int(text))
 
     def on_rfid_text_changed(self, text):
         if text == "1":
@@ -138,6 +151,14 @@ class MainWnd(QMainWindow):
         elif self.ui.radio_api_both.isChecked():
             self.ui.custom_spacebar.hide()
             self.ui.custom_widget.show()
+
+    def select_gps_type(self):
+        if self.ui.radio_internet_gps.isChecked():
+            self.gps = GPS(self.ui.edit_gps_port)
+            self.gps.sig_msg.connect(self.monitor_gps_status)
+            self.gps.start()
+        elif self.ui.radio_external_gps.isChecked():
+            pass
 
     def select_login_type(self):
         if self.ui.radio_login_basic.isChecked():
@@ -343,5 +364,5 @@ class MainWnd(QMainWindow):
 if __name__ == "__main__":
     app = QApplication(sys.argv)
     # window = MainWnd("aa")
-    window.show()
+    # window.show()
     sys.exit(app.exec())

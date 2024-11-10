@@ -6,6 +6,8 @@ from sllurp.llrp import LLRP_DEFAULT_PORT, LLRPReaderConfig, LLRPReaderClient
 # from settings import RFID_CARD_READER
 from argparse import ArgumentParser
 
+from settings import RFID_CARD_READER
+
 
 def convert_to_unicode(obj):
     """
@@ -24,9 +26,9 @@ def convert_to_unicode(obj):
         return obj
 
 
-def parse_args():
+def parse_args(rfid_host):
     parser = ArgumentParser(description='Simple RFID Reader Inventory')
-    parser.add_argument('host', help='hostname or IP address of RFID reader', default=['169.254.10.1'],
+    parser.add_argument('host', help='hostname or IP address of RFID reader', default=[rfid_host],
                         nargs='*')
     parser.add_argument('-p', '--port', default=LLRP_DEFAULT_PORT, type=int,
                         help='port to connect to (default {})'
@@ -62,11 +64,16 @@ class RFID(QThread):
 
     sig_msg = Signal(int)
 
-    def __init__(self, args=parse_args()):
+    def __init__(self):
         super().__init__()
         self._b_stop = threading.Event()
         self.tag_data = None
         self.connectivity = None
+        self.reader_clients = []
+        self.set_reader(RFID_CARD_READER)
+
+    def set_reader(self, port):
+        args = parse_args(port)
         enabled_antennas = [int(x.strip()) for x in args.antennas.split(',')]
         factory_args = dict(
             report_every_n_tags=args.every_n,
@@ -97,7 +104,7 @@ class RFID(QThread):
             impinj_tag_content_selector=None,
         )
 
-        self.reader_clients = []
+        self.reader_clients.clear()
         for host in args.host:
             if ':' in host:
                 host, port = host.split(':', 1)

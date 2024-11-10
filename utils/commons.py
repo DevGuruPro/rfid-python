@@ -1,3 +1,4 @@
+import re
 from datetime import datetime
 from geopy.distance import geodesic
 
@@ -7,6 +8,7 @@ from geographiclib.geodesic import Geodesic
 
 import serial
 import serial.tools.list_ports
+
 
 def convert_to_decimal(coord, direction, is_latitude):
     try:
@@ -79,6 +81,19 @@ def get_date_from_utc(timestamp_microseconds):
         "AM" if utc_datetime.hour < 12 else "PM"
     )
     return formatted_date
+
+
+def is_ipv4_address(ip):
+    # Regular expression for validating an IPv4 address
+    ipv4_regex = re.compile(r'^(?:\d{1,3}\.){3}\d{1,3}$')
+    # Check if the input matches the IPv4 address pattern
+    if ipv4_regex.match(ip):
+        # Split the input into parts and check if each part is between 0 and 255
+        parts = ip.split('.')
+        print(parts)
+        if all(0 <= int(part) <= 255 for part in parts):
+            return True
+    return False
 
 
 def find_gps_port():

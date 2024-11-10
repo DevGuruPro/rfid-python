@@ -23,6 +23,11 @@ class GPS(QThread):
         self._data = {}
         self.connectivity = False
 
+    def set_baud_rate(self, baud):
+        self.baud_rate = baud
+        self.stop()
+        self.start()
+
     def _connect(self):
         """Attempts to connect to the GPS module."""
         try:
