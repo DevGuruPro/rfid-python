@@ -7,6 +7,7 @@ from sllurp.llrp import LLRP_DEFAULT_PORT, LLRPReaderConfig, LLRPReaderClient
 from argparse import ArgumentParser
 
 from settings import RFID_CARD_READER
+from utils.logger import logger
 
 
 def convert_to_unicode(obj):
@@ -122,7 +123,7 @@ class RFID(QThread):
                 try:
                     reader.connect()
                 except Exception as e:
-                    # logger.error(f"Failed to connect to reader {reader}: {e}")
+                    logger.error(f"Failed to connect to reader {reader}: {e}")
                     if self.connectivity is True:
                         self.connectivity = False
                         self.sig_msg.emit(2)
@@ -135,6 +136,7 @@ class RFID(QThread):
         """Function to run each time the reader reports seeing tags."""
         if tags:
             self.tag_data = convert_to_unicode(tags)
+            logger.debug(f"RFID tag data:{self.tag_data}")
             self.sig_msg.emit(3)
 
     def run(self):

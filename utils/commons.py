@@ -53,7 +53,7 @@ def calculate_speed_bearing(lat1, lon1, time1, lat2, lon2, time2):
     distance = geodesic((lat1, lon1), (lat2, lon2)).meters
 
     # Calculate the time difference in seconds
-    time_diff = (time2 - time1).total_seconds() / 1_000_000
+    time_diff = (time2 - time1) / 1_000_000
 
     # Calculate speed in m/s
     if time_diff > 0:
