@@ -37,8 +37,8 @@ class MainWnd(QMainWindow):
 
         # label = QLabel("Internet/Network Connection Status:", self)
         # label.setGeometry(self.geometry().width()-200, 20)
-        text_label = QLabel("Internet / Network Connection Status : ", self)
-        text_label.setGeometry(self.geometry().right()-300, 10, 250, 30)
+        text_label = QLabel("Internet / Network Connection Status:", self)
+        text_label.setGeometry(self.geometry().right()-300, 10, 300, 30)
         text_label.setStyleSheet("""
             QLabel {  
                 font-size: 10pt; /* Font size */  
@@ -46,7 +46,7 @@ class MainWnd(QMainWindow):
             }""")
 
         self.internet_label = QLabel("Connected", self)
-        self.internet_label.setGeometry(self.geometry().right()-30, 10, 80, 30)
+        self.internet_label.setGeometry(self.geometry().right()-20, 10, 80, 30)
         self.internet_label.setStyleSheet("""
                     QLabel {  
                         font-size: 10pt; /* Font size */
