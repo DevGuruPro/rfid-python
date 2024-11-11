@@ -268,7 +268,7 @@ class MainWnd(QMainWindow):
                 if (int(tag['EPC-96']) < int(self.ui.setting_start_tag.text()) or
                         int(tag['EPC-96']) > int(self.ui.setting_end_tag.text())):
                     upload_flag = False
-            new_data = [upload_flag, tag['EPC-96'], tag['AntennaID'], tag['PeakRSSI'], (lat, lon),
+            new_data = [upload_flag, tag['EPC-96'], f"{tag['AntennaID']}", f"{tag['PeakRSSI']}", (lat, lon),
                         tag['LastSeenTimestampUTC'], speed, bearing]
             self.database.append(new_data)
             self.refresh_data_table()
