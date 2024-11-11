@@ -138,8 +138,8 @@ class MainWnd(QMainWindow):
         self.ui.api_save_btn.released.connect(self.api_save)
 
     def on_log_out(self):
-        self.main_closed.emit()
         self.close()
+        self.main_closed.emit()
 
     def beep_sound(self):
         relative_path = r"ui\alarm.wav"

@@ -40,8 +40,8 @@ class LoginWnd(QMainWindow):
                 logger.debug('Login successful!')
                 self.token = data['result']['acessToken']
                 self.userName = data['result']['userNameId']
-                self.login_closed.emit()
                 self.close()
+                self.login_closed.emit()
             else:
                 logger.error("Login failed")
                 QMessageBox.critical(self, 'Login', "Login Failed. Please input correct credentials.",
