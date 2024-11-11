@@ -50,6 +50,7 @@ class MainWnd(QMainWindow):
         self.internet_label.setStyleSheet("""
                     QLabel {  
                         font-size: 10pt; /* Font size */
+                        color: green;
                     }""")
         # Connect the button's clicked signal to a slot
 
@@ -244,10 +245,10 @@ class MainWnd(QMainWindow):
             self.ui.gps_connection_status.setText("Connected")
         else:
             self.ui.gps_connection_status.setStyleSheet("""
-                            padding: 5px;
-                            border: 1px solid black;
-                            color: red;
-                            """)
+                padding: 5px;
+                border: 1px solid black;
+                color: red;
+                """)
             self.ui.gps_connection_status.setText("Disconnected")
         if self.notify_gps:
             self.notify_thread = threading.Thread(target=self.beep_sound)
@@ -256,17 +257,17 @@ class MainWnd(QMainWindow):
     def monitor_rfid_status(self, status):
         if status == 1:
             self.ui.rfid_connection_status.setStyleSheet("""
-                                        padding: 5px;
-                                        border: 1px solid black;
-                                        color: green;
-                                        """)
+                padding: 5px;
+                border: 1px solid black;
+                color: green;
+                """)
             self.ui.rfid_connection_status.setText("Connected")
         elif status == 2:
             self.ui.rfid_connection_status.setStyleSheet("""
-                                        padding: 5px;
-                                        border: 1px solid black;
-                                        color: red;
-                                        """)
+                padding: 5px;
+                border: 1px solid black;
+                color: red;
+                """)
             self.ui.rfid_connection_status.setText("Disconnected")
         elif status == 3:
             tag = self.rfid.tag_data[0]
