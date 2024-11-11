@@ -46,7 +46,7 @@ def parse_args(rfid_host):
                         help='modulation (default M8)')
     parser.add_argument('-T', '--tari', default=0, type=int,
                         help='Tari value (default 0=auto)')
-    parser.add_argument('-s', '--session', type=int, default=0,
+    parser.add_argument('-s', '--session', type=int, default=1,
                         help='Gen2 session (default 2)')
     parser.add_argument('--mode-identifier', type=int,
                         help='ModeIdentifier value')
