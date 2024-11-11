@@ -1780,7 +1780,7 @@ class Ui_MainWindow(object):
         self.label.setText(QCoreApplication.translate("MainWindow", u"RFID Health Status", None))
         self.last_rfid_read.setText("")
         self.label_2.setText(QCoreApplication.translate("MainWindow", u"RFID Connection Status", None))
-        self.rfid_connection_status.setText("")
+        self.rfid_connection_status.setText(QCoreApplication.translate("MainWindow", u"Connected", None))
         self.label_4.setText(QCoreApplication.translate("MainWindow", u"Last RFID Tag Read", None))
         self.label_6.setText(QCoreApplication.translate("MainWindow", u"Last RFID Read Time", None))
         self.last_rfid_time.setText("")

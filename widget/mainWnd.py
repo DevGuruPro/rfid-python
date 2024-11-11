@@ -46,7 +46,7 @@ class MainWnd(QMainWindow):
             }""")
 
         self.internet_label = QLabel("Connected", self)
-        self.internet_label.setGeometry(self.geometry().right() - 50, 10, 80, 30)
+        self.internet_label.setGeometry(self.geometry().right()-30, 10, 80, 30)
         self.internet_label.setStyleSheet("""
                     QLabel {  
                         font-size: 10pt; /* Font size */
@@ -54,7 +54,7 @@ class MainWnd(QMainWindow):
         # Connect the button's clicked signal to a slot
 
         logout_button = QPushButton("Logout", self)
-        logout_button.setGeometry(350, 5, 55, 30)
+        logout_button.setGeometry(400, 5, 55, 30)
         logout_button.setCursor(Qt.CursorShape.PointingHandCursor)
         logout_button.setStyleSheet("""
             QPushButton {
@@ -317,6 +317,7 @@ class MainWnd(QMainWindow):
                     data = response.json()
                     if data['metadata']['code'] == '200':
                         logger.info(f'Uploading scanned data successfully finished-batch{batch_index}.')
+                        logger.info(f"Response:{data}")
                         self.database = self.database[:start_index] + self.database[index:]
                         logger.info(f'Uploaded record removed.')
                         break
@@ -354,6 +355,7 @@ class MainWnd(QMainWindow):
             data = response.json()
             if data['metadata']['code'] == '200':
                 logger.info('Uploading health data successfully finished.')
+                logger.info(f"Response:{data}")
             else:
                 logger.error("Uploading health data failed.")
         except requests.exceptions.RequestException as e:
