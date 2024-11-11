@@ -5,21 +5,27 @@ from PySide6.QtWidgets import QApplication
 from widget.loginWnd import LoginWnd
 from widget.mainWnd import MainWnd
 
+
+class InventorySystem(object):
+    def __init__(self):
+        self.login = LoginWnd()
+        self.login.login_closed.connect(self.close_login)
+        self.login.show()
+        self.main = None
+
+    def close_login(self):
+        self.main = MainWnd(self.login.userName, self.login.token)
+        self.main.main_closed.connect(self.close_main)
+        self.main.show()
+
+    def close_main(self):
+        self.login = LoginWnd()
+        self.login.login_closed.connect(self.close_login)
+        self.login.show()
+
+
 if __name__ == "__main__":
 
     app = QApplication(sys.argv)
-    login_window = LoginWnd()
-
-    def on_first_window_closed():
-        if login_window.passed:
-            main_window = MainWnd(login_window.userName, login_window.token)
-            main_window.show()
-
-    # We override the closeEvent to trigger the second window to be shown
-    def first_window_close_event(event):
-        on_first_window_closed()
-        event.accept()  # Accept the close event to proceed
-
-    login_window.closeEvent = first_window_close_event
-    login_window.show()
+    IS = InventorySystem()
     sys.exit(app.exec())

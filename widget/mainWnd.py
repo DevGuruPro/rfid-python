@@ -9,9 +9,10 @@ import requests
 import schedule
 import json
 
-from PySide6.QtCore import QUrl
+from PySide6.QtCore import QUrl, Signal
 from PySide6.QtGui import Qt
-from PySide6.QtWidgets import QMainWindow, QApplication, QHeaderView, QTableWidget, QTableWidgetItem
+from PySide6.QtWidgets import QMainWindow, QApplication, QHeaderView, QTableWidget, QTableWidgetItem, QPushButton, \
+    QLabel
 from PySide6.QtMultimedia import QSoundEffect
 
 from settings import HEALTH_UPLOAD_URL, RECORD_UPLOAD_URL
@@ -27,10 +28,57 @@ import ui.res_rc
 
 class MainWnd(QMainWindow):
 
+    main_closed = Signal()
+
     def __init__(self, user_name, token):
         super().__init__()
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
+
+        # label = QLabel("Internet/Network Connection Status:", self)
+        # label.setGeometry(self.geometry().width()-200, 20)
+        text_label = QLabel("Internet / Network Connection Status : ", self)
+        text_label.setGeometry(self.geometry().right()-300, 10, 250, 30)
+        text_label.setStyleSheet("""
+            QLabel {  
+                font-size: 10pt; /* Font size */  
+                font-weight: bold; /* Bold font */  
+            }""")
+
+        self.internet_label = QLabel("Connected", self)
+        self.internet_label.setGeometry(self.geometry().right() - 50, 10, 80, 30)
+        self.internet_label.setStyleSheet("""
+                    QLabel {  
+                        font-size: 10pt; /* Font size */
+                    }""")
+        # Connect the button's clicked signal to a slot
+
+        logout_button = QPushButton("Logout", self)
+        logout_button.setGeometry(350, 5, 55, 30)
+        logout_button.setCursor(Qt.CursorShape.PointingHandCursor)
+        logout_button.setStyleSheet("""
+            QPushButton {
+                background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1,
+                                                  stop:0 #222222, stop:1 #aaaaaa);
+                border: 2px solid white;
+                border-radius: 10px;
+                min-width: 80px;
+                min-height: 30px;
+                font-size: 10pt;
+                font-weight: bold;
+                color: white;
+            }
+
+            QPushButton:hover {
+                background-color: #a0a0a0; /* Slightly different green on hover */
+            }
+
+            QPushButton:pressed {
+                background-color: #909090; /* Darker green when pressed */
+            }""")
+        # Connect the button's clicked signal to a slot
+        logout_button.clicked.connect(self.on_log_out)
+
         # self.setWindowFlags(Qt.WindowType.FramelessWindowHint)  # Qt.WindowType.Popup
         # self.setAttribute(QtCore.Qt.WidgetAttribute.WA_TranslucentBackground)
         self.ui.tableWidget.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeMode.Fixed)
@@ -88,6 +136,10 @@ class MainWnd(QMainWindow):
         self.ui.edit_gps_baud.textChanged.connect(self.on_gps_baud_text_changed)
         self.ui.setting_save_btn.released.connect(self.setting_save)
         self.ui.api_save_btn.released.connect(self.api_save)
+
+    def on_log_out(self):
+        self.main_closed.emit()
+        self.close()
 
     def beep_sound(self):
         relative_path = r"ui\alarm.wav"
@@ -325,7 +377,8 @@ class MainWnd(QMainWindow):
     def refresh_data_table(self):
         for row in range(self.ui.tableWidget.rowCount()-2, -1, -1):
             for column in range(self.ui.tableWidget.columnCount()):
-                self.ui.tableWidget.setItem(row+1, column, self.ui.tableWidget.item(row, column))
+                item = self.ui.tableWidget.item(row, column).text()
+                self.ui.tableWidget.setItem(row+1, column, QTableWidgetItem(item))
         for column in range(self.ui.tableWidget.columnCount()):
             d = self.database[len(self.database) - 1][column + 1]
             if column == 3:

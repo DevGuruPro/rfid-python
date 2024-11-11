@@ -1,5 +1,6 @@
 import sys
 import requests
+from PySide6.QtCore import Signal
 
 from PySide6.QtGui import QPixmap, QPainter
 from PySide6.QtWidgets import QMainWindow, QApplication, QMessageBox
@@ -13,6 +14,8 @@ from utils.logger import logger
 
 class LoginWnd(QMainWindow):
 
+    login_closed = Signal()
+
     def __init__(self):
         super().__init__()
         self.ui = Ui_LoginWindow()
@@ -20,7 +23,6 @@ class LoginWnd(QMainWindow):
         # self.setWindowFlags(Qt.WindowType.FramelessWindowHint)  # Qt.WindowType.Popup
         # self.setAttribute(QtCore.Qt.WidgetAttribute.WA_TranslucentBackground)
         self.ui.loginBtn.released.connect(self.login)
-        self.passed = False
         self.token = None
         self.userName = None
 
@@ -38,7 +40,7 @@ class LoginWnd(QMainWindow):
                 logger.debug('Login successful!')
                 self.token = data['result']['acessToken']
                 self.userName = data['result']['userNameId']
-                self.passed = True
+                self.login_closed.emit()
                 self.close()
             else:
                 logger.error("Login failed")
