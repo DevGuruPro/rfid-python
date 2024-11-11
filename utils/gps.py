@@ -51,7 +51,6 @@ class GPS(QThread):
         line = self._ser.readline().decode('utf-8', errors='ignore').strip()
         if line.startswith('$GNGGA'):
             try:
-                logger.debug(f"GPS data:{line}")
                 msg = pynmea2.parse(line)
                 for field in msg.fields:
                     label, attr = field[:2]

@@ -377,7 +377,6 @@ class MainWnd(QMainWindow):
             data = response.json()
             if data['metadata']['code'] == '200':
                 logger.info('Uploading health data successfully finished.')
-                logger.info(f"Health Response:{data}")
             else:
                 logger.error("Uploading health data failed.")
         except requests.exceptions.RequestException as e:

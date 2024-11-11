@@ -38,7 +38,6 @@ def extract_from_gps(gps_data):
         latitude = convert_to_decimal(gps_data['lat'], gps_data['lat_dir'], is_latitude=True)
         longitude = convert_to_decimal(gps_data['lon'], gps_data['lon_dir'], is_latitude=False)
 
-        logger.info(f"Latitude: {latitude}, Longitude: {longitude}")
         return latitude, longitude
     except KeyError as e:
         logger.error(f"Missing key in GPS data: {e}")
