@@ -192,7 +192,7 @@ QTableWidget::item {
               <number>6</number>
              </property>
              <attribute name="horizontalHeaderVisible">
-              <bool>false</bool>
+              <bool>true</bool>
              </attribute>
              <attribute name="horizontalHeaderDefaultSectionSize">
               <number>200</number>
@@ -381,7 +381,7 @@ border: 1px solid black;</string>
 border: 1px solid black;</string>
                  </property>
                  <property name="text">
-                  <string>Connected</string>
+                  <string/>
                  </property>
                 </widget>
                </item>
