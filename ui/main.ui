@@ -385,7 +385,8 @@ border: 1px solid black;</string>
                  </property>
                  <property name="styleSheet">
                   <string notr="true">padding: 5px;
-border: 1px solid black;</string>
+border: 1px solid black;
+color: green;</string>
                  </property>
                  <property name="text">
                   <string>Connected</string>

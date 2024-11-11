@@ -227,8 +227,10 @@ class Ui_MainWindow(object):
 
         self.rfid_connection_status = QLabel(self.widget)
         self.rfid_connection_status.setObjectName(u"rfid_connection_status")
+        self.rfid_connection_status.setFont(font2)
         self.rfid_connection_status.setStyleSheet(u"padding: 5px;\n"
-"border: 1px solid black;")
+"border: 1px solid black;\n"
+"color: green;")
 
         self.gridLayout_2.addWidget(self.rfid_connection_status, 0, 1, 1, 1)
 
@@ -296,6 +298,7 @@ class Ui_MainWindow(object):
 
         self.gps_connection_status = QLabel(self.widget_2)
         self.gps_connection_status.setObjectName(u"gps_connection_status")
+        self.gps_connection_status.setFont(font2)
         self.gps_connection_status.setStyleSheet(u"padding: 5px;\n"
 "border: 1px solid black;")
 
