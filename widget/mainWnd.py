@@ -373,6 +373,7 @@ class MainWnd(QMainWindow):
         }
         try:
             response = requests.post(HEALTH_UPLOAD_URL, headers=headers, json=payload)
+            logger.info(f'Request:{payload}')
             data = response.json()
             if data['metadata']['code'] == '200':
                 logger.info('Uploading health data successfully finished.')
