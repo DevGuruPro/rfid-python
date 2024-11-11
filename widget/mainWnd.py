@@ -219,6 +219,7 @@ class MainWnd(QMainWindow):
             new_data = [upload_flag, tag['EPC-96'], tag['AntennaID'], tag['PeakRSSI'], (lat, lon),
                         tag['LastSeenTimestampUTC'], speed, bearing]
             self.database.append(new_data)
+            self.refresh_data_table()
             self.ui.last_rfid_read.setText(tag['EPC-96'])
             self.ui.last_rfid_time.setText(get_date_from_utc(tag['LastSeenTimestampUTC']))
             self.ui.last_gps_read.setText(f"{lat}, {lon}")
@@ -322,19 +323,18 @@ class MainWnd(QMainWindow):
         logger.info('Deleted old data.')
 
     def refresh_data_table(self):
-        rc = min(len(self.database), 8)
-        for row in range(rc):
+        for row in range(self.ui.tableWidget.rowCount()-2, -1, -1):
             for column in range(self.ui.tableWidget.columnCount()):
-                d = self.database[len(self.database) - rc + row][column + 1]
-                if column == 3:
-                    item = QTableWidgetItem(f"{d[0]}, {d[1]}")
-                elif column == 4:
-                    item = QTableWidgetItem(get_date_from_utc(d))
-                else:
-                    item = QTableWidgetItem(d)
-                # item.setFlags(item.flags() & ~Qt.ItemFlag.ItemIsSelectable & ~Qt.ItemFlag.ItemIsEditable
-                #               & ~Qt.ItemFlag.ItemIsEnabled)
-                self.ui.tableWidget.setItem(row, column, item)
+                self.ui.tableWidget.setItem(row+1, column, self.ui.tableWidget.item(row, column))
+        for column in range(self.ui.tableWidget.columnCount()):
+            d = self.database[len(self.database) - 1][column + 1]
+            if column == 3:
+                item = QTableWidgetItem(f"{d[0]}, {d[1]}")
+            elif column == 4:
+                item = QTableWidgetItem(get_date_from_utc(d))
+            else:
+                item = QTableWidgetItem(d)
+            self.ui.tableWidget.setItem(0, column, item)
 
     def show_rfid_status(self, status):
         if status:
