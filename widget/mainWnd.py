@@ -229,7 +229,7 @@ class MainWnd(QMainWindow):
     def start_scheduler(self):
         schedule.clear()
         schedule.every(10).seconds.do(self.upload_scanned_data)
-        schedule.every(10).minutes.do(self.upload_health_data)
+        schedule.every(10).seconds.do(self.upload_health_data)
         while not self._stop.is_set():
             schedule.run_pending()
             time.sleep(0.1)
