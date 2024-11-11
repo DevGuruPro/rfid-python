@@ -91,7 +91,7 @@ class MainWnd(QMainWindow):
 
     def beep_sound(self):
         relative_path = r"ui\alarm.wav"
-        os.system(f"ffplay -nodisp -autoexit {os.path.join(os.getcwd(), relative_path) }")
+        os.system(f"ffplay -nodisp -autoexit {os.path.join(os.getcwd(), relative_path)}")
 
     def on_rfid_host_text_changed(self, text):
         if is_ipv4_address(text):
@@ -199,9 +199,11 @@ class MainWnd(QMainWindow):
         elif status == 3:
             tag = self.rfid.tag_data[0]
             lat, lon = extract_from_gps(self.gps.get_data())
-            last_lat, last_lon = self.database[len(self.database)-1][4]
-            speed, bearing = calculate_speed_bearing(last_lat, last_lon, self.database[len(self.database)-1][5],
-                                                     lat, lon, tag['LastSeenTimestampUTC'])
+            speed, bearing = 0, 0
+            if len(self.database):
+                last_lat, last_lon = self.database[len(self.database) - 1][4]
+                speed, bearing = calculate_speed_bearing(last_lat, last_lon, self.database[len(self.database) - 1][5],
+                                                         lat, lon, tag['LastSeenTimestampUTC'])
             upload_flag = True
             if self.ui.speed_limit.isChecked():
                 if speed < int(self.ui.setting_min_speed.text()) or speed > int(self.ui.setting_max_speed.text()):
@@ -251,7 +253,7 @@ class MainWnd(QMainWindow):
                     "username": self.userName
                 }
                 db.append(data)
-                index = index+1
+                index = index + 1
             payload = {
                 "data": db
             }
@@ -262,7 +264,7 @@ class MainWnd(QMainWindow):
                     data = response.json()
                     if data['metadata']['code'] == '200':
                         logger.info(f'Uploading scanned data successfully finished-batch{batch_index}.')
-                        self.database = self.database[:start_index]+self.database[index:]
+                        self.database = self.database[:start_index] + self.database[index:]
                         logger.info(f'Uploaded record removed.')
                         break
                 except requests.exceptions.RequestException as e:
@@ -289,7 +291,7 @@ class MainWnd(QMainWindow):
             "userName": self.userName,
             "rfidStatus": "Connected" if self.rfid.connectivity else "Disconnected",
             "gpsStatus": "Connected" if self.gps.connectivity else "Disconnected",
-            "macAddress": '-'.join(('%012X' % uuid.getnode())[i:i+2] for i in range(0, 12, 2)),
+            "macAddress": '-'.join(('%012X' % uuid.getnode())[i:i + 2] for i in range(0, 12, 2)),
             "lat": lat,
             "lng": lon,
             "dateTime": datetime.now().strftime("%Y-%m-%d")
@@ -371,6 +373,6 @@ class MainWnd(QMainWindow):
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
-    window = MainWnd("aa","a")
+    window = MainWnd("aa", "a")
     window.show()
     sys.exit(app.exec())
