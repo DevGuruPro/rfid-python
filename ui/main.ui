@@ -565,11 +565,6 @@ border: 1px solid black;</string>
        </layout>
       </widget>
       <widget class="QWidget" name="setting_tab">
-       <property name="styleSheet">
-        <string notr="true">#setting_tab{
-	background-image: url(:/img/back_image.jpg);
-}</string>
-       </property>
        <attribute name="title">
         <string>Settings</string>
        </attribute>
@@ -590,7 +585,7 @@ border: 1px solid black;</string>
          <widget class="QWidget" name="widget_3" native="true">
           <property name="styleSheet">
            <string notr="true">#widget_3{
-	background-color: rgba(40, 40, 40, 220);
+	background-color: rgba(40, 40, 40, 255);
 }</string>
           </property>
           <layout class="QGridLayout" name="gridLayout_4">
@@ -657,13 +652,34 @@ border: 1px solid black;</string>
                      <bold>true</bold>
                     </font>
                    </property>
+                   <property name="focusPolicy">
+                    <enum>Qt::StrongFocus</enum>
+                   </property>
                    <property name="styleSheet">
                     <string notr="true">QCheckBox{
 	color: white; 
-}</string>
+}
+
+QCheckBox::indicator {  
+    width: 20px;  
+    height: 20px;  
+}  
+
+QCheckBox::indicator:unchecked {  
+    border: 2px solid gray;  
+    background-color: white;  
+}
+
+QCheckBox::indicator:checked { 
+	border: 2px solid gray;   
+    image: url(:/img/checkmark.png);  /* Use a custom image if needed */  
+ }</string>
                    </property>
                    <property name="text">
                     <string>Enable GPS</string>
+                   </property>
+                   <property name="shortcut">
+                    <string/>
                    </property>
                   </widget>
                  </item>
@@ -2024,11 +2040,6 @@ QPushButton:pressed {
        </layout>
       </widget>
       <widget class="QWidget" name="api_tab">
-       <property name="styleSheet">
-        <string notr="true">#api_tab{
-	background-image: url(:/img/back_image.jpg);
-}</string>
-       </property>
        <attribute name="title">
         <string>API Integration</string>
        </attribute>
@@ -2052,7 +2063,7 @@ QPushButton:pressed {
          <widget class="QWidget" name="widget_27" native="true">
           <property name="styleSheet">
            <string notr="true">#widget_27{
-	background-color: rgba(40, 40, 40, 220);  
+	background-color: rgba(40, 40, 40, 255);  
 }
 
 QLineEdit {  

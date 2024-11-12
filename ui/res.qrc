@@ -1,5 +1,6 @@
 <RCC>
   <qresource prefix="/">
+    <file>img/checkmark.png</file>
     <file>img/back_image1.jpg</file>
     <file>img/back_image.jpg</file>
     <file>img/api_json_request.png</file>

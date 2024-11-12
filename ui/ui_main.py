@@ -337,16 +337,13 @@ class Ui_MainWindow(object):
         self.tabWidget.addTab(self.rfid_tab, "")
         self.setting_tab = QWidget()
         self.setting_tab.setObjectName(u"setting_tab")
-        self.setting_tab.setStyleSheet(u"#setting_tab{\n"
-"	background-image: url(:/img/back_image.jpg);\n"
-"}")
         self.verticalLayout_5 = QVBoxLayout(self.setting_tab)
         self.verticalLayout_5.setObjectName(u"verticalLayout_5")
         self.verticalLayout_5.setContentsMargins(0, 0, 0, 0)
         self.widget_3 = QWidget(self.setting_tab)
         self.widget_3.setObjectName(u"widget_3")
         self.widget_3.setStyleSheet(u"#widget_3{\n"
-"	background-color: rgba(40, 40, 40, 220);\n"
+"	background-color: rgba(40, 40, 40, 255);\n"
 "}")
         self.gridLayout_4 = QGridLayout(self.widget_3)
         self.gridLayout_4.setObjectName(u"gridLayout_4")
@@ -373,9 +370,25 @@ class Ui_MainWindow(object):
         self.checkBox = QCheckBox(self.widget_8)
         self.checkBox.setObjectName(u"checkBox")
         self.checkBox.setFont(font2)
+        self.checkBox.setFocusPolicy(Qt.StrongFocus)
         self.checkBox.setStyleSheet(u"QCheckBox{\n"
 "	color: white; \n"
-"}")
+"}\n"
+"\n"
+"QCheckBox::indicator {  \n"
+"    width: 20px;  \n"
+"    height: 20px;  \n"
+"}  \n"
+"\n"
+"QCheckBox::indicator:unchecked {  \n"
+"    border: 2px solid gray;  \n"
+"    background-color: white;  \n"
+"}\n"
+"\n"
+"QCheckBox::indicator:checked { \n"
+"	border: 2px solid gray;   \n"
+"    image: url(:/img/checkmark.png);  /* Use a custom image if needed */  \n"
+" }")
 
         self.verticalLayout_13.addWidget(self.checkBox)
 
@@ -1080,9 +1093,6 @@ class Ui_MainWindow(object):
         self.tabWidget.addTab(self.setting_tab, "")
         self.api_tab = QWidget()
         self.api_tab.setObjectName(u"api_tab")
-        self.api_tab.setStyleSheet(u"#api_tab{\n"
-"	background-image: url(:/img/back_image.jpg);\n"
-"}")
         self.verticalLayout_21 = QVBoxLayout(self.api_tab)
         self.verticalLayout_21.setSpacing(0)
         self.verticalLayout_21.setObjectName(u"verticalLayout_21")
@@ -1090,7 +1100,7 @@ class Ui_MainWindow(object):
         self.widget_27 = QWidget(self.api_tab)
         self.widget_27.setObjectName(u"widget_27")
         self.widget_27.setStyleSheet(u"#widget_27{\n"
-"	background-color: rgba(40, 40, 40, 220);  \n"
+"	background-color: rgba(40, 40, 40, 255);  \n"
 "}\n"
 "\n"
 "QLineEdit {  \n"
@@ -1797,6 +1807,9 @@ class Ui_MainWindow(object):
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.rfid_tab), QCoreApplication.translate("MainWindow", u"RFID", None))
         self.groupBox_2.setTitle(QCoreApplication.translate("MainWindow", u"GPS", None))
         self.checkBox.setText(QCoreApplication.translate("MainWindow", u"Enable GPS", None))
+#if QT_CONFIG(shortcut)
+        self.checkBox.setShortcut("")
+#endif // QT_CONFIG(shortcut)
         self.groupBox_3.setTitle("")
         self.radio_external_gps.setText(QCoreApplication.translate("MainWindow", u"GPS", None))
         self.radio_internet_gps.setText(QCoreApplication.translate("MainWindow", u"Internet GPS", None))
