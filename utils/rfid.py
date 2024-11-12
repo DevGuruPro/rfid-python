@@ -123,7 +123,6 @@ class RFID(QThread):
                 try:
                     reader.connect()
                 except Exception as e:
-                    reader.disconnect()
                     # logger.error(f"Failed to connect to reader {reader}: {e}")
                     if self.connectivity is True:
                         self.connectivity = False

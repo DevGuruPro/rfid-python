@@ -35,13 +35,13 @@ class GPS(QThread):
             if self.connectivity is False:
                 self.connectivity = True
                 self.sig_msg.emit(True)
-            logger.info(f"Connected to gps module-{self.port}.")
+            # logger.info(f"Connected to gps module-{self.port}.")
             return _ser
         except serial.SerialException as e:
             if self.connectivity is True:
                 self.connectivity = False
                 self.sig_msg.emit(False)
-            logger.error(f"Failed to connect to gps module-{self.port}: {e}")
+            # logger.error(f"Failed to connect to gps module-{self.port}: {e}")
             return None
 
     def read_serial_data(self):
@@ -66,19 +66,22 @@ class GPS(QThread):
             self._connect()
 
         while not self._b_stop.is_set():
-            try:
-                self.read_serial_data()
-                if self.connectivity is False:
-                    self.connectivity = True
-                    self.sig_msg.emit(True)
-            except Exception as er:
-                self._data = {}
-                self._ser = None
-                if self.connectivity is True:
-                    self.connectivity = False
-                    self.sig_msg.emit(False)
-                logger.error(f"Serial reading error : {er}")
-                while self._ser is None:
+            if self._ser is None:
+                self._connect()
+                time.sleep(.2)
+            else:
+                try:
+                    self.read_serial_data()
+                    if self.connectivity is False:
+                        self.connectivity = True
+                        self.sig_msg.emit(True)
+                except Exception as er:
+                    self._data = {}
+                    self._ser = None
+                    if self.connectivity is True:
+                        self.connectivity = False
+                        self.sig_msg.emit(False)
+                    logger.error(f"Serial reading error : {er}")
                     self._connect()
 
     def stop(self):
