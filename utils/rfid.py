@@ -123,6 +123,7 @@ class RFID(QThread):
                 try:
                     reader.connect()
                 except Exception as e:
+                    reader.disconnect()
                     logger.error(f"Failed to connect to reader {reader}: {e}")
                     if self.connectivity is True:
                         self.connectivity = False
@@ -146,6 +147,8 @@ class RFID(QThread):
     def stop(self):
         self._b_stop.set()
         self.wait()
+        LLRPReaderClient.disconnect_all_readers()
+        self.reader_clients.clear()
 
 
 if __name__ == '__main__':
