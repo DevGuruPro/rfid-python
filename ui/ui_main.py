@@ -775,8 +775,23 @@ class Ui_MainWindow(object):
         font3.setBold(False)
         self.tag_limit.setFont(font3)
         self.tag_limit.setStyleSheet(u"QCheckBox{\n"
-"	color:white;\n"
-"}")
+"	color: white; \n"
+"}\n"
+"\n"
+"QCheckBox::indicator {  \n"
+"    width: 20px;  \n"
+"    height: 20px;  \n"
+"}  \n"
+"\n"
+"QCheckBox::indicator:unchecked {  \n"
+"    border: 2px solid gray;  \n"
+"    background-color: white;  \n"
+"}\n"
+"\n"
+"QCheckBox::indicator:checked { \n"
+"	border: 2px solid gray;   \n"
+"    image: url(:/img/checkmark.png);  /* Use a custom image if needed */  \n"
+" }")
 
         self.verticalLayout_16.addWidget(self.tag_limit)
 
@@ -913,8 +928,23 @@ class Ui_MainWindow(object):
         self.speed_limit.setObjectName(u"speed_limit")
         self.speed_limit.setFont(font3)
         self.speed_limit.setStyleSheet(u"QCheckBox{\n"
-"	color:white;\n"
-"}")
+"	color: white; \n"
+"}\n"
+"\n"
+"QCheckBox::indicator {  \n"
+"    width: 20px;  \n"
+"    height: 20px;  \n"
+"}  \n"
+"\n"
+"QCheckBox::indicator:unchecked {  \n"
+"    border: 2px solid gray;  \n"
+"    background-color: white;  \n"
+"}\n"
+"\n"
+"QCheckBox::indicator:checked { \n"
+"	border: 2px solid gray;   \n"
+"    image: url(:/img/checkmark.png);  /* Use a custom image if needed */  \n"
+" }")
 
         self.verticalLayout_15.addWidget(self.speed_limit)
 
@@ -1004,8 +1034,23 @@ class Ui_MainWindow(object):
         self.rssi_limit.setObjectName(u"rssi_limit")
         self.rssi_limit.setFont(font3)
         self.rssi_limit.setStyleSheet(u"QCheckBox{\n"
-"	color:white;\n"
-"}")
+"	color: white; \n"
+"}\n"
+"\n"
+"QCheckBox::indicator {  \n"
+"    width: 20px;  \n"
+"    height: 20px;  \n"
+"}  \n"
+"\n"
+"QCheckBox::indicator:unchecked {  \n"
+"    border: 2px solid gray;  \n"
+"    background-color: white;  \n"
+"}\n"
+"\n"
+"QCheckBox::indicator:checked { \n"
+"	border: 2px solid gray;   \n"
+"    image: url(:/img/checkmark.png);  /* Use a custom image if needed */  \n"
+" }")
 
         self.verticalLayout_14.addWidget(self.rssi_limit)
 

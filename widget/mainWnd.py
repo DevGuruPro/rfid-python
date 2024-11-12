@@ -331,11 +331,13 @@ class MainWnd(QMainWindow):
             payload = {
                 "data": db
             }
+            logger.debug(f"Record Upload Request to:{RECORD_UPLOAD_URL}, {payload}")
             i = 0
             for i in range(3):
                 try:
                     response = requests.post(RECORD_UPLOAD_URL, headers=headers, json=payload)
                     data = response.json()
+                    logger.debug(f"Record Upload Response-{data}")
                     if data['metadata']['code'] == '200':
                         logger.info(f'Uploading scanned data successfully finished-batch{batch_index}.')
                         logger.info(f"Record Response:{data}")
@@ -371,9 +373,11 @@ class MainWnd(QMainWindow):
             "lng": lon,
             "dateTime": datetime.now().strftime("%Y-%m-%d")
         }
+        logger.debug(f"Health data Upload Request to:{HEALTH_UPLOAD_URL}, {payload}")
         try:
             response = requests.post(HEALTH_UPLOAD_URL, headers=headers, json=payload)
             data = response.json()
+            logger.debug(f"Health data Upload Response-{data}")
             if data['metadata']['code'] == '200':
                 logger.info('Uploading health data successfully finished.')
             else:

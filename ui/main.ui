@@ -1445,8 +1445,23 @@ QCheckBox::indicator:checked {
                 </property>
                 <property name="styleSheet">
                  <string notr="true">QCheckBox{
-	color:white;
-}</string>
+	color: white; 
+}
+
+QCheckBox::indicator {  
+    width: 20px;  
+    height: 20px;  
+}  
+
+QCheckBox::indicator:unchecked {  
+    border: 2px solid gray;  
+    background-color: white;  
+}
+
+QCheckBox::indicator:checked { 
+	border: 2px solid gray;   
+    image: url(:/img/checkmark.png);  /* Use a custom image if needed */  
+ }</string>
                 </property>
                 <property name="text">
                  <string>Enable Tag Range Limit</string>
@@ -1716,8 +1731,23 @@ QPushButton:pressed {
                    </property>
                    <property name="styleSheet">
                     <string notr="true">QCheckBox{
-	color:white;
-}</string>
+	color: white; 
+}
+
+QCheckBox::indicator {  
+    width: 20px;  
+    height: 20px;  
+}  
+
+QCheckBox::indicator:unchecked {  
+    border: 2px solid gray;  
+    background-color: white;  
+}
+
+QCheckBox::indicator:checked { 
+	border: 2px solid gray;   
+    image: url(:/img/checkmark.png);  /* Use a custom image if needed */  
+ }</string>
                    </property>
                    <property name="text">
                     <string>Enable Speed Limit</string>
@@ -1894,8 +1924,23 @@ QPushButton:pressed {
                    </property>
                    <property name="styleSheet">
                     <string notr="true">QCheckBox{
-	color:white;
-}</string>
+	color: white; 
+}
+
+QCheckBox::indicator {  
+    width: 20px;  
+    height: 20px;  
+}  
+
+QCheckBox::indicator:unchecked {  
+    border: 2px solid gray;  
+    background-color: white;  
+}
+
+QCheckBox::indicator:checked { 
+	border: 2px solid gray;   
+    image: url(:/img/checkmark.png);  /* Use a custom image if needed */  
+ }</string>
                    </property>
                    <property name="text">
                     <string>Enable RSSI Limit</string>
