@@ -1865,7 +1865,7 @@ class Ui_MainWindow(object):
         self.label_35.setText(QCoreApplication.translate("MainWindow", u"GPS StopBits", None))
         self.label_36.setText(QCoreApplication.translate("MainWindow", u"GPS Parity", None))
         self.label_37.setText(QCoreApplication.translate("MainWindow", u"GPS BaudRate", None))
-        self.edit_gps_noti.setText("")
+        self.edit_gps_noti.setText(QCoreApplication.translate("MainWindow", u"-1", None))
         self.groupBox.setTitle(QCoreApplication.translate("MainWindow", u"RFID", None))
         self.label_15.setText(QCoreApplication.translate("MainWindow", u"Notify RFID", None))
         self.label_24.setText(QCoreApplication.translate("MainWindow", u"RFID Host", None))

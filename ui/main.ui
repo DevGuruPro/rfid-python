@@ -986,7 +986,7 @@ QCheckBox::indicator:checked {
                        </font>
                       </property>
                       <property name="text">
-                       <string/>
+                       <string>-1</string>
                       </property>
                      </widget>
                     </item>

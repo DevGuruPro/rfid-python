@@ -138,6 +138,8 @@ class MainWnd(QMainWindow):
         self.ui.setting_save_btn.released.connect(self.setting_save)
         self.ui.api_save_btn.released.connect(self.api_save)
 
+        self.load_setting()
+
     def on_log_out(self):
         self.close()
         self.main_closed.emit()
@@ -164,6 +166,33 @@ class MainWnd(QMainWindow):
             self.notify_gps = True
         else:
             self.notify_gps = False
+
+    def load_setting(self):
+        with open('setting/module.setting', 'r') as load_file:
+            setting_data = json.load(load_file)
+            self.ui.edit_rfid_noti.setText(setting_data['RFID']['notify'])
+            self.ui.edit_rfid_host.setText(setting_data['RFID']['host'])
+            self.ui.edit_rfid_rsa1.setText(setting_data['RFID']['rsa1'])
+            self.ui.edit_rfid_rsa2.setText(setting_data['RFID']['rsa2'])
+            self.ui.edit_rfid_lsa1.setText(setting_data['RFID']['lsa1'])
+            self.ui.edit_rfid_lsa2.setText(setting_data['RFID']['lsa2'])
+            self.ui.edit_rfid_ra1.setText(setting_data['RFID']['ra1'])
+            self.ui.edit_rfid_ra2.setText(setting_data['RFID']['ra2'])
+
+            self.ui.edit_gps_noti.setText(setting_data['gps']['notify'])
+            self.ui.edit_gps_hand.setText(setting_data['gps']['handshake'])
+            self.ui.edit_gps_port.setText(setting_data['gps']['port'])
+            self.ui.edit_gps_dbits.setText(setting_data['gps']['data_bits'])
+            self.ui.edit_gps_sbits.setText(setting_data['gps']['stop_bits'])
+            self.ui.edit_gps_parity.setText(setting_data['gps']['parity'])
+            self.ui.edit_gps_baud.setText(setting_data['gps']['baud_rate'])
+
+            self.ui.setting_min_speed.setText(setting_data['speed']['min'])
+            self.ui.setting_max_speed.setText(setting_data['speed']['max'])
+            self.ui.setting_min_rssi.setText(setting_data['rssi']['min'])
+            self.ui.setting_max_rssi.setText(setting_data['rssi']['max'])
+            self.ui.setting_start_tag.setText(setting_data['tag_range']['min'])
+            self.ui.setting_end_tag.setText(setting_data['tag_range']['max'])
 
     def setting_save(self):
         setting_data = {
@@ -229,8 +258,8 @@ class MainWnd(QMainWindow):
 
     def start_scheduler(self):
         schedule.clear()
-        schedule.every(10).seconds.do(self.upload_scanned_data)
-        schedule.every(10).seconds.do(self.upload_health_data)
+        schedule.every(3).seconds.do(self.upload_scanned_data)
+        schedule.every(3).seconds.do(self.upload_health_data)
         while not self._stop.is_set():
             schedule.run_pending()
             time.sleep(0.1)

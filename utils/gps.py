@@ -73,13 +73,13 @@ class GPS(QThread):
                     self.sig_msg.emit(True)
             except Exception as er:
                 self._data = {}
+                self._ser = None
                 if self.connectivity is True:
                     self.connectivity = False
                     self.sig_msg.emit(False)
                 logger.error(f"Serial reading error : {er}")
-                self._ser.close()
-                time.sleep(.1)
-                self._ser.open()
+                while self._ser is None:
+                    self._connect()
 
     def stop(self):
         self._b_stop.set()
