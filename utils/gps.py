@@ -35,13 +35,13 @@ class GPS(QThread):
             if self.connectivity is False:
                 self.connectivity = True
                 self.sig_msg.emit(True)
-            logger.info("Connected to gps module.")
+            logger.info(f"Connected to gps module-{self.port}.")
             return _ser
         except serial.SerialException as e:
             if self.connectivity is True:
                 self.connectivity = False
                 self.sig_msg.emit(False)
-            logger.error(f"Failed to connect to gps module: {e}")
+            logger.error(f"Failed to connect to gps module-{self.port}: {e}")
             return None
 
     def read_serial_data(self):

@@ -373,7 +373,6 @@ class MainWnd(QMainWindow):
         }
         try:
             response = requests.post(HEALTH_UPLOAD_URL, headers=headers, json=payload)
-            logger.info(f'Request:{payload}')
             data = response.json()
             if data['metadata']['code'] == '200':
                 logger.info('Uploading health data successfully finished.')
@@ -411,12 +410,6 @@ class MainWnd(QMainWindow):
             else:
                 item = QTableWidgetItem(d)
             self.ui.tableWidget.setItem(0, column, item)
-
-    def show_rfid_status(self, status):
-        if status:
-            self.ui.rfid_connection_status.setText("Connected")
-        else:
-            self.ui.rfid_connection_status.setText("Disconnected")
 
     def showEvent(self, event):
         self.resize_columns_to_fit()
