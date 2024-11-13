@@ -59,9 +59,7 @@ class GPS(QThread):
     def run(self):
         self._ser = self._connect()
         while self._ser is None and not self._b_stop.is_set():
-            # self._ser = self._connect()
-            # time.sleep(.1)
-            logger.debug(f"set: {self._b_stop.is_set()}")
+            self._ser = self._connect()
 
         while not self._b_stop.is_set():
             if self._ser is None:

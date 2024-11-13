@@ -300,7 +300,8 @@ class Ui_MainWindow(object):
         self.gps_connection_status.setObjectName(u"gps_connection_status")
         self.gps_connection_status.setFont(font2)
         self.gps_connection_status.setStyleSheet(u"padding: 5px;\n"
-"border: 1px solid black;")
+"border: 1px solid black;\n"
+"color: red;")
 
         self.gridLayout_3.addWidget(self.gps_connection_status, 0, 1, 1, 1)
 
@@ -1856,7 +1857,7 @@ class Ui_MainWindow(object):
         self.label_8.setText(QCoreApplication.translate("MainWindow", u"GPS Health Status", None))
         self.last_gps_read.setText("")
         self.label_10.setText(QCoreApplication.translate("MainWindow", u"GPS Connection Status", None))
-        self.gps_connection_status.setText("")
+        self.gps_connection_status.setText(QCoreApplication.translate("MainWindow", u"Disconnected", None))
         self.label_12.setText(QCoreApplication.translate("MainWindow", u"Last GPS Read", None))
         self.label_13.setText(QCoreApplication.translate("MainWindow", u"Last GPS Read Time", None))
         self.last_gps_time.setText("")

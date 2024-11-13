@@ -515,10 +515,11 @@ border: 1px solid black;</string>
                  </property>
                  <property name="styleSheet">
                   <string notr="true">padding: 5px;
-border: 1px solid black;</string>
+border: 1px solid black;
+color: red;</string>
                  </property>
                  <property name="text">
-                  <string/>
+                  <string>Disconnected</string>
                  </property>
                 </widget>
                </item>
