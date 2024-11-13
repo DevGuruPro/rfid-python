@@ -410,7 +410,7 @@ class MainWnd(QMainWindow):
             "macAddress": '-'.join(('%012X' % uuid.getnode())[i:i + 2] for i in range(0, 12, 2)),
             "lat": lat,
             "lng": lon,
-            "dateTime": datetime.now().strftime("%Y-%m-%d")
+            "dateTime": datetime.now().strftime("%Y-%m-%dT%H:%M:%S")
         }
         logger.debug(f"Health data Upload Request to:{HEALTH_UPLOAD_URL}, {payload}")
         try:
