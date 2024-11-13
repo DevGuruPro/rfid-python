@@ -35,17 +35,20 @@ class LoginWnd(QMainWindow):
         }
         try:
             response = requests.Session().post(LOGIN_URL, json=payload)
-            data = response.json()
-            if data['metadata']['code'] == '200':
-                logger.debug('Login successful!')
-                self.token = data['result']['acessToken']
-                self.userName = data['result']['userNameId']
-                self.close()
-                self.login_closed.emit()
+            if response.status_code == 200:
+                data = response.json()
+                if data['metadata']['code'] == '200':
+                    logger.debug('Login successful!')
+                    self.token = data['result']['acessToken']
+                    self.userName = data['result']['userNameId']
+                    self.close()
+                    self.login_closed.emit()
+                else:
+                    logger.error("Login failed")
+                    QMessageBox.critical(self, 'Login', "Login Failed.", QMessageBox.StandardButton.Ok)
             else:
                 logger.error("Login failed")
-                QMessageBox.critical(self, 'Login', "Login Failed. Please input correct credentials.",
-                                     QMessageBox.StandardButton.Ok)
+                QMessageBox.critical(self, 'Login', "Login Failed.", QMessageBox.StandardButton.Ok)
         except requests.exceptions.RequestException as e:
             logger.error("Login Error, ", e)
             QMessageBox.critical(self, 'Login', "Login Error.", QMessageBox.StandardButton.Ok)

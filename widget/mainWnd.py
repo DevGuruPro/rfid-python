@@ -350,6 +350,7 @@ class MainWnd(QMainWindow):
             index = start_index
             while len(db) < 1000 and index < len(self.database):
                 item = self.database[index]
+                index = index + 1
                 if not item[0]:
                     continue
                 data = {
@@ -363,7 +364,6 @@ class MainWnd(QMainWindow):
                     "username": self.userName
                 }
                 db.append(data)
-                index = index + 1
             payload = {
                 "data": db
             }
@@ -372,17 +372,18 @@ class MainWnd(QMainWindow):
             for i in range(3):
                 try:
                     response = requests.post(RECORD_UPLOAD_URL, headers=headers, json=payload)
-                    data = response.json()
-                    logger.debug(f"Record Upload Response-{data}")
-                    if data['metadata']['code'] == '200':
-                        logger.info(f'Uploading scanned data successfully finished-batch{batch_index}.')
-                        logger.info(f"Record Response:{data}")
-                        self.database = self.database[:start_index] + self.database[index:]
-                        logger.info(f'Uploaded record removed.')
-                        break
+                    if response.status_code == 200:
+                        data = response.json()
+                        logger.debug(f"Record Upload Response-{data}")
+                        if data['metadata']['code'] == '200':
+                            logger.info(f'Uploading scanned data successfully finished-batch{batch_index}.')
+                            logger.info(f"Record Response:{data}")
+                            self.database = self.database[:start_index] + self.database[index:]
+                            logger.info(f'Uploaded record removed.')
+                            break
                 except requests.exceptions.RequestException as e:
                     pass
-            if i != 3:
+            if i == 3:
                 logger.info(f'Uploading scanned data failed-batch{batch_index}.')
                 start_index = index
             batch_index = batch_index + 1
