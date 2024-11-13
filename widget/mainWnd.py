@@ -364,6 +364,8 @@ class MainWnd(QMainWindow):
                     "username": self.userName
                 }
                 db.append(data)
+            if len(db) == 0:
+                break
             payload = {
                 "data": db
             }
