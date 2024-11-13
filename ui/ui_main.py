@@ -355,6 +355,7 @@ class Ui_MainWindow(object):
 "    color: white;  /* Change 'blue' to any color you want */  \n"
 "}")
         self.verticalLayout_9 = QVBoxLayout(self.groupBox_2)
+        self.verticalLayout_9.setSpacing(5)
         self.verticalLayout_9.setObjectName(u"verticalLayout_9")
         self.verticalLayout_9.setContentsMargins(20, -1, 20, 15)
         self.widget_8 = QWidget(self.groupBox_2)
@@ -367,11 +368,11 @@ class Ui_MainWindow(object):
         self.verticalLayout_13 = QVBoxLayout(self.widget_8)
         self.verticalLayout_13.setObjectName(u"verticalLayout_13")
         self.verticalLayout_13.setContentsMargins(9, 0, 9, 0)
-        self.checkBox = QCheckBox(self.widget_8)
-        self.checkBox.setObjectName(u"checkBox")
-        self.checkBox.setFont(font2)
-        self.checkBox.setFocusPolicy(Qt.StrongFocus)
-        self.checkBox.setStyleSheet(u"QCheckBox{\n"
+        self.gps_checkBox = QCheckBox(self.widget_8)
+        self.gps_checkBox.setObjectName(u"gps_checkBox")
+        self.gps_checkBox.setFont(font2)
+        self.gps_checkBox.setFocusPolicy(Qt.StrongFocus)
+        self.gps_checkBox.setStyleSheet(u"QCheckBox{\n"
 "	color: white; \n"
 "}\n"
 "\n"
@@ -389,8 +390,9 @@ class Ui_MainWindow(object):
 "	border: 2px solid gray;   \n"
 "    image: url(:/img/checkmark.png);  /* Use a custom image if needed */  \n"
 " }")
+        self.gps_checkBox.setChecked(True)
 
-        self.verticalLayout_13.addWidget(self.checkBox)
+        self.verticalLayout_13.addWidget(self.gps_checkBox)
 
 
         self.verticalLayout_9.addWidget(self.widget_8)
@@ -402,7 +404,16 @@ class Ui_MainWindow(object):
         self.verticalLayout_12 = QVBoxLayout(self.widget_9)
         self.verticalLayout_12.setObjectName(u"verticalLayout_12")
         self.verticalLayout_12.setContentsMargins(0, 0, 50, 0)
-        self.groupBox_3 = QGroupBox(self.widget_9)
+
+        self.verticalLayout_9.addWidget(self.widget_9)
+
+        self.widget_47 = QWidget(self.groupBox_2)
+        self.widget_47.setObjectName(u"widget_47")
+        self.verticalLayout_32 = QVBoxLayout(self.widget_47)
+        self.verticalLayout_32.setSpacing(5)
+        self.verticalLayout_32.setObjectName(u"verticalLayout_32")
+        self.verticalLayout_32.setContentsMargins(0, 0, 0, 0)
+        self.groupBox_3 = QGroupBox(self.widget_47)
         self.groupBox_3.setObjectName(u"groupBox_3")
         sizePolicy2.setHeightForWidth(self.groupBox_3.sizePolicy().hasHeightForWidth())
         self.groupBox_3.setSizePolicy(sizePolicy2)
@@ -433,12 +444,9 @@ class Ui_MainWindow(object):
         self.horizontalLayout_12.addWidget(self.radio_internet_gps)
 
 
-        self.verticalLayout_12.addWidget(self.groupBox_3)
+        self.verticalLayout_32.addWidget(self.groupBox_3)
 
-
-        self.verticalLayout_9.addWidget(self.widget_9)
-
-        self.widget_10 = QWidget(self.groupBox_2)
+        self.widget_10 = QWidget(self.widget_47)
         self.widget_10.setObjectName(u"widget_10")
         sizePolicy3 = QSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Maximum)
         sizePolicy3.setHorizontalStretch(0)
@@ -584,7 +592,10 @@ class Ui_MainWindow(object):
         self.horizontalLayout_2.addWidget(self.widget_12)
 
 
-        self.verticalLayout_9.addWidget(self.widget_10)
+        self.verticalLayout_32.addWidget(self.widget_10)
+
+
+        self.verticalLayout_9.addWidget(self.widget_47)
 
 
         self.gridLayout_4.addWidget(self.groupBox_2, 0, 1, 1, 1)
@@ -1851,9 +1862,9 @@ class Ui_MainWindow(object):
         self.last_gps_time.setText("")
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.rfid_tab), QCoreApplication.translate("MainWindow", u"RFID", None))
         self.groupBox_2.setTitle(QCoreApplication.translate("MainWindow", u"GPS", None))
-        self.checkBox.setText(QCoreApplication.translate("MainWindow", u"Enable GPS", None))
+        self.gps_checkBox.setText(QCoreApplication.translate("MainWindow", u"Enable GPS", None))
 #if QT_CONFIG(shortcut)
-        self.checkBox.setShortcut("")
+        self.gps_checkBox.setShortcut("")
 #endif // QT_CONFIG(shortcut)
         self.groupBox_3.setTitle("")
         self.radio_external_gps.setText(QCoreApplication.translate("MainWindow", u"GPS", None))
@@ -1866,6 +1877,7 @@ class Ui_MainWindow(object):
         self.label_36.setText(QCoreApplication.translate("MainWindow", u"GPS Parity", None))
         self.label_37.setText(QCoreApplication.translate("MainWindow", u"GPS BaudRate", None))
         self.edit_gps_noti.setText(QCoreApplication.translate("MainWindow", u"-1", None))
+        self.edit_gps_baud.setText(QCoreApplication.translate("MainWindow", u"115200", None))
         self.groupBox.setTitle(QCoreApplication.translate("MainWindow", u"RFID", None))
         self.label_15.setText(QCoreApplication.translate("MainWindow", u"Notify RFID", None))
         self.label_24.setText(QCoreApplication.translate("MainWindow", u"RFID Host", None))

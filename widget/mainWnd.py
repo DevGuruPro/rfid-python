@@ -96,9 +96,11 @@ class MainWnd(QMainWindow):
         # self.ui.tableWidget.item(0, 4).setText("5/20/2024 11:09:35 PM")
         self._stop = threading.Event()
 
-        self.gps = GPS(find_gps_port())
-        self.gps.sig_msg.connect(self.monitor_gps_status)
-        self.gps.start()
+        pp = find_gps_port()
+        self.gps = GPS(port=pp)
+        if pp is not None:
+            self.gps.sig_msg.connect(self.monitor_gps_status)
+            self.gps.start()
 
         self.rfid = RFID()
         self.rfid.sig_msg.connect(self.monitor_rfid_status)
@@ -113,8 +115,6 @@ class MainWnd(QMainWindow):
         self.notify_thread = threading.Thread(target=self.beep_sound)
 
         self.database = []
-        self.notify_rfid = False
-        self.notify_gps = False
         self.userName = user_name
         self.token = token
 
@@ -125,16 +125,13 @@ class MainWnd(QMainWindow):
         self.ui.radio_login_basic.clicked.connect(self.select_login_type)
         self.ui.radio_login_token.clicked.connect(self.select_login_type)
 
-        self.ui.radio_external_gps.clicked.connect(self.select_gps_type)
-        self.ui.radio_internet_gps.clicked.connect(self.select_gps_type)
-
         self.ui.token_widget.hide()
         self.ui.custom_widget.hide()
 
-        self.ui.edit_rfid_noti.textChanged.connect(self.on_rfid_text_changed)
-        self.ui.edit_gps_noti.textChanged.connect(self.on_gps_text_changed)
         self.ui.edit_rfid_host.textChanged.connect(self.on_rfid_host_text_changed)
-        self.ui.edit_gps_baud.textChanged.connect(self.on_gps_baud_text_changed)
+        self.ui.gps_checkBox.clicked.connect(self.on_gps_checked)
+        self.ui.radio_external_gps.clicked.connect(self.on_gps_type)
+        self.ui.radio_internet_gps.clicked.connect(self.on_gps_type)
         self.ui.setting_save_btn.released.connect(self.setting_save)
         self.ui.api_save_btn.released.connect(self.api_save)
 
@@ -144,6 +141,28 @@ class MainWnd(QMainWindow):
         self.close()
         self.main_closed.emit()
 
+    def on_gps_checked(self):
+        if self.ui.gps_checkBox.isChecked():
+            self.ui.widget_47.setEnabled(True)
+        else:
+            self.ui.widget_47.setDisabled(True)
+
+    def on_gps_type(self):
+        if self.ui.radio_internet_gps.isChecked():
+            self.gps.stop()
+            pp = find_gps_port()
+            if pp is not None:
+                self.gps = GPS(port=pp)
+                self.gps.sig_msg.connect(self.monitor_gps_status)
+                self.gps.start()
+                logger.debug(f"internet gps selected")
+        else:
+            self.gps.stop()
+            if self.ui.edit_gps_port.text() != "" and self.ui.edit_gps_baud.text() != "":
+                self.gps = GPS(port=self.ui.edit_gps_port.text(), baud_rate=int(self.ui.edit_gps_baud.text()))
+                self.gps.sig_msg.connect(self.monitor_gps_status)
+                self.gps.start()
+
     def beep_sound(self):
         relative_path = r"ui\alarm.wav"
         os.system(f"ffplay -nodisp -autoexit {os.path.join(os.getcwd(), relative_path)}")
@@ -152,22 +171,10 @@ class MainWnd(QMainWindow):
         if is_ipv4_address(text):
             self.rfid.set_reader(text)
 
-    def on_gps_baud_text_changed(self, text):
-        self.gps.set_baud_rate(int(text))
-
-    def on_rfid_text_changed(self, text):
-        if text == "1":
-            self.notify_rfid = True
-        else:
-            self.notify_rfid = False
-
-    def on_gps_text_changed(self, text):
-        if text == "1":
-            self.notify_gps = True
-        else:
-            self.notify_gps = False
-
     def load_setting(self):
+        if not os.path.isfile('setting/module.setting'):
+            logger.debug("Setting file does not exist.")
+            return
         with open('setting/module.setting', 'r') as load_file:
             setting_data = json.load(load_file)
             self.ui.edit_rfid_noti.setText(setting_data['RFID']['notify'])
@@ -240,14 +247,6 @@ class MainWnd(QMainWindow):
             self.ui.custom_spacebar.hide()
             self.ui.custom_widget.show()
 
-    def select_gps_type(self):
-        if self.ui.radio_internet_gps.isChecked():
-            self.gps = GPS(self.ui.edit_gps_port)
-            self.gps.sig_msg.connect(self.monitor_gps_status)
-            self.gps.start()
-        elif self.ui.radio_external_gps.isChecked():
-            pass
-
     def select_login_type(self):
         if self.ui.radio_login_basic.isChecked():
             self.ui.basic_widget.show()
@@ -279,7 +278,7 @@ class MainWnd(QMainWindow):
                 color: red;
                 """)
             self.ui.gps_connection_status.setText("Disconnected")
-        if self.notify_gps:
+        if self.ui.edit_gps_noti.text() == "1":
             self.notify_thread = threading.Thread(target=self.beep_sound)
             self.notify_thread.start()
 
@@ -318,6 +317,14 @@ class MainWnd(QMainWindow):
                 if (int(tag['EPC-96']) < int(self.ui.setting_start_tag.text()) or
                         int(tag['EPC-96']) > int(self.ui.setting_end_tag.text())):
                     upload_flag = False
+            if upload_flag:
+                for record in self.database:
+                    if tag['LastSeenTimestampUTC'] - record[5] > 10_000_000:
+                        break
+                    if tag['EPC-96'] == record[1]:
+                        upload_flag = False
+                        logger.debug("Record already exists")
+                        break
             new_data = [upload_flag, tag['EPC-96'], f"{tag['AntennaID']}", f"{tag['PeakRSSI']}", (lat, lon),
                         tag['LastSeenTimestampUTC'], speed, bearing]
             self.database.append(new_data)
@@ -326,7 +333,7 @@ class MainWnd(QMainWindow):
             self.ui.last_rfid_time.setText(get_date_from_utc(tag['LastSeenTimestampUTC']))
             self.ui.last_gps_read.setText(f"{lat}, {lon}")
             self.ui.last_gps_time.setText(get_date_from_utc(tag['LastSeenTimestampUTC']))
-        if self.notify_rfid:
+        if self.ui.edit_rfid_noti.text() == "1":
             self.notify_thread = threading.Thread(target=self.beep_sound)
             self.notify_thread.start()
 
@@ -405,14 +412,18 @@ class MainWnd(QMainWindow):
         logger.debug(f"Health data Upload Request to:{HEALTH_UPLOAD_URL}, {payload}")
         try:
             response = requests.post(HEALTH_UPLOAD_URL, headers=headers, json=payload)
-            data = response.json()
-            logger.debug(f"Health data Upload Response-{data}")
-            if data['metadata']['code'] == '200':
-                logger.info('Uploading health data successfully finished.')
+            if response.status_code == 200:
+                data = response.json()
+                logger.debug(f"Health data Upload Response-{data}")
+                if data['metadata']['code'] == '200':
+                    logger.info('Uploading health data successfully finished.')
+                else:
+                    logger.error("Uploading health data failed.")
             else:
                 logger.error("Uploading health data failed.")
         except requests.exceptions.RequestException as e:
             logger.error("Error occurred while uploading health data, ", e)
+
 
     def upload_scanned_data(self):
         if self.ui.radio_api_default.isChecked():

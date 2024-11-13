@@ -6,7 +6,7 @@ import pynmea2
 
 from PySide6.QtCore import Signal, QThread
 
-from settings import SERIAL_PORT_GPS, BAUD_RATE_GPS
+from settings import DEFAULT_SERIAL_PORT_GPS, BAUD_RATE_GPS
 from utils.logger import logger
 
 
@@ -14,19 +14,15 @@ class GPS(QThread):
 
     sig_msg = Signal(bool)
 
-    def __init__(self, port=SERIAL_PORT_GPS, baud_rate=BAUD_RATE_GPS):
+    def __init__(self, port, baud_rate=BAUD_RATE_GPS):
         super().__init__()
         self.port = port
         self.baud_rate = baud_rate
+        logger.debug(f"gps config: {self.port}, {self.baud_rate}")
         self._ser = None
         self._b_stop = threading.Event()
         self._data = {}
         self.connectivity = False
-
-    def set_baud_rate(self, baud):
-        self.baud_rate = baud
-        self.stop()
-        self.start()
 
     def _connect(self):
         """Attempts to connect to the GPS module."""
@@ -35,13 +31,13 @@ class GPS(QThread):
             if self.connectivity is False:
                 self.connectivity = True
                 self.sig_msg.emit(True)
-            # logger.info(f"Connected to gps module-{self.port}.")
+            logger.info(f"Connected to gps module-{self.port}.")
             return _ser
         except serial.SerialException as e:
             if self.connectivity is True:
                 self.connectivity = False
                 self.sig_msg.emit(False)
-            # logger.error(f"Failed to connect to gps module-{self.port}: {e}")
+            logger.error(f"Failed to connect to gps module-{self.port}: {e}")
             return None
 
     def read_serial_data(self):
@@ -62,13 +58,15 @@ class GPS(QThread):
 
     def run(self):
         self._ser = self._connect()
-        while self._ser is None:
-            self._connect()
+        while self._ser is None and not self._b_stop.is_set():
+            # self._ser = self._connect()
+            # time.sleep(.1)
+            logger.debug(f"set: {self._b_stop.is_set()}")
 
         while not self._b_stop.is_set():
             if self._ser is None:
-                self._connect()
-                time.sleep(.2)
+                self._ser = self._connect()
+                time.sleep(.1)
             else:
                 try:
                     self.read_serial_data()
@@ -82,11 +80,10 @@ class GPS(QThread):
                         self.connectivity = False
                         self.sig_msg.emit(False)
                     logger.error(f"Serial reading error : {er}")
-                    self._connect()
 
     def stop(self):
         self._b_stop.set()
-        self.wait()
+        self.wait(1)
         self._close_serial()
 
     def _close_serial(self):

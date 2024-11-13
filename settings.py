@@ -20,7 +20,7 @@ LOGIN_URL = "https://rfidngpsinventory.com/rfid/user/userLogin"
 RECORD_UPLOAD_URL = "https://rfidngpsinventory.com/rfid/mobileApp/updateRfidScanning"
 HEALTH_UPLOAD_URL = "https://rfidngpsinventory.com/rfid/dashBoard/rfidapphealth"
 
-SERIAL_PORT_GPS = 'COM4'
+DEFAULT_SERIAL_PORT_GPS = 'COM4'
 BAUD_RATE_GPS = 115200
 
 RFID_CARD_READER = '169.254.216.147'

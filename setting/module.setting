@@ -16,7 +16,7 @@
         "data_bits": "",
         "stop_bits": "",
         "parity": "",
-        "baud_rate": ""
+        "baud_rate": "115200"
     },
     "speed": {
         "min": "",
