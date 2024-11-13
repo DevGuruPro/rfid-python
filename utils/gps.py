@@ -52,6 +52,7 @@ class GPS(QThread):
                     label, attr = field[:2]
                     value = getattr(msg, attr)
                     self._data[attr] = value
+                logger.debug(f"GPS:{self._data}")
             except pynmea2.ParseError as e:
                 logger.error(f"Parse error: {e}")
                 self._data = {}
