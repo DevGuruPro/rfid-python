@@ -141,8 +141,8 @@ class MainWnd(QMainWindow):
         self.ui.widget_14.setDisabled(True)
         self.load_setting()
 
-        self.db_connection = sqlite3.connect('database.db')
-        cursor = self.db_connection.cursor()
+        db_connection = sqlite3.connect('database.db')
+        cursor = db_connection.cursor()
         cursor.execute('''
             CREATE TABLE IF NOT EXISTS records (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -166,7 +166,8 @@ class MainWnd(QMainWindow):
                 timestamp INTEGER NOT NULL,
             )
         ''')
-        self.db_connection.commit()
+        db_connection.commit()
+        db_connection.close()
 
     def on_log_out(self):
         self.close()
@@ -358,7 +359,8 @@ class MainWnd(QMainWindow):
                         int(tag['EPC-96']) > int(self.ui.setting_end_tag.text())):
                     upload_flag = False
             if upload_flag:
-                cursor = self.db_connection.cursor()
+                db_connection = sqlite3.connect('database.db')
+                cursor = db_connection.cursor()
                 cursor.execute('''
                     SELECT * FROM records
                     WHERE rfidTag = ?
@@ -367,8 +369,10 @@ class MainWnd(QMainWindow):
                 rows = cursor.fetchall()
                 if rows:
                     upload_flag = False
+                db_connection.close()
             if upload_flag:
-                cursor = self.db_connection.cursor()
+                db_connection = sqlite3.connect('database.db')
+                cursor = db_connection.cursor()
                 cursor.execute('''
                 INSERT INTO records
                 (rfidTag, antenna, RSSI, latitude, longitude, speed, heading, locationCode, username, timestamp, tag1, value1, tag2, value2, tag3, value3, tag4, value4)
@@ -381,7 +385,8 @@ class MainWnd(QMainWindow):
                     self.ui.edit_api_ctag3.text(), self.ui.edit_api_cval3.text(),
                     self.ui.edit_api_ctag4.text(), self.ui.edit_api_cval4.text()
                 ))
-                self.db_connection.commit()
+                db_connection.commit()
+                db_connection.close()
             self.refresh_data_table([tag['EPC-96'], f"{tag['AntennaID']}", f"{tag['PeakRSSI']}",
                                      f"{lat}, {lon}", get_date_from_utc(tag['LastSeenTimestampUTC'])])
             self.ui.edit_api_tag.setText(tag['EPC-96'])
@@ -450,7 +455,8 @@ class MainWnd(QMainWindow):
             logger.error("Error occurred while uploading health data, ", e)
 
     def upload_scanned_data(self):
-        cursor = self.db_connection.cursor()
+        db_connection = sqlite3.connect('database.db')
+        cursor = db_connection.cursor()
         cursor.execute('''
             SELECT id, rfidTag, antenna, RSSI, latitude, longitude, speed, heading, locationCode, username, tag1, value1, tag2, value2, tag3, value3, tag4, valu4
             FROM records
@@ -507,7 +513,8 @@ class MainWnd(QMainWindow):
             DELETE FROM records
             WHERE ABS(timestamp - ?) > 600000000
         ''', [microsecond_timestamp])
-        self.db_connection.commit()
+        db_connection.commit()
+        db_connection.close()
         logger.info('Deleted old data.')
 
     def refresh_data_table(self, new_data):
@@ -538,7 +545,6 @@ class MainWnd(QMainWindow):
         self.ui.tableWidget.setRowHeight(5, height - int(height / 6) * 5)
 
     def closeEvent(self, event):
-        self.db_connection.close()
         self.gps.stop()
         self.rfid.stop()
         self._stop.set()
