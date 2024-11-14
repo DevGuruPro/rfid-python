@@ -155,7 +155,15 @@ class MainWnd(QMainWindow):
                 heading REAL NOT NULL,
                 locationCode TEXT NOT NULL,
                 username TEXT NOT NULL,
-                timestamp INTEGER NOT NULL
+                tag1 TEXT NOT NULL,
+                value1 TEXT NOT NULL,
+                tag2 TEXT NOT NULL,
+                value2 TEXT NOT NULL,
+                tag3 TEXT NOT NULL,
+                value3 TEXT NOT NULL,
+                tag4 TEXT NOT NULL,
+                value4 TEXT NOT NULL,
+                timestamp INTEGER NOT NULL,
             )
         ''')
         self.db_connection.commit()
@@ -363,15 +371,26 @@ class MainWnd(QMainWindow):
                 cursor = self.db_connection.cursor()
                 cursor.execute('''
                 INSERT INTO records
-                (rfidTag, antenna, RSSI, latitude, longitude, speed, heading, locationCode, username, timestamp)
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                (rfidTag, antenna, RSSI, latitude, longitude, speed, heading, locationCode, username, timestamp, tag1, value1, tag2, value2, tag3, value3, tag4, value4)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
                 ''', (
                     tag['EPC-96'], f"{tag['AntennaID']}", f"{tag['PeakRSSI']}", lat, lon,
-                    speed, bearing, "-", self.userName, tag['LastSeenTimestampUTC']
+                    speed, bearing, "-", self.userName, tag['LastSeenTimestampUTC'],
+                    self.ui.edit_api_ctag1.text(), self.ui.edit_api_cval1.text(),
+                    self.ui.edit_api_ctag2.text(), self.ui.edit_api_cval2.text(),
+                    self.ui.edit_api_ctag3.text(), self.ui.edit_api_cval3.text(),
+                    self.ui.edit_api_ctag4.text(), self.ui.edit_api_cval4.text()
                 ))
                 self.db_connection.commit()
             self.refresh_data_table([tag['EPC-96'], f"{tag['AntennaID']}", f"{tag['PeakRSSI']}",
                                      f"{lat}, {lon}", get_date_from_utc(tag['LastSeenTimestampUTC'])])
+            self.ui.edit_api_tag.setText(tag['EPC-96'])
+            self.ui.edit_api_ant.setText(f"{tag['AntennaID']}")
+            self.ui.edit_api_lat.setText(f"{lat}")
+            self.ui.edit_api_lng.setText(f"{lon}")
+            self.ui.edit_api_heading.setText(f"{bearing}")
+            self.ui.edit_api_speed.setText(f"{speed}")
+            self.ui.edit_api_rssi.setText(f"{tag['PeakRSSI']}")
         if self.ui.edit_rfid_noti.text() == "1":
             self.notify_thread = threading.Thread(target=self.beep_sound)
             self.notify_thread.start()
@@ -433,14 +452,14 @@ class MainWnd(QMainWindow):
     def upload_scanned_data(self):
         cursor = self.db_connection.cursor()
         cursor.execute('''
-            SELECT id, rfidTag, antenna, RSSI, latitude, longitude, speed, heading, locationCode, username
+            SELECT id, rfidTag, antenna, RSSI, latitude, longitude, speed, heading, locationCode, username, tag1, value1, tag2, value2, tag3, value3, tag4, valu4
             FROM records
             ''')
         data = cursor.fetchall()
         chunk_size = 1000
         for i in range(0, len(data), chunk_size):
             chunk = data[i:i + chunk_size]
-            data_list = {
+            data_list_default = {
                 "data": [{
                     "rfidTag": row[1],
                     "antenna": row[2],
@@ -453,13 +472,29 @@ class MainWnd(QMainWindow):
                     "username": row[9],
                 } for row in chunk]
             }
+            data_list_custom = {
+                "data": [{
+                    "rfidTag": row[1],
+                    "antenna": row[2],
+                    "RSSI": row[3],
+                    "latitude": row[4],
+                    "longitude": row[5],
+                    "speed": row[6],
+                    "heading": row[7],
+                    "locationCode": row[8],
+                    "username": row[9],
+                    row[10]: row[11],
+                } for row in chunk]
+            }
             delete = None
             if self.ui.radio_api_default.isChecked():
-                delete = self.upload_to_default(data_list)
+                delete = self.upload_to_default(data_list_default)
             elif self.ui.radio_api_custom.isChecked():
-                delete = self.upload_to_custom(data_list)
+                delete = self.upload_to_custom(data_list_custom)
             elif self.ui.radio_api_both.isChecked():
-                delete = self.upload_to_default(data_list) or self.upload_to_custom(data_list)
+                delete1 = self.upload_to_default(data_list_default)
+                delete2 = self.upload_to_custom(data_list_custom)
+                delete = delete1 or delete2
             if delete:
                 ids_to_delete = [row[0] for row in chunk]
                 cursor.execute('''

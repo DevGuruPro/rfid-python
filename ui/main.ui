@@ -2674,6 +2674,30 @@ QRadioButton::indicator:checked {
                            <bold>true</bold>
                           </font>
                          </property>
+                         <property name="styleSheet">
+                          <string notr="true">QRadioButton{
+	color: white;
+}
+
+QRadioButton::indicator {  
+    width: 16px;  
+    height: 16px;  
+	border-radius: 8px;
+}  
+
+QRadioButton::indicator:unchecked {
+	width: 14px;  
+    height: 14px;
+	margin: 1px;
+    background-color: white;
+	border-radius: 7px;
+}
+
+QRadioButton::indicator:checked {
+	border-radius: 8px;
+    image: url(:/img/radiomark.png);  /* Use a custom image if needed */  
+ }</string>
+                         </property>
                          <property name="text">
                           <string>Basic</string>
                          </property>
@@ -2696,6 +2720,30 @@ QRadioButton::indicator:checked {
                            <weight>75</weight>
                            <bold>true</bold>
                           </font>
+                         </property>
+                         <property name="styleSheet">
+                          <string notr="true">QRadioButton{
+	color: white;
+}
+
+QRadioButton::indicator {  
+    width: 16px;  
+    height: 16px;  
+	border-radius: 8px;
+}  
+
+QRadioButton::indicator:unchecked {
+	width: 14px;  
+    height: 14px;
+	margin: 1px;
+    background-color: white;
+	border-radius: 7px;
+}
+
+QRadioButton::indicator:checked {
+	border-radius: 8px;
+    image: url(:/img/radiomark.png);  /* Use a custom image if needed */  
+ }</string>
                          </property>
                          <property name="text">
                           <string>Token</string>
@@ -3169,6 +3217,9 @@ QRadioButton::indicator:checked {
                             <property name="text">
                              <string/>
                             </property>
+                            <property name="readOnly">
+                             <bool>true</bool>
+                            </property>
                            </widget>
                           </item>
                           <item>
@@ -3179,6 +3230,9 @@ QRadioButton::indicator:checked {
                               <weight>75</weight>
                               <bold>true</bold>
                              </font>
+                            </property>
+                            <property name="readOnly">
+                             <bool>true</bool>
                             </property>
                            </widget>
                           </item>
@@ -3191,6 +3245,9 @@ QRadioButton::indicator:checked {
                               <bold>true</bold>
                              </font>
                             </property>
+                            <property name="readOnly">
+                             <bool>true</bool>
+                            </property>
                            </widget>
                           </item>
                           <item>
@@ -3201,6 +3258,9 @@ QRadioButton::indicator:checked {
                               <weight>75</weight>
                               <bold>true</bold>
                              </font>
+                            </property>
+                            <property name="readOnly">
+                             <bool>true</bool>
                             </property>
                            </widget>
                           </item>
@@ -3213,6 +3273,9 @@ QRadioButton::indicator:checked {
                               <bold>true</bold>
                              </font>
                             </property>
+                            <property name="readOnly">
+                             <bool>true</bool>
+                            </property>
                            </widget>
                           </item>
                           <item>
@@ -3223,6 +3286,9 @@ QRadioButton::indicator:checked {
                               <weight>75</weight>
                               <bold>true</bold>
                              </font>
+                            </property>
+                            <property name="readOnly">
+                             <bool>true</bool>
                             </property>
                            </widget>
                           </item>
@@ -3321,6 +3387,9 @@ QRadioButton::indicator:checked {
                             <property name="text">
                              <string/>
                             </property>
+                            <property name="readOnly">
+                             <bool>true</bool>
+                            </property>
                            </widget>
                           </item>
                          </layout>
@@ -3416,7 +3485,7 @@ QRadioButton::indicator:checked {
                               </widget>
                              </item>
                              <item>
-                              <widget class="QLineEdit" name="edit_api_heading_3">
+                              <widget class="QLineEdit" name="edit_api_ctag1">
                                <property name="font">
                                 <font>
                                  <pointsize>8</pointsize>
@@ -3430,7 +3499,7 @@ QRadioButton::indicator:checked {
                               </widget>
                              </item>
                              <item>
-                              <widget class="QLineEdit" name="edit_api_heading_2">
+                              <widget class="QLineEdit" name="edit_api_ctag2">
                                <property name="font">
                                 <font>
                                  <pointsize>8</pointsize>
@@ -3441,7 +3510,7 @@ QRadioButton::indicator:checked {
                               </widget>
                              </item>
                              <item>
-                              <widget class="QLineEdit" name="edit_api_heading_4">
+                              <widget class="QLineEdit" name="edit_api_ctag3">
                                <property name="font">
                                 <font>
                                  <pointsize>8</pointsize>
@@ -3452,7 +3521,7 @@ QRadioButton::indicator:checked {
                               </widget>
                              </item>
                              <item>
-                              <widget class="QLineEdit" name="edit_api_lng_2">
+                              <widget class="QLineEdit" name="edit_api_ctag4">
                                <property name="font">
                                 <font>
                                  <pointsize>8</pointsize>
@@ -3494,7 +3563,7 @@ QRadioButton::indicator:checked {
                               </widget>
                              </item>
                              <item>
-                              <widget class="QLineEdit" name="edit_api_heading_5">
+                              <widget class="QLineEdit" name="edit_api_cval1">
                                <property name="font">
                                 <font>
                                  <pointsize>8</pointsize>
@@ -3505,7 +3574,7 @@ QRadioButton::indicator:checked {
                               </widget>
                              </item>
                              <item>
-                              <widget class="QLineEdit" name="edit_api_ant_2">
+                              <widget class="QLineEdit" name="edit_api_cval2">
                                <property name="font">
                                 <font>
                                  <pointsize>8</pointsize>
@@ -3516,7 +3585,7 @@ QRadioButton::indicator:checked {
                               </widget>
                              </item>
                              <item>
-                              <widget class="QLineEdit" name="edit_api_lat_2">
+                              <widget class="QLineEdit" name="edit_api_cval3">
                                <property name="font">
                                 <font>
                                  <pointsize>8</pointsize>
@@ -3527,7 +3596,7 @@ QRadioButton::indicator:checked {
                               </widget>
                              </item>
                              <item>
-                              <widget class="QLineEdit" name="edit_api_speed_2">
+                              <widget class="QLineEdit" name="edit_api_cval4">
                                <property name="font">
                                 <font>
                                  <pointsize>8</pointsize>

@@ -1438,6 +1438,28 @@ class Ui_MainWindow(object):
         sizePolicy5.setHeightForWidth(self.radio_login_basic.sizePolicy().hasHeightForWidth())
         self.radio_login_basic.setSizePolicy(sizePolicy5)
         self.radio_login_basic.setFont(font2)
+        self.radio_login_basic.setStyleSheet(u"QRadioButton{\n"
+"	color: white;\n"
+"}\n"
+"\n"
+"QRadioButton::indicator {  \n"
+"    width: 16px;  \n"
+"    height: 16px;  \n"
+"	border-radius: 8px;\n"
+"}  \n"
+"\n"
+"QRadioButton::indicator:unchecked {\n"
+"	width: 14px;  \n"
+"    height: 14px;\n"
+"	margin: 1px;\n"
+"    background-color: white;\n"
+"	border-radius: 7px;\n"
+"}\n"
+"\n"
+"QRadioButton::indicator:checked {\n"
+"	border-radius: 8px;\n"
+"    image: url(:/img/radiomark.png);  /* Use a custom image if needed */  \n"
+" }")
         self.radio_login_basic.setChecked(True)
 
         self.horizontalLayout_27.addWidget(self.radio_login_basic)
@@ -1447,6 +1469,28 @@ class Ui_MainWindow(object):
         sizePolicy5.setHeightForWidth(self.radio_login_token.sizePolicy().hasHeightForWidth())
         self.radio_login_token.setSizePolicy(sizePolicy5)
         self.radio_login_token.setFont(font2)
+        self.radio_login_token.setStyleSheet(u"QRadioButton{\n"
+"	color: white;\n"
+"}\n"
+"\n"
+"QRadioButton::indicator {  \n"
+"    width: 16px;  \n"
+"    height: 16px;  \n"
+"	border-radius: 8px;\n"
+"}  \n"
+"\n"
+"QRadioButton::indicator:unchecked {\n"
+"	width: 14px;  \n"
+"    height: 14px;\n"
+"	margin: 1px;\n"
+"    background-color: white;\n"
+"	border-radius: 7px;\n"
+"}\n"
+"\n"
+"QRadioButton::indicator:checked {\n"
+"	border-radius: 8px;\n"
+"    image: url(:/img/radiomark.png);  /* Use a custom image if needed */  \n"
+" }")
 
         self.horizontalLayout_27.addWidget(self.radio_login_token)
 
@@ -1669,36 +1713,42 @@ class Ui_MainWindow(object):
         self.edit_api_tag = QLineEdit(self.widget_39)
         self.edit_api_tag.setObjectName(u"edit_api_tag")
         self.edit_api_tag.setFont(font4)
+        self.edit_api_tag.setReadOnly(True)
 
         self.verticalLayout_23.addWidget(self.edit_api_tag)
 
         self.edit_api_ant = QLineEdit(self.widget_39)
         self.edit_api_ant.setObjectName(u"edit_api_ant")
         self.edit_api_ant.setFont(font4)
+        self.edit_api_ant.setReadOnly(True)
 
         self.verticalLayout_23.addWidget(self.edit_api_ant)
 
         self.edit_api_lat = QLineEdit(self.widget_39)
         self.edit_api_lat.setObjectName(u"edit_api_lat")
         self.edit_api_lat.setFont(font4)
+        self.edit_api_lat.setReadOnly(True)
 
         self.verticalLayout_23.addWidget(self.edit_api_lat)
 
         self.edit_api_lng = QLineEdit(self.widget_39)
         self.edit_api_lng.setObjectName(u"edit_api_lng")
         self.edit_api_lng.setFont(font4)
+        self.edit_api_lng.setReadOnly(True)
 
         self.verticalLayout_23.addWidget(self.edit_api_lng)
 
         self.edit_api_heading = QLineEdit(self.widget_39)
         self.edit_api_heading.setObjectName(u"edit_api_heading")
         self.edit_api_heading.setFont(font4)
+        self.edit_api_heading.setReadOnly(True)
 
         self.verticalLayout_23.addWidget(self.edit_api_heading)
 
         self.edit_api_speed = QLineEdit(self.widget_39)
         self.edit_api_speed.setObjectName(u"edit_api_speed")
         self.edit_api_speed.setFont(font4)
+        self.edit_api_speed.setReadOnly(True)
 
         self.verticalLayout_23.addWidget(self.edit_api_speed)
 
@@ -1741,6 +1791,7 @@ class Ui_MainWindow(object):
         self.edit_api_rssi = QLineEdit(self.widget_43)
         self.edit_api_rssi.setObjectName(u"edit_api_rssi")
         self.edit_api_rssi.setFont(font4)
+        self.edit_api_rssi.setReadOnly(True)
 
         self.horizontalLayout_36.addWidget(self.edit_api_rssi)
 
@@ -1787,29 +1838,29 @@ class Ui_MainWindow(object):
 
         self.verticalLayout_24.addWidget(self.label_57)
 
-        self.edit_api_heading_3 = QLineEdit(self.widget_40)
-        self.edit_api_heading_3.setObjectName(u"edit_api_heading_3")
-        self.edit_api_heading_3.setFont(font4)
+        self.edit_api_ctag1 = QLineEdit(self.widget_40)
+        self.edit_api_ctag1.setObjectName(u"edit_api_ctag1")
+        self.edit_api_ctag1.setFont(font4)
 
-        self.verticalLayout_24.addWidget(self.edit_api_heading_3)
+        self.verticalLayout_24.addWidget(self.edit_api_ctag1)
 
-        self.edit_api_heading_2 = QLineEdit(self.widget_40)
-        self.edit_api_heading_2.setObjectName(u"edit_api_heading_2")
-        self.edit_api_heading_2.setFont(font4)
+        self.edit_api_ctag2 = QLineEdit(self.widget_40)
+        self.edit_api_ctag2.setObjectName(u"edit_api_ctag2")
+        self.edit_api_ctag2.setFont(font4)
 
-        self.verticalLayout_24.addWidget(self.edit_api_heading_2)
+        self.verticalLayout_24.addWidget(self.edit_api_ctag2)
 
-        self.edit_api_heading_4 = QLineEdit(self.widget_40)
-        self.edit_api_heading_4.setObjectName(u"edit_api_heading_4")
-        self.edit_api_heading_4.setFont(font4)
+        self.edit_api_ctag3 = QLineEdit(self.widget_40)
+        self.edit_api_ctag3.setObjectName(u"edit_api_ctag3")
+        self.edit_api_ctag3.setFont(font4)
 
-        self.verticalLayout_24.addWidget(self.edit_api_heading_4)
+        self.verticalLayout_24.addWidget(self.edit_api_ctag3)
 
-        self.edit_api_lng_2 = QLineEdit(self.widget_40)
-        self.edit_api_lng_2.setObjectName(u"edit_api_lng_2")
-        self.edit_api_lng_2.setFont(font4)
+        self.edit_api_ctag4 = QLineEdit(self.widget_40)
+        self.edit_api_ctag4.setObjectName(u"edit_api_ctag4")
+        self.edit_api_ctag4.setFont(font4)
 
-        self.verticalLayout_24.addWidget(self.edit_api_lng_2)
+        self.verticalLayout_24.addWidget(self.edit_api_ctag4)
 
 
         self.horizontalLayout_35.addWidget(self.widget_40)
@@ -1829,29 +1880,29 @@ class Ui_MainWindow(object):
 
         self.verticalLayout_25.addWidget(self.label_63)
 
-        self.edit_api_heading_5 = QLineEdit(self.widget_41)
-        self.edit_api_heading_5.setObjectName(u"edit_api_heading_5")
-        self.edit_api_heading_5.setFont(font4)
+        self.edit_api_cval1 = QLineEdit(self.widget_41)
+        self.edit_api_cval1.setObjectName(u"edit_api_cval1")
+        self.edit_api_cval1.setFont(font4)
 
-        self.verticalLayout_25.addWidget(self.edit_api_heading_5)
+        self.verticalLayout_25.addWidget(self.edit_api_cval1)
 
-        self.edit_api_ant_2 = QLineEdit(self.widget_41)
-        self.edit_api_ant_2.setObjectName(u"edit_api_ant_2")
-        self.edit_api_ant_2.setFont(font4)
+        self.edit_api_cval2 = QLineEdit(self.widget_41)
+        self.edit_api_cval2.setObjectName(u"edit_api_cval2")
+        self.edit_api_cval2.setFont(font4)
 
-        self.verticalLayout_25.addWidget(self.edit_api_ant_2)
+        self.verticalLayout_25.addWidget(self.edit_api_cval2)
 
-        self.edit_api_lat_2 = QLineEdit(self.widget_41)
-        self.edit_api_lat_2.setObjectName(u"edit_api_lat_2")
-        self.edit_api_lat_2.setFont(font4)
+        self.edit_api_cval3 = QLineEdit(self.widget_41)
+        self.edit_api_cval3.setObjectName(u"edit_api_cval3")
+        self.edit_api_cval3.setFont(font4)
 
-        self.verticalLayout_25.addWidget(self.edit_api_lat_2)
+        self.verticalLayout_25.addWidget(self.edit_api_cval3)
 
-        self.edit_api_speed_2 = QLineEdit(self.widget_41)
-        self.edit_api_speed_2.setObjectName(u"edit_api_speed_2")
-        self.edit_api_speed_2.setFont(font4)
+        self.edit_api_cval4 = QLineEdit(self.widget_41)
+        self.edit_api_cval4.setObjectName(u"edit_api_cval4")
+        self.edit_api_cval4.setFont(font4)
 
-        self.verticalLayout_25.addWidget(self.edit_api_speed_2)
+        self.verticalLayout_25.addWidget(self.edit_api_cval4)
 
 
         self.horizontalLayout_35.addWidget(self.widget_41)
@@ -2034,7 +2085,7 @@ class Ui_MainWindow(object):
         self.edit_api_rssi.setText("")
         self.label_60.setText("")
         self.label_57.setText(QCoreApplication.translate("MainWindow", u"Custom Tag", None))
-        self.edit_api_heading_3.setText("")
+        self.edit_api_ctag1.setText("")
         self.label_63.setText(QCoreApplication.translate("MainWindow", u"Custom Value", None))
         self.api_save_btn.setText(QCoreApplication.translate("MainWindow", u"Save", None))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.api_tab), QCoreApplication.translate("MainWindow", u"API Integration", None))
