@@ -6,24 +6,20 @@ Software for reading live tag and gps module.
 - Clone this repository:
     ```shell
     cd ~
-    git clone https://https://github.com/prosperinfotech/rfid-python
+    git clone https://github.com/prosperinfotech/rfid-python
     ```
 - Install python libraries
 
     ```shell
     cd CCKC_EOL
+    pip install -r requirement.txt
+    ```
+
+  - In Raspberry pi OS, you can use this command.
+
+    ```shell
+    cd CCKC_EOL
     pip install -r requirement.txt --break-system-packages
-    ```
-- Install dependencies for FFmpeg
-
-  - Windows 
-      
-    Run "setup_ffmpeg.bat". 
-
-  - Linux or MacOS
-
-    ```
-    sudo apt install ffmpeg
     ```
 
 - And start!
