@@ -18,10 +18,10 @@ class GPS(QThread):
         super().__init__()
         self.port = port
         self.baud_rate = baud_rate
-        logger.debug(f"gps config: {self.port}, {self.baud_rate}")
         self._ser = None
         self._b_stop = threading.Event()
         self._data = {}
+        self._sdata = []
         self.connectivity = False
 
     def _connect(self):
@@ -52,10 +52,16 @@ class GPS(QThread):
                     label, attr = field[:2]
                     value = getattr(msg, attr)
                     self._data[attr] = value
-                logger.debug(f"GPS:{self._data}")
             except pynmea2.ParseError as e:
                 logger.error(f"Parse error: {e}")
                 self._data = {}
+        elif line.startswith('$GPRMC'):
+            try:
+                msg = pynmea2.parse(line)
+                self._sdata = [msg.spd_over_grnd * 1.15078, msg.true_course]
+            except pynmea2.ParseError as e:
+                logger.error(f"Parse error: {e}")
+                self._sdata = []
 
     def run(self):
         self._ser = self._connect()
@@ -74,6 +80,7 @@ class GPS(QThread):
                         self.sig_msg.emit(True)
                 except Exception as er:
                     self._data = {}
+                    self._sdata = []
                     self._ser = None
                     if self.connectivity is True:
                         self.connectivity = False
@@ -95,6 +102,9 @@ class GPS(QThread):
     def get_data(self):
         """Returns the latest parsed data."""
         return self._data
+
+    def get_sdata(self):
+        return self._sdata
 
 
 if __name__ == "__main__":

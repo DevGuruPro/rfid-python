@@ -1,10 +1,8 @@
 import re
 from datetime import datetime
-from geopy.distance import geodesic
 
 from settings import BAUD_RATE_GPS
 from utils.logger import logger
-from geographiclib.geodesic import Geodesic
 
 import serial
 import serial.tools.list_ports
@@ -37,7 +35,6 @@ def extract_from_gps(gps_data):
         # Extract and convert latitude and longitude
         latitude = convert_to_decimal(gps_data['lat'], gps_data['lat_dir'], is_latitude=True)
         longitude = convert_to_decimal(gps_data['lon'], gps_data['lon_dir'], is_latitude=False)
-        logger.debug(f"latitude:{latitude}, longitude:{longitude}")
         return latitude, longitude
     except KeyError as e:
         logger.error(f"Missing key in GPS data: {e}")
@@ -45,21 +42,6 @@ def extract_from_gps(gps_data):
     except ValueError as e:
         logger.error(f"Error: {e}")
         return 0, 0
-
-
-def calculate_speed_bearing(lat1, lon1, time1, lat2, lon2, time2):
-    # Calculate the distance in meters
-    distance = geodesic((lat1, lon1), (lat2, lon2)).meters
-
-    # Calculate the time difference in seconds
-    time_diff = (time2 - time1) / 1_000_000
-
-    # Calculate speed in m/s
-    if time_diff > 0:
-        speed = distance / time_diff
-    else:
-        speed = 0  # If time difference is 0, speed is undefined or considered 0
-    return speed * 2.23694, Geodesic.WGS84.Inverse(lat1, lon1, lat2, lon2)['azi1']
 
 
 def get_date_from_utc(timestamp_microseconds):

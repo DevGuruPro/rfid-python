@@ -769,14 +769,33 @@ QCheckBox::indicator:checked {
                       </property>
                       <property name="styleSheet">
                        <string notr="true">QRadioButton{
-	color: white; 
-}</string>
+	color: white;
+}
+
+QRadioButton::indicator {  
+    width: 16px;  
+    height: 16px;  
+	border-radius: 8px;
+}  
+
+QRadioButton::indicator:unchecked {
+	width: 14px;  
+    height: 14px;
+	margin: 1px;
+    background-color: white;
+	border-radius: 7px;
+}
+
+QRadioButton::indicator:checked {
+	border-radius: 8px;
+    image: url(:/img/radiomark.png);  /* Use a custom image if needed */  
+ }</string>
                       </property>
                       <property name="text">
                        <string>GPS</string>
                       </property>
                       <property name="checked">
-                       <bool>false</bool>
+                       <bool>true</bool>
                       </property>
                      </widget>
                     </item>
@@ -791,14 +810,33 @@ QCheckBox::indicator:checked {
                       </property>
                       <property name="styleSheet">
                        <string notr="true">QRadioButton{
-	color: white; 
-}</string>
+	color: white;
+}
+
+QRadioButton::indicator {  
+    width: 16px;  
+    height: 16px;  
+	border-radius: 8px;
+}  
+
+QRadioButton::indicator:unchecked {
+	width: 14px;  
+    height: 14px;
+	margin: 1px;
+    background-color: white;
+	border-radius: 7px;
+}
+
+QRadioButton::indicator:checked {
+	border-radius: 8px;
+    image: url(:/img/radiomark.png);  /* Use a custom image if needed */  
+ }</string>
                       </property>
                       <property name="text">
                        <string>Internet GPS</string>
                       </property>
                       <property name="checked">
-                       <bool>true</bool>
+                       <bool>false</bool>
                       </property>
                      </widget>
                     </item>
@@ -2297,6 +2335,30 @@ tag mapping with available data points. Use custom fields for any data points no
                      <bold>true</bold>
                     </font>
                    </property>
+                   <property name="styleSheet">
+                    <string notr="true">QRadioButton{
+	color: white;
+}
+
+QRadioButton::indicator {  
+    width: 16px;  
+    height: 16px;  
+	border-radius: 8px;
+}  
+
+QRadioButton::indicator:unchecked {
+	width: 14px;  
+    height: 14px;
+	margin: 1px;
+    background-color: white;
+	border-radius: 7px;
+}
+
+QRadioButton::indicator:checked {
+	border-radius: 8px;
+    image: url(:/img/radiomark.png);  /* Use a custom image if needed */  
+ }</string>
+                   </property>
                    <property name="text">
                     <string>Default API</string>
                    </property>
@@ -2320,6 +2382,30 @@ tag mapping with available data points. Use custom fields for any data points no
                      <bold>true</bold>
                     </font>
                    </property>
+                   <property name="styleSheet">
+                    <string notr="true">QRadioButton{
+	color: white;
+}
+
+QRadioButton::indicator {  
+    width: 16px;  
+    height: 16px;  
+	border-radius: 8px;
+}  
+
+QRadioButton::indicator:unchecked {
+	width: 14px;  
+    height: 14px;
+	margin: 1px;
+    background-color: white;
+	border-radius: 7px;
+}
+
+QRadioButton::indicator:checked {
+	border-radius: 8px;
+    image: url(:/img/radiomark.png);  /* Use a custom image if needed */  
+ }</string>
+                   </property>
                    <property name="text">
                     <string>Customer API</string>
                    </property>
@@ -2339,6 +2425,30 @@ tag mapping with available data points. Use custom fields for any data points no
                      <weight>75</weight>
                      <bold>true</bold>
                     </font>
+                   </property>
+                   <property name="styleSheet">
+                    <string notr="true">QRadioButton{
+	color: white;
+}
+
+QRadioButton::indicator {  
+    width: 16px;  
+    height: 16px;  
+	border-radius: 8px;
+}  
+
+QRadioButton::indicator:unchecked {
+	width: 14px;  
+    height: 14px;
+	margin: 1px;
+    background-color: white;
+	border-radius: 7px;
+}
+
+QRadioButton::indicator:checked {
+	border-radius: 8px;
+    image: url(:/img/radiomark.png);  /* Use a custom image if needed */  
+ }</string>
                    </property>
                    <property name="text">
                     <string>Both</string>

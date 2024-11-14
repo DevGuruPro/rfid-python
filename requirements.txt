@@ -2,7 +2,5 @@ PySide6~=6.7.2
 requests~=2.32.3
 pynmea2~=1.19.0
 sllurp~=2.0.1
-geopy~=2.4.1
 schedule~=1.2.2
-geographiclib
-pydub
+pygame

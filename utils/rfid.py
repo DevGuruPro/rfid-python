@@ -115,15 +115,17 @@ class RFID(QThread):
             config = LLRPReaderConfig(factory_args)
             reader = LLRPReaderClient(host, port, config)
             reader.add_tag_report_callback(self.tag_seen_callback)
+            reader.add_disconnected_callback(self.reader_disconnected)
             self.reader_clients.append(reader)
 
     def _connect_reader(self):
         for reader in self.reader_clients:
+            logger.debug(f"alive:{reader.is_alive()}")
             if not reader.is_alive():
                 try:
                     reader.connect()
                 except Exception as e:
-                    # logger.error(f"Failed to connect to reader {reader}: {e}")
+                    logger.error(f"Failed to connect to reader {reader}: {e}")
                     if self.connectivity is True:
                         self.connectivity = False
                         self.sig_msg.emit(2)
@@ -131,6 +133,11 @@ class RFID(QThread):
         if self.connectivity is False:
             self.connectivity = True
             self.sig_msg.emit(1)
+
+    def reader_disconnected(self):
+        if self.connectivity is True:
+            self.connectivity = False
+            self.sig_msg.emit(2)
 
     def tag_seen_callback(self, reader, tags):
         """Function to run each time the reader reports seeing tags."""

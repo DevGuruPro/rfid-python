@@ -34,7 +34,7 @@ class CustomFormatter(logging.Formatter):
         return _formatter.format(record)
 
 
-logger = logging.getLogger("AS")
+logger = logging.getLogger("RFID")
 logger.setLevel(logging.DEBUG)  # better to have too much log than not enough
 logger.handlers = []
 formatter = CustomFormatter()

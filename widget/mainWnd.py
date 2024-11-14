@@ -5,9 +5,11 @@ import time
 import uuid
 from datetime import datetime
 
+import pygame
 import requests
 import schedule
 import json
+import sqlite3
 
 from PySide6.QtCore import QUrl, Signal
 from PySide6.QtGui import Qt
@@ -17,17 +19,14 @@ from PySide6.QtMultimedia import QSoundEffect
 
 from settings import HEALTH_UPLOAD_URL, RECORD_UPLOAD_URL
 from ui.ui_main import Ui_MainWindow
-from utils.commons import extract_from_gps, get_date_from_utc, calculate_speed_bearing, find_gps_port, is_ipv4_address
+from utils.commons import extract_from_gps, get_date_from_utc, find_gps_port, is_ipv4_address
 
 from utils.gps import GPS
 from utils.logger import logger
 from utils.rfid import RFID
 
-import ui.res_rc
-
 
 class MainWnd(QMainWindow):
-
     main_closed = Signal()
 
     def __init__(self, user_name, token):
@@ -38,20 +37,18 @@ class MainWnd(QMainWindow):
         # label = QLabel("Internet/Network Connection Status:", self)
         # label.setGeometry(self.geometry().width()-200, 20)
         text_label = QLabel("Internet / Network Connection Status:", self)
-        text_label.setGeometry(self.geometry().right()-300, 10, 300, 30)
-        text_label.setStyleSheet("""
-            QLabel {  
-                font-size: 10pt; /* Font size */  
-                font-weight: bold; /* Bold font */  
-            }""")
+        text_label.setGeometry(self.geometry().right() - 300, 10, 300, 30)
+        text_label.setStyleSheet(u"QLabel{\n"
+                                 "font-size: 10pt; /* Font size */\n"
+                                 "font-weight: bold; /* Bold font */\n"
+                                 "}")
 
         self.internet_label = QLabel("Connected", self)
-        self.internet_label.setGeometry(self.geometry().right()-20, 10, 80, 30)
-        self.internet_label.setStyleSheet("""
-                    QLabel {  
-                        font-size: 10pt; /* Font size */
-                        color: green;
-                    }""")
+        self.internet_label.setGeometry(self.geometry().right() - 20, 10, 80, 30)
+        self.internet_label.setStyleSheet(u"QLabel {\n"
+                                          "font-size: 10pt; /* Font size */\n"
+                                          "color: green;\n"
+                                          "}")
         # Connect the button's clicked signal to a slot
 
         logout_button = QPushButton("Logout", self)
@@ -99,6 +96,7 @@ class MainWnd(QMainWindow):
         pp = find_gps_port()
         self.gps = GPS(port=pp)
         if pp is not None:
+            self.ui.edit_gps_port.setText(pp)
             self.gps.sig_msg.connect(self.monitor_gps_status)
             self.gps.start()
 
@@ -114,7 +112,6 @@ class MainWnd(QMainWindow):
 
         self.notify_thread = threading.Thread(target=self.beep_sound)
 
-        self.database = []
         self.userName = user_name
         self.token = token
 
@@ -135,11 +132,55 @@ class MainWnd(QMainWindow):
         self.ui.setting_save_btn.released.connect(self.setting_save)
         self.ui.api_save_btn.released.connect(self.api_save)
 
+        self.ui.speed_limit.clicked.connect(self.on_speed_check)
+        self.ui.tag_limit.clicked.connect(self.on_tag_check)
+        self.ui.rssi_limit.clicked.connect(self.on_rssi_check)
+
+        self.ui.widget_17.setDisabled(True)
+        self.ui.widget_24.setDisabled(True)
+        self.ui.widget_14.setDisabled(True)
         self.load_setting()
+
+        self.db_connection = sqlite3.connect('database.db')
+        cursor = self.db_connection.cursor()
+        cursor.execute('''
+            CREATE TABLE IF NOT EXISTS records (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                rfidTag TEXT NOT NULL,
+                antenna INTEGER NOT NULL,
+                RSSI INTEGER NOT NULL,
+                latitude REAL NOT NULL,
+                longitude REAL NOT NULL,
+                speed REAL NOT NULL,
+                heading REAL NOT NULL,
+                locationCode TEXT NOT NULL,
+                username TEXT NOT NULL,
+                timestamp INTEGER NOT NULL
+            )
+        ''')
+        self.db_connection.commit()
 
     def on_log_out(self):
         self.close()
         self.main_closed.emit()
+
+    def on_speed_check(self):
+        if self.ui.speed_limit.isChecked():
+            self.ui.widget_17.setEnabled(True)
+        else:
+            self.ui.widget_17.setDisabled(True)
+
+    def on_tag_check(self):
+        if self.ui.tag_limit.isChecked():
+            self.ui.widget_24.setEnabled(True)
+        else:
+            self.ui.widget_24.setDisabled(True)
+
+    def on_rssi_check(self):
+        if self.ui.rssi_limit.isChecked():
+            self.ui.widget_14.setEnabled(True)
+        else:
+            self.ui.widget_14.setDisabled(True)
 
     def on_gps_checked(self):
         if self.ui.gps_checkBox.isChecked():
@@ -150,13 +191,7 @@ class MainWnd(QMainWindow):
     def on_gps_type(self):
         if self.ui.radio_internet_gps.isChecked():
             self.gps.stop()
-            pp = find_gps_port()
-            if pp is not None:
-                self.gps = GPS(port=pp)
-                self.gps.sig_msg.connect(self.monitor_gps_status)
-                self.gps.start()
-                logger.debug(f"internet gps selected")
-        else:
+        elif self.ui.radio_external_gps.isChecked():
             self.gps.stop()
             if self.ui.edit_gps_port.text() != "" and self.ui.edit_gps_baud.text() != "":
                 self.gps = GPS(port=self.ui.edit_gps_port.text(), baud_rate=int(self.ui.edit_gps_baud.text()))
@@ -164,8 +199,9 @@ class MainWnd(QMainWindow):
                 self.gps.start()
 
     def beep_sound(self):
-        relative_path = r"ui\alarm.wav"
-        os.system(f"ffplay -nodisp -autoexit {os.path.join(os.getcwd(), relative_path)}")
+        pygame.mixer.init()
+        sound = pygame.mixer.Sound(r"ui\alarm.wav")
+        sound.play()
 
     def on_rfid_host_text_changed(self, text):
         if is_ipv4_address(text):
@@ -300,11 +336,7 @@ class MainWnd(QMainWindow):
         elif status == 3:
             tag = self.rfid.tag_data[0]
             lat, lon = extract_from_gps(self.gps.get_data())
-            speed, bearing = 0, 0
-            if len(self.database):
-                last_lat, last_lon = self.database[len(self.database) - 1][4]
-                speed, bearing = calculate_speed_bearing(last_lat, last_lon, self.database[len(self.database) - 1][5],
-                                                         lat, lon, tag['LastSeenTimestampUTC'])
+            speed, bearing = self.gps.get_sdata()
             upload_flag = True
             if self.ui.speed_limit.isChecked():
                 if speed < int(self.ui.setting_min_speed.text()) or speed > int(self.ui.setting_max_speed.text()):
@@ -318,83 +350,56 @@ class MainWnd(QMainWindow):
                         int(tag['EPC-96']) > int(self.ui.setting_end_tag.text())):
                     upload_flag = False
             if upload_flag:
-                for record in self.database:
-                    if tag['LastSeenTimestampUTC'] - record[5] > 10_000_000:
-                        break
-                    if tag['EPC-96'] == record[1]:
-                        upload_flag = False
-                        logger.debug("Record already exists")
-                        break
-            new_data = [upload_flag, tag['EPC-96'], f"{tag['AntennaID']}", f"{tag['PeakRSSI']}", (lat, lon),
-                        tag['LastSeenTimestampUTC'], speed, bearing]
-            self.database.append(new_data)
-            self.refresh_data_table()
-            self.ui.last_rfid_read.setText(tag['EPC-96'])
-            self.ui.last_rfid_time.setText(get_date_from_utc(tag['LastSeenTimestampUTC']))
-            self.ui.last_gps_read.setText(f"{lat}, {lon}")
-            self.ui.last_gps_time.setText(get_date_from_utc(tag['LastSeenTimestampUTC']))
+                cursor = self.db_connection.cursor()
+                cursor.execute('''
+                    SELECT * FROM records
+                    WHERE rfidTag = ?
+                    AND ABS(timestamp - ?) < 10000000
+                    ''', (tag['EPC-96'], tag['LastSeenTimestampUTC']))
+                rows = cursor.fetchall()
+                if rows:
+                    upload_flag = False
+            if upload_flag:
+                cursor = self.db_connection.cursor()
+                cursor.execute('''
+                INSERT INTO records
+                (rfidTag, antenna, RSSI, latitude, longitude, speed, heading, locationCode, username, timestamp)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                ''', (
+                    tag['EPC-96'], f"{tag['AntennaID']}", f"{tag['PeakRSSI']}", lat, lon,
+                    speed, bearing, "-", self.userName, tag['LastSeenTimestampUTC']
+                ))
+                self.db_connection.commit()
+            self.refresh_data_table([tag['EPC-96'], f"{tag['AntennaID']}", f"{tag['PeakRSSI']}",
+                                     f"{lat}, {lon}", get_date_from_utc(tag['LastSeenTimestampUTC'])])
         if self.ui.edit_rfid_noti.text() == "1":
             self.notify_thread = threading.Thread(target=self.beep_sound)
             self.notify_thread.start()
 
-    def upload_to_default(self):
+    def upload_to_default(self, payload):
         logger.info('Uploading scanned data initiated...')
         headers = {
             "Authorization": f"Bearer {self.token}",
             "Content-Type": "application/json"  # Ensure the payload is interpreted as JSON
         }
-        start_index = 0
-        batch_index = 0
-        while start_index < len(self.database):
-            db = []
-            index = start_index
-            while len(db) < 1000 and index < len(self.database):
-                item = self.database[index]
-                index = index + 1
-                if not item[0]:
-                    continue
-                data = {
-                    "rfidTag": item[1],
-                    "antenna": f"{item[2]}",
-                    "latitude": item[4][0],
-                    "longitude": item[4][1],
-                    "heading": item[7],
-                    "speed": item[6],
-                    "locationCode": "-",
-                    "username": self.userName
-                }
-                db.append(data)
-            if len(db) == 0:
-                break
-            payload = {
-                "data": db
-            }
-            logger.debug(f"Record Upload Request to:{RECORD_UPLOAD_URL}, {payload}")
-            i = 0
-            for i in range(3):
-                try:
-                    response = requests.post(RECORD_UPLOAD_URL, headers=headers, json=payload)
-                    if response.status_code == 200:
-                        data = response.json()
-                        logger.debug(f"Record Upload Response-{data}")
-                        if data['metadata']['code'] == '200':
-                            logger.info(f'Uploading scanned data successfully finished-batch{batch_index}.')
-                            logger.info(f"Record Response:{data}")
-                            self.database = self.database[:start_index] + self.database[index:]
-                            logger.info(f'Uploaded record removed.')
-                            break
-                except requests.exceptions.RequestException as e:
-                    pass
-            if i == 3:
-                logger.info(f'Uploading scanned data failed-batch{batch_index}.')
-                start_index = index
-            batch_index = batch_index + 1
+        for i in range(3):
+            try:
+                response = requests.post(RECORD_UPLOAD_URL, headers=headers, json=payload)
+                if response.status_code == 200:
+                    data = response.json()
+                    if data['metadata']['code'] == '200':
+                        logger.info("Uploading scanned data successfully finished.")
+                        return True
+            except requests.exceptions.RequestException:
+                pass
+        return False
 
-    def upload_to_custom(self):
+    def upload_to_custom(self, payload):
         if self.ui.radio_login_basic.isChecked():
             pass
         elif self.ui.radio_login_token.isChecked():
             pass
+        return True
 
     def upload_health_data(self):
         logger.info('Uploading health data initiated...')
@@ -412,12 +417,10 @@ class MainWnd(QMainWindow):
             "lng": lon,
             "dateTime": datetime.now().strftime("%Y-%m-%dT%H:%M:%S")
         }
-        logger.debug(f"Health data Upload Request to:{HEALTH_UPLOAD_URL}, {payload}")
         try:
             response = requests.post(HEALTH_UPLOAD_URL, headers=headers, json=payload)
             if response.status_code == 200:
                 data = response.json()
-                logger.debug(f"Health data Upload Response-{data}")
                 if data['metadata']['code'] == '200':
                     logger.info('Uploading health data successfully finished.')
                 else:
@@ -427,36 +430,58 @@ class MainWnd(QMainWindow):
         except requests.exceptions.RequestException as e:
             logger.error("Error occurred while uploading health data, ", e)
 
-
     def upload_scanned_data(self):
-        if self.ui.radio_api_default.isChecked():
-            self.upload_to_default()
-        elif self.ui.radio_api_custom.isChecked():
-            self.upload_to_custom()
-        elif self.ui.radio_api_both.isChecked():
-            self.upload_to_default()
-            self.upload_to_custom()
+        cursor = self.db_connection.cursor()
+        cursor.execute('''
+            SELECT id, rfidTag, antenna, RSSI, latitude, longitude, speed, heading, locationCode, username
+            FROM records
+            ''')
+        data = cursor.fetchall()
+        chunk_size = 1000
+        for i in range(0, len(data), chunk_size):
+            chunk = data[i:i + chunk_size]
+            data_list = {
+                "data": [{
+                    "rfidTag": row[1],
+                    "antenna": row[2],
+                    "RSSI": row[3],
+                    "latitude": row[4],
+                    "longitude": row[5],
+                    "speed": row[6],
+                    "heading": row[7],
+                    "locationCode": row[8],
+                    "username": row[9],
+                } for row in chunk]
+            }
+            delete = None
+            if self.ui.radio_api_default.isChecked():
+                delete = self.upload_to_default(data_list)
+            elif self.ui.radio_api_custom.isChecked():
+                delete = self.upload_to_custom(data_list)
+            elif self.ui.radio_api_both.isChecked():
+                delete = self.upload_to_default(data_list) or self.upload_to_custom(data_list)
+            if delete:
+                ids_to_delete = [row[0] for row in chunk]
+                cursor.execute('''
+                DELETE FROM records
+                WHERE id IN (%s)
+                ''' % ','.join('?' * len(ids_to_delete)), ids_to_delete)
+
         microsecond_timestamp = int(time.time() * 1_000_000)
-        while len(self.database):
-            if microsecond_timestamp - self.database[0][5] < 600_000_000:
-                break
-            self.database.pop(0)
+        cursor.execute('''
+            DELETE FROM records
+            WHERE ABS(timestamp - ?) > 600000000
+        ''', [microsecond_timestamp])
+        self.db_connection.commit()
         logger.info('Deleted old data.')
 
-    def refresh_data_table(self):
-        for row in range(self.ui.tableWidget.rowCount()-2, -1, -1):
+    def refresh_data_table(self, new_data):
+        for row in range(self.ui.tableWidget.rowCount() - 2, -1, -1):
             for column in range(self.ui.tableWidget.columnCount()):
                 item = self.ui.tableWidget.item(row, column).text()
-                self.ui.tableWidget.setItem(row+1, column, QTableWidgetItem(item))
+                self.ui.tableWidget.setItem(row + 1, column, QTableWidgetItem(item))
         for column in range(self.ui.tableWidget.columnCount()):
-            d = self.database[len(self.database) - 1][column + 1]
-            if column == 3:
-                item = QTableWidgetItem(f"{d[0]}, {d[1]}")
-            elif column == 4:
-                item = QTableWidgetItem(get_date_from_utc(d))
-            else:
-                item = QTableWidgetItem(d)
-            self.ui.tableWidget.setItem(0, column, item)
+            self.ui.tableWidget.setItem(0, column, QTableWidgetItem(new_data[column]))
 
     def showEvent(self, event):
         self.resize_columns_to_fit()
@@ -478,6 +503,7 @@ class MainWnd(QMainWindow):
         self.ui.tableWidget.setRowHeight(5, height - int(height / 6) * 5)
 
     def closeEvent(self, event):
+        self.db_connection.close()
         self.gps.stop()
         self.rfid.stop()
         self._stop.set()

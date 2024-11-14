@@ -428,9 +428,28 @@ class Ui_MainWindow(object):
         self.radio_external_gps.setObjectName(u"radio_external_gps")
         self.radio_external_gps.setFont(font2)
         self.radio_external_gps.setStyleSheet(u"QRadioButton{\n"
-"	color: white; \n"
-"}")
-        self.radio_external_gps.setChecked(False)
+"	color: white;\n"
+"}\n"
+"\n"
+"QRadioButton::indicator {  \n"
+"    width: 16px;  \n"
+"    height: 16px;  \n"
+"	border-radius: 8px;\n"
+"}  \n"
+"\n"
+"QRadioButton::indicator:unchecked {\n"
+"	width: 14px;  \n"
+"    height: 14px;\n"
+"	margin: 1px;\n"
+"    background-color: white;\n"
+"	border-radius: 7px;\n"
+"}\n"
+"\n"
+"QRadioButton::indicator:checked {\n"
+"	border-radius: 8px;\n"
+"    image: url(:/img/radiomark.png);  /* Use a custom image if needed */  \n"
+" }")
+        self.radio_external_gps.setChecked(True)
 
         self.horizontalLayout_12.addWidget(self.radio_external_gps)
 
@@ -438,9 +457,28 @@ class Ui_MainWindow(object):
         self.radio_internet_gps.setObjectName(u"radio_internet_gps")
         self.radio_internet_gps.setFont(font2)
         self.radio_internet_gps.setStyleSheet(u"QRadioButton{\n"
-"	color: white; \n"
-"}")
-        self.radio_internet_gps.setChecked(True)
+"	color: white;\n"
+"}\n"
+"\n"
+"QRadioButton::indicator {  \n"
+"    width: 16px;  \n"
+"    height: 16px;  \n"
+"	border-radius: 8px;\n"
+"}  \n"
+"\n"
+"QRadioButton::indicator:unchecked {\n"
+"	width: 14px;  \n"
+"    height: 14px;\n"
+"	margin: 1px;\n"
+"    background-color: white;\n"
+"	border-radius: 7px;\n"
+"}\n"
+"\n"
+"QRadioButton::indicator:checked {\n"
+"	border-radius: 8px;\n"
+"    image: url(:/img/radiomark.png);  /* Use a custom image if needed */  \n"
+" }")
+        self.radio_internet_gps.setChecked(False)
 
         self.horizontalLayout_12.addWidget(self.radio_internet_gps)
 
@@ -1227,6 +1265,28 @@ class Ui_MainWindow(object):
         sizePolicy5.setHeightForWidth(self.radio_api_default.sizePolicy().hasHeightForWidth())
         self.radio_api_default.setSizePolicy(sizePolicy5)
         self.radio_api_default.setFont(font2)
+        self.radio_api_default.setStyleSheet(u"QRadioButton{\n"
+"	color: white;\n"
+"}\n"
+"\n"
+"QRadioButton::indicator {  \n"
+"    width: 16px;  \n"
+"    height: 16px;  \n"
+"	border-radius: 8px;\n"
+"}  \n"
+"\n"
+"QRadioButton::indicator:unchecked {\n"
+"	width: 14px;  \n"
+"    height: 14px;\n"
+"	margin: 1px;\n"
+"    background-color: white;\n"
+"	border-radius: 7px;\n"
+"}\n"
+"\n"
+"QRadioButton::indicator:checked {\n"
+"	border-radius: 8px;\n"
+"    image: url(:/img/radiomark.png);  /* Use a custom image if needed */  \n"
+" }")
         self.radio_api_default.setChecked(True)
 
         self.horizontalLayout_28.addWidget(self.radio_api_default)
@@ -1236,6 +1296,28 @@ class Ui_MainWindow(object):
         sizePolicy5.setHeightForWidth(self.radio_api_custom.sizePolicy().hasHeightForWidth())
         self.radio_api_custom.setSizePolicy(sizePolicy5)
         self.radio_api_custom.setFont(font2)
+        self.radio_api_custom.setStyleSheet(u"QRadioButton{\n"
+"	color: white;\n"
+"}\n"
+"\n"
+"QRadioButton::indicator {  \n"
+"    width: 16px;  \n"
+"    height: 16px;  \n"
+"	border-radius: 8px;\n"
+"}  \n"
+"\n"
+"QRadioButton::indicator:unchecked {\n"
+"	width: 14px;  \n"
+"    height: 14px;\n"
+"	margin: 1px;\n"
+"    background-color: white;\n"
+"	border-radius: 7px;\n"
+"}\n"
+"\n"
+"QRadioButton::indicator:checked {\n"
+"	border-radius: 8px;\n"
+"    image: url(:/img/radiomark.png);  /* Use a custom image if needed */  \n"
+" }")
 
         self.horizontalLayout_28.addWidget(self.radio_api_custom)
 
@@ -1244,6 +1326,28 @@ class Ui_MainWindow(object):
         sizePolicy5.setHeightForWidth(self.radio_api_both.sizePolicy().hasHeightForWidth())
         self.radio_api_both.setSizePolicy(sizePolicy5)
         self.radio_api_both.setFont(font2)
+        self.radio_api_both.setStyleSheet(u"QRadioButton{\n"
+"	color: white;\n"
+"}\n"
+"\n"
+"QRadioButton::indicator {  \n"
+"    width: 16px;  \n"
+"    height: 16px;  \n"
+"	border-radius: 8px;\n"
+"}  \n"
+"\n"
+"QRadioButton::indicator:unchecked {\n"
+"	width: 14px;  \n"
+"    height: 14px;\n"
+"	margin: 1px;\n"
+"    background-color: white;\n"
+"	border-radius: 7px;\n"
+"}\n"
+"\n"
+"QRadioButton::indicator:checked {\n"
+"	border-radius: 8px;\n"
+"    image: url(:/img/radiomark.png);  /* Use a custom image if needed */  \n"
+" }")
         self.radio_api_both.setChecked(False)
 
         self.horizontalLayout_28.addWidget(self.radio_api_both)
