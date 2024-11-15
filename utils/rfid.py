@@ -120,12 +120,12 @@ class RFID(QThread):
 
     def _connect_reader(self):
         for reader in self.reader_clients:
-            logger.debug(f"alive:{reader.is_alive()}")
+            # logger.debug(f"alive:{reader.is_alive()}")
             if not reader.is_alive():
                 try:
                     reader.connect()
                 except Exception as e:
-                    logger.error(f"Failed to connect to reader {reader}: {e}")
+                    # logger.error(f"Failed to connect to reader {reader}: {e}")
                     if self.connectivity is True:
                         self.connectivity = False
                         self.sig_msg.emit(2)
@@ -134,7 +134,7 @@ class RFID(QThread):
             self.connectivity = True
             self.sig_msg.emit(1)
 
-    def reader_disconnected(self):
+    def reader_disconnected(self, e):
         if self.connectivity is True:
             self.connectivity = False
             self.sig_msg.emit(2)

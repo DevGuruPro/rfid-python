@@ -93,3 +93,14 @@ def find_gps_port():
 
     logger.info("No GPS port found")
     return None
+
+
+def find_smallest_available_id(used_ids):
+    smallest_available_id = 1
+    for record in used_ids:
+        current_id = record[0]
+        if current_id == smallest_available_id:
+            smallest_available_id += 1
+        else:
+            break
+    return smallest_available_id

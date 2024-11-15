@@ -19,7 +19,8 @@ from PySide6.QtMultimedia import QSoundEffect
 
 from settings import HEALTH_UPLOAD_URL, RECORD_UPLOAD_URL
 from ui.ui_main import Ui_MainWindow
-from utils.commons import extract_from_gps, get_date_from_utc, find_gps_port, is_ipv4_address
+from utils.commons import extract_from_gps, get_date_from_utc, find_gps_port, is_ipv4_address, \
+    find_smallest_available_id
 
 from utils.gps import GPS
 from utils.logger import logger
@@ -28,6 +29,7 @@ from utils.rfid import RFID
 
 class MainWnd(QMainWindow):
     main_closed = Signal()
+    upload_record = Signal()
 
     def __init__(self, user_name, token):
         super().__init__()
@@ -107,6 +109,8 @@ class MainWnd(QMainWindow):
         self.scheduler_thread = threading.Thread(target=self.start_scheduler)
         self.scheduler_thread.start()
 
+        self.upload_record.connect(self.upload_scanned_data)
+
         self.sound_effect = QSoundEffect()
         self.sound_effect.setSource(QUrl.fromLocalFile(":/alarm.wav"))
 
@@ -141,11 +145,11 @@ class MainWnd(QMainWindow):
         self.ui.widget_14.setDisabled(True)
         self.load_setting()
 
-        db_connection = sqlite3.connect('database.db')
-        cursor = db_connection.cursor()
-        cursor.execute('''
+        self.db_connection = sqlite3.connect('database.db')
+        self.db_cursor = self.db_connection.cursor()
+        self.db_cursor.execute('''
             CREATE TABLE IF NOT EXISTS records (
-                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                id INTEGER PRIMARY KEY,
                 rfidTag TEXT NOT NULL,
                 antenna INTEGER NOT NULL,
                 RSSI INTEGER NOT NULL,
@@ -163,11 +167,10 @@ class MainWnd(QMainWindow):
                 value3 TEXT NOT NULL,
                 tag4 TEXT NOT NULL,
                 value4 TEXT NOT NULL,
-                timestamp INTEGER NOT NULL,
+                timestamp INTEGER NOT NULL
             )
         ''')
-        db_connection.commit()
-        db_connection.close()
+        self.db_connection.commit()
 
     def on_log_out(self):
         self.close()
@@ -302,7 +305,7 @@ class MainWnd(QMainWindow):
 
     def start_scheduler(self):
         schedule.clear()
-        schedule.every(7).seconds.do(self.upload_scanned_data)
+        schedule.every(7).seconds.do(self.emit_upload_scanned_data)
         schedule.every(15).seconds.do(self.upload_health_data)
         while not self._stop.is_set():
             schedule.run_pending()
@@ -359,34 +362,34 @@ class MainWnd(QMainWindow):
                         int(tag['EPC-96']) > int(self.ui.setting_end_tag.text())):
                     upload_flag = False
             if upload_flag:
-                db_connection = sqlite3.connect('database.db')
-                cursor = db_connection.cursor()
-                cursor.execute('''
+                self.db_cursor.execute('''
                     SELECT * FROM records
                     WHERE rfidTag = ?
                     AND ABS(timestamp - ?) < 10000000
                     ''', (tag['EPC-96'], tag['LastSeenTimestampUTC']))
-                rows = cursor.fetchall()
+                rows = self.db_cursor.fetchall()
                 if rows:
                     upload_flag = False
-                db_connection.close()
             if upload_flag:
-                db_connection = sqlite3.connect('database.db')
-                cursor = db_connection.cursor()
-                cursor.execute('''
+                self.db_cursor.execute('''
+                    SELECT id FROM records
+                    ORDER BY id ASC
+                    ''')
+                used_ids = self.db_cursor.fetchall()
+                self.db_cursor.execute('''
                 INSERT INTO records
-                (rfidTag, antenna, RSSI, latitude, longitude, speed, heading, locationCode, username, timestamp, tag1, value1, tag2, value2, tag3, value3, tag4, value4)
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                (id, rfidTag, antenna, RSSI, latitude, longitude, speed, heading, locationCode, username,
+                timestamp, tag1, value1, tag2, value2, tag3, value3, tag4, value4)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
                 ''', (
-                    tag['EPC-96'], f"{tag['AntennaID']}", f"{tag['PeakRSSI']}", lat, lon,
+                    find_smallest_available_id(used_ids), tag['EPC-96'], f"{tag['AntennaID']}", f"{tag['PeakRSSI']}", lat, lon,
                     speed, bearing, "-", self.userName, tag['LastSeenTimestampUTC'],
                     self.ui.edit_api_ctag1.text(), self.ui.edit_api_cval1.text(),
                     self.ui.edit_api_ctag2.text(), self.ui.edit_api_cval2.text(),
                     self.ui.edit_api_ctag3.text(), self.ui.edit_api_cval3.text(),
                     self.ui.edit_api_ctag4.text(), self.ui.edit_api_cval4.text()
                 ))
-                db_connection.commit()
-                db_connection.close()
+                self.db_connection.commit()
             self.refresh_data_table([tag['EPC-96'], f"{tag['AntennaID']}", f"{tag['PeakRSSI']}",
                                      f"{lat}, {lon}", get_date_from_utc(tag['LastSeenTimestampUTC'])])
             self.ui.edit_api_tag.setText(tag['EPC-96'])
@@ -401,7 +404,6 @@ class MainWnd(QMainWindow):
             self.notify_thread.start()
 
     def upload_to_default(self, payload):
-        logger.info('Uploading scanned data initiated...')
         headers = {
             "Authorization": f"Bearer {self.token}",
             "Content-Type": "application/json"  # Ensure the payload is interpreted as JSON
@@ -412,7 +414,6 @@ class MainWnd(QMainWindow):
                 if response.status_code == 200:
                     data = response.json()
                     if data['metadata']['code'] == '200':
-                        logger.info("Uploading scanned data successfully finished.")
                         return True
             except requests.exceptions.RequestException:
                 pass
@@ -454,19 +455,25 @@ class MainWnd(QMainWindow):
         except requests.exceptions.RequestException as e:
             logger.error("Error occurred while uploading health data, ", e)
 
+    def emit_upload_scanned_data(self):
+        self.upload_record.emit()
+
     def upload_scanned_data(self):
-        db_connection = sqlite3.connect('database.db')
-        cursor = db_connection.cursor()
-        cursor.execute('''
-            SELECT id, rfidTag, antenna, RSSI, latitude, longitude, speed, heading, locationCode, username, tag1, value1, tag2, value2, tag3, value3, tag4, valu4
+        logger.info('Uploading scanned data initiated...')
+        self.db_cursor.execute('''
+            SELECT id, rfidTag, antenna, RSSI, latitude, longitude, speed, heading,
+            locationCode, username, tag1, value1, tag2, value2, tag3, value3, tag4, value4
             FROM records
+            ORDER BY timestamp ASC
             ''')
-        data = cursor.fetchall()
+        data = self.db_cursor.fetchall()
         chunk_size = 1000
         for i in range(0, len(data), chunk_size):
             chunk = data[i:i + chunk_size]
-            data_list_default = {
-                "data": [{
+            data_list_default = []
+            data_list_custom = []
+            for row in chunk:
+                default_data = {
                     "rfidTag": row[1],
                     "antenna": row[2],
                     "RSSI": row[3],
@@ -476,45 +483,39 @@ class MainWnd(QMainWindow):
                     "heading": row[7],
                     "locationCode": row[8],
                     "username": row[9],
-                } for row in chunk]
-            }
-            data_list_custom = {
-                "data": [{
-                    "rfidTag": row[1],
-                    "antenna": row[2],
-                    "RSSI": row[3],
-                    "latitude": row[4],
-                    "longitude": row[5],
-                    "speed": row[6],
-                    "heading": row[7],
-                    "locationCode": row[8],
-                    "username": row[9],
-                    row[10]: row[11],
-                } for row in chunk]
-            }
+                }
+                custom_data = {}
+                for idx in range(10, 17, 2):
+                    key, value = row[idx], row[idx + 1]
+                    if key and value:
+                        custom_data[key] = value
+                custom_data = default_data | custom_data
+                data_list_default.append(default_data)
+                data_list_custom.append(custom_data)
+            payload_default = {"data": data_list_default}
+            payload_custom = {"data": data_list_custom}
             delete = None
             if self.ui.radio_api_default.isChecked():
-                delete = self.upload_to_default(data_list_default)
+                delete = self.upload_to_default(payload_default)
             elif self.ui.radio_api_custom.isChecked():
-                delete = self.upload_to_custom(data_list_custom)
+                delete = self.upload_to_custom(payload_custom)
             elif self.ui.radio_api_both.isChecked():
-                delete1 = self.upload_to_default(data_list_default)
-                delete2 = self.upload_to_custom(data_list_custom)
+                delete1 = self.upload_to_default(payload_default)
+                delete2 = self.upload_to_custom(payload_custom)
                 delete = delete1 or delete2
             if delete:
                 ids_to_delete = [row[0] for row in chunk]
-                cursor.execute('''
+                self.db_cursor.execute('''
                 DELETE FROM records
                 WHERE id IN (%s)
                 ''' % ','.join('?' * len(ids_to_delete)), ids_to_delete)
-
+        logger.info("Uploading scanned data finished.")
         microsecond_timestamp = int(time.time() * 1_000_000)
-        cursor.execute('''
+        self.db_cursor.execute('''
             DELETE FROM records
             WHERE ABS(timestamp - ?) > 600000000
         ''', [microsecond_timestamp])
-        db_connection.commit()
-        db_connection.close()
+        self.db_connection.commit()
         logger.info('Deleted old data.')
 
     def refresh_data_table(self, new_data):
@@ -545,6 +546,7 @@ class MainWnd(QMainWindow):
         self.ui.tableWidget.setRowHeight(5, height - int(height / 6) * 5)
 
     def closeEvent(self, event):
+        self.db_connection.close()
         self.gps.stop()
         self.rfid.stop()
         self._stop.set()
