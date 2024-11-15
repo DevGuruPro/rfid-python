@@ -36,8 +36,6 @@ class MainWnd(QMainWindow):
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
 
-        # label = QLabel("Internet/Network Connection Status:", self)
-        # label.setGeometry(self.geometry().width()-200, 20)
         text_label = QLabel("Internet / Network Connection Status : ", self)
         text_label.setGeometry(self.geometry().right() - 300, 15, 300, 30)
         text_label.setStyleSheet(u"QLabel{\n"
@@ -334,7 +332,6 @@ class MainWnd(QMainWindow):
             self.notify_thread.start()
 
     def monitor_rfid_status(self, status):
-        print(f"status:{status}")
         if status == 1:
             self.ui.rfid_connection_status.setStyleSheet("""
                 padding: 5px;
@@ -351,8 +348,22 @@ class MainWnd(QMainWindow):
             self.ui.rfid_connection_status.setText("Disconnected")
         elif status == 3:
             tag = self.rfid.tag_data[0]
-            lat, lon = extract_from_gps(self.gps.get_data())
-            speed, bearing = self.gps.get_sdata()
+            lat, lon = 0, 0
+            speed, bearing = 0, 0
+            if self.ui.radio_external_gps.isChecked():
+                lat, lon = extract_from_gps(self.gps.get_data())
+                speed, bearing = self.gps.get_sdata()
+            elif self.ui.radio_internet_gps.isChecked():
+                try:
+                    response = requests.get('http://ip-api.com/json/', timeout=0.5)
+                    response.raise_for_status()
+                    data = response.json()
+                    if data['status'] == 'success':
+                        lat, lon = data['lat'], data['lon']
+                    else:
+                        logger.error("Unable to get location data.")
+                except Exception as e:
+                    logger.error("An unexpected error occurred while getting location data.")
             upload_flag = True
             if self.ui.speed_limit.isChecked():
                 if speed < int(self.ui.setting_min_speed.text()) or speed > int(self.ui.setting_max_speed.text()):
@@ -394,7 +405,6 @@ class MainWnd(QMainWindow):
                     self.ui.edit_api_ctag4.text(), self.ui.edit_api_cval4.text()
                 ))
                 self.db_connection.commit()
-            print("#")
             self.refresh_data_table([tag['EPC-96'], f"{tag['AntennaID']}", f"{tag['PeakRSSI']}",
                                      f"{lat}, {lon}", get_date_from_utc(tag['LastSeenTimestampUTC'])])
             self.ui.edit_api_tag.setText(tag['EPC-96'])
@@ -524,8 +534,9 @@ class MainWnd(QMainWindow):
         logger.info('Deleted old data.')
 
     def refresh_data_table(self, new_data):
-        print("##")
+        logger.debug(f"update table:{new_data}")
         for row in range(self.ui.tableWidget.rowCount() - 2, -1, -1):
+            logger.debug(f"{row}")
             for column in range(self.ui.tableWidget.columnCount()):
                 item = self.ui.tableWidget.item(row, column).text()
                 self.ui.tableWidget.setItem(row + 1, column, QTableWidgetItem(item))

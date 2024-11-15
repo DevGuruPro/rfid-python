@@ -71,7 +71,6 @@ def is_ipv4_address(ip):
     if ipv4_regex.match(ip):
         # Split the input into parts and check if each part is between 0 and 255
         parts = ip.split('.')
-        print(parts)
         if all(0 <= int(part) <= 255 for part in parts):
             return True
     return False
