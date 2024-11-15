@@ -21,7 +21,7 @@ class GPS(QThread):
         self._ser = None
         self._b_stop = threading.Event()
         self._data = {}
-        self._sdata = []
+        self._sdata = [0, 0]
         self.connectivity = False
 
     def _connect(self):
@@ -58,10 +58,11 @@ class GPS(QThread):
         elif line.startswith('$GPRMC'):
             try:
                 msg = pynmea2.parse(line)
+                logger.debug(f"speed:{msg}")
                 self._sdata = [msg.spd_over_grnd * 1.15078, msg.true_course]
             except pynmea2.ParseError as e:
                 logger.error(f"Parse error: {e}")
-                self._sdata = []
+                self._sdata = [0, 0]
 
     def run(self):
         self._ser = self._connect()
@@ -80,7 +81,7 @@ class GPS(QThread):
                         self.sig_msg.emit(True)
                 except Exception as er:
                     self._data = {}
-                    self._sdata = []
+                    self._sdata = [0, 0]
                     self._ser = None
                     if self.connectivity is True:
                         self.connectivity = False

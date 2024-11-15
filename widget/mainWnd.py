@@ -331,6 +331,7 @@ class MainWnd(QMainWindow):
             self.notify_thread.start()
 
     def monitor_rfid_status(self, status):
+        print(f"status:{status}")
         if status == 1:
             self.ui.rfid_connection_status.setStyleSheet("""
                 padding: 5px;
@@ -390,6 +391,7 @@ class MainWnd(QMainWindow):
                     self.ui.edit_api_ctag4.text(), self.ui.edit_api_cval4.text()
                 ))
                 self.db_connection.commit()
+            print("#")
             self.refresh_data_table([tag['EPC-96'], f"{tag['AntennaID']}", f"{tag['PeakRSSI']}",
                                      f"{lat}, {lon}", get_date_from_utc(tag['LastSeenTimestampUTC'])])
             self.ui.edit_api_tag.setText(tag['EPC-96'])
@@ -519,6 +521,7 @@ class MainWnd(QMainWindow):
         logger.info('Deleted old data.')
 
     def refresh_data_table(self, new_data):
+        print("##")
         for row in range(self.ui.tableWidget.rowCount() - 2, -1, -1):
             for column in range(self.ui.tableWidget.columnCount()):
                 item = self.ui.tableWidget.item(row, column).text()
