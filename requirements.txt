@@ -4,3 +4,5 @@ pynmea2~=1.19.0
 sllurp~=2.0.1
 schedule~=1.2.2
 pygame
+geopy
+geographiclib
