@@ -20,7 +20,7 @@ from PySide6.QtMultimedia import QSoundEffect
 from settings import HEALTH_UPLOAD_URL, RECORD_UPLOAD_URL
 from ui.ui_main import Ui_MainWindow
 from utils.commons import extract_from_gps, get_date_from_utc, find_gps_port, is_ipv4_address, \
-    find_smallest_available_id
+    find_smallest_available_id, calculate_speed_bearing
 
 from utils.gps import GPS
 from utils.logger import logger
@@ -172,6 +172,10 @@ class MainWnd(QMainWindow):
             )
         ''')
         self.db_connection.commit()
+
+        self.last_lat = None
+        self.last_lon = None
+        self.last_utctime = None
 
     def on_log_out(self):
         self.close()
@@ -352,6 +356,10 @@ class MainWnd(QMainWindow):
             speed, bearing = 0, 0
             if self.ui.radio_external_gps.isChecked():
                 lat, lon = extract_from_gps(self.gps.get_data())
+                if lat != 0 and lon != 0:
+                    self.last_lat = lat
+                    self.last_lon = lon
+                    self.last_utctime = int(time.time() * 1_000_000)
                 speed, bearing = self.gps.get_sdata()
             elif self.ui.radio_internet_gps.isChecked():
                 try:
@@ -360,6 +368,13 @@ class MainWnd(QMainWindow):
                     data = response.json()
                     if data['status'] == 'success':
                         lat, lon = data['lat'], data['lon']
+                        milliseconds_time = int(time.time() * 1_000_000)
+                        if self.last_lat is not None and self.last_lon is not None and self.last_utctime is not None:
+                            speed, bearing = calculate_speed_bearing(self.last_lat, self.last_lon, self.last_utctime,
+                                                                     lat, lon, milliseconds_time)
+                        self.last_lat = lat
+                        self.last_lon = lon
+                        self.last_utctime = milliseconds_time
                     else:
                         logger.error("Unable to get location data.")
                 except Exception as e:
@@ -397,7 +412,8 @@ class MainWnd(QMainWindow):
                 timestamp, tag1, value1, tag2, value2, tag3, value3, tag4, value4)
                 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
                 ''', (
-                    find_smallest_available_id(used_ids), tag['EPC-96'], f"{tag['AntennaID']}", f"{tag['PeakRSSI']}", lat, lon,
+                    find_smallest_available_id(used_ids), tag['EPC-96'], f"{tag['AntennaID']}", f"{tag['PeakRSSI']}",
+                    lat, lon,
                     speed, bearing, "-", self.userName, tag['LastSeenTimestampUTC'],
                     self.ui.edit_api_ctag1.text(), self.ui.edit_api_cval1.text(),
                     self.ui.edit_api_ctag2.text(), self.ui.edit_api_cval2.text(),
@@ -407,6 +423,10 @@ class MainWnd(QMainWindow):
                 self.db_connection.commit()
             self.refresh_data_table([tag['EPC-96'], f"{tag['AntennaID']}", f"{tag['PeakRSSI']}",
                                      f"{lat}, {lon}", get_date_from_utc(tag['LastSeenTimestampUTC'])])
+            self.ui.last_rfid_read.setText(tag['EPC-96'])
+            self.ui.last_rfid_time.setText(get_date_from_utc(tag['LastSeenTimestampUTC']))
+            self.ui.last_gps_read.setText(f"{lat}, {lon}")
+            self.ui.last_gps_time.setText(get_date_from_utc(tag['LastSeenTimestampUTC']))
             self.ui.edit_api_tag.setText(tag['EPC-96'])
             self.ui.edit_api_ant.setText(f"{tag['AntennaID']}")
             self.ui.edit_api_lat.setText(f"{lat}")
@@ -534,9 +554,7 @@ class MainWnd(QMainWindow):
         logger.info('Deleted old data.')
 
     def refresh_data_table(self, new_data):
-        logger.debug(f"update table:{new_data}")
         for row in range(self.ui.tableWidget.rowCount() - 2, -1, -1):
-            logger.debug(f"{row}")
             for column in range(self.ui.tableWidget.columnCount()):
                 item = self.ui.tableWidget.item(row, column).text()
                 self.ui.tableWidget.setItem(row + 1, column, QTableWidgetItem(item))
