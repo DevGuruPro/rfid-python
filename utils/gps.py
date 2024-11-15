@@ -55,11 +55,13 @@ class GPS(QThread):
             except pynmea2.ParseError as e:
                 logger.error(f"Parse error: {e}")
                 self._data = {}
-        elif line.startswith('$GPRMC'):
+        elif line.startswith('$GPRMC') or line.startswith('$GNRMC'):
             try:
                 msg = pynmea2.parse(line)
                 logger.debug(f"speed:{msg}")
-                self._sdata = [msg.spd_over_grnd * 1.15078, msg.true_course]
+                speed_knots = msg.spd_over_grnd if msg.spd_over_grnd is not None else 0
+                course_degrees = msg.true_course if msg.true_course is not None else 0
+                self._sdata = [speed_knots * 1.15078, course_degrees]
             except pynmea2.ParseError as e:
                 logger.error(f"Parse error: {e}")
                 self._sdata = [0, 0]
