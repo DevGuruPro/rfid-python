@@ -369,7 +369,7 @@ class MainWnd(QMainWindow):
                     if data['status'] == 'success':
                         lat, lon = data['lat'], data['lon']
                         milliseconds_time = int(time.time() * 1_000_000)
-                        if self.last_lat is not None and self.last_lon is not None and self.last_utctime is not None:
+                        if self.last_lat is not None:
                             speed, bearing = calculate_speed_bearing(self.last_lat, self.last_lon, self.last_utctime,
                                                                      lat, lon, milliseconds_time)
                         self.last_lat = lat
