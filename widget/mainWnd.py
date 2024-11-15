@@ -478,7 +478,7 @@ class MainWnd(QMainWindow):
             "dateTime": datetime.now().strftime("%Y-%m-%dT%H:%M:%S")
         }
         try:
-            logger.debug(f"health:{headers}")
+            logger.debug(f"health:{headers}, {payload}")
             response = requests.post(HEALTH_UPLOAD_URL, headers=headers, json=payload)
             if response.status_code == 200:
                 logger.debug(f"health:{response}")
