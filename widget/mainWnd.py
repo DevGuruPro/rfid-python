@@ -14,7 +14,7 @@ import sqlite3
 from PySide6.QtCore import QUrl, Signal
 from PySide6.QtGui import Qt
 from PySide6.QtWidgets import QMainWindow, QApplication, QHeaderView, QTableWidget, QTableWidgetItem, QPushButton, \
-    QLabel
+    QLabel, QSizePolicy
 from PySide6.QtMultimedia import QSoundEffect
 
 from settings import HEALTH_UPLOAD_URL, RECORD_UPLOAD_URL
@@ -38,23 +38,26 @@ class MainWnd(QMainWindow):
 
         # label = QLabel("Internet/Network Connection Status:", self)
         # label.setGeometry(self.geometry().width()-200, 20)
-        text_label = QLabel("Internet / Network Connection Status:", self)
-        text_label.setGeometry(self.geometry().right() - 300, 10, 300, 30)
+        text_label = QLabel("Internet / Network Connection Status : ", self)
+        text_label.setGeometry(self.geometry().right() - 300, 15, 300, 30)
         text_label.setStyleSheet(u"QLabel{\n"
                                  "font-size: 10pt; /* Font size */\n"
                                  "font-weight: bold; /* Bold font */\n"
                                  "}")
+        text_label.setSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Maximum)
+        text_label.adjustSize()
 
         self.internet_label = QLabel("Connected", self)
-        self.internet_label.setGeometry(self.geometry().right() - 20, 10, 80, 30)
+        self.internet_label.setGeometry(self.geometry().right() - 300 + text_label.width(), 15, 80, 30)
         self.internet_label.setStyleSheet(u"QLabel {\n"
                                           "font-size: 10pt; /* Font size */\n"
                                           "color: green;\n"
                                           "}")
-        # Connect the button's clicked signal to a slot
+        self.internet_label.setSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Maximum)
+        self.internet_label.adjustSize()
 
         logout_button = QPushButton("Logout", self)
-        logout_button.setGeometry(400, 5, 55, 30)
+        logout_button.setGeometry(400, 7, 50, 30)
         logout_button.setCursor(Qt.CursorShape.PointingHandCursor)
         logout_button.setStyleSheet("""
             QPushButton {

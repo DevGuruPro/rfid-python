@@ -143,6 +143,7 @@ class RFID(QThread):
         """Function to run each time the reader reports seeing tags."""
         if tags:
             self.tag_data = convert_to_unicode(tags)
+            # logger.debug(f"rfid data:{self.tag_data}")
             self.sig_msg.emit(3)
 
     def run(self):
