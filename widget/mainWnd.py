@@ -379,6 +379,7 @@ class MainWnd(QMainWindow):
                         logger.error("Unable to get location data.")
                 except Exception as e:
                     logger.error("An unexpected error occurred while getting location data.")
+            logger.debug(f"gps:{lat},{lon},{speed},{bearing}")
             upload_flag = True
             if self.ui.speed_limit.isChecked():
                 if speed < int(self.ui.setting_min_speed.text()) or speed > int(self.ui.setting_max_speed.text()):
@@ -445,7 +446,9 @@ class MainWnd(QMainWindow):
         }
         for i in range(3):
             try:
+                logger.debug(f"scanned:{headers}, {payload}")
                 response = requests.post(RECORD_UPLOAD_URL, headers=headers, json=payload)
+                logger.debug(f"response:{response}")
                 if response.status_code == 200:
                     data = response.json()
                     if data['metadata']['code'] == '200':
