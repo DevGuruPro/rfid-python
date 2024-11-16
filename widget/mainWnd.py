@@ -237,6 +237,17 @@ class MainWnd(QMainWindow):
                 response.raise_for_status()
                 data = response.json()
                 if data['status'] == 'success':
+                    if self.ui.gps_connection_status.text() == "Disconnected":
+                        self.ui.gps_connection_status.setStyleSheet("""
+                            padding: 5px;
+                            border: 1px solid black;
+                            color: green;
+                            """)
+                        self.ui.gps_connection_status.setText("Connected")
+                        if self.ui.edit_gps_noti.text() == "1":
+                            self.notify_thread = threading.Thread(target=self.beep_sound)
+                            self.notify_thread.start()
+
                     self.cur_lat, self.cur_lon = data['lat'], data['lon']
                     milliseconds_time = int(time.time() * 1_000_000)
                     if self.last_lat is not None:
@@ -247,12 +258,21 @@ class MainWnd(QMainWindow):
                     self.last_lon = self.cur_lon
                     self.last_utctime = milliseconds_time
             except Exception:
-                pass
+                if self.ui.gps_connection_status.text() == "Connected":
+                    self.ui.gps_connection_status.setStyleSheet("""
+                                                padding: 5px;
+                                                border: 1px solid black;
+                                                color: red;
+                                                """)
+                    self.ui.gps_connection_status.setText("Disconnected")
+                    if self.ui.edit_gps_noti.text() == "1":
+                        self.notify_thread = threading.Thread(target=self.beep_sound)
+                        self.notify_thread.start()
             time.sleep(.1)
 
     def beep_sound(self):
         pygame.mixer.init()
-        sound = pygame.mixer.Sound(r"ui\alarm.wav")
+        sound = pygame.mixer.Sound(os.path.abspath("ui/alarm.wav"))
         sound.play()
 
     def on_rfid_host_text_changed(self, text):
@@ -605,10 +625,12 @@ class MainWnd(QMainWindow):
         self.ui.tableWidget.setRowHeight(5, height - int(height / 6) * 5)
 
     def closeEvent(self, event):
+        self.setting_save()
         self.db_connection.close()
         self.gps.stop()
         self.igps_stop.set()
-        self.internet_gps.join(.1)
+        if self.internet_gps.is_alive():
+            self.internet_gps.join(.1)
         self.rfid.stop()
         self._stop.set()
         schedule.clear()
