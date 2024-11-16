@@ -225,9 +225,13 @@ class MainWnd(QMainWindow):
             self.igps_stop.set()
             self.internet_gps.join(.1)
             if self.ui.edit_gps_port.text() != "" and self.ui.edit_gps_baud.text() != "":
-                self.gps = GPS(port=self.ui.edit_gps_port.text(), baud_rate=int(self.ui.edit_gps_baud.text()))
+                sta = True if self.ui.last_gps_read.text() == "Connected" else False
+                self.gps = GPS(port=self.ui.edit_gps_port.text(), baud_rate=int(self.ui.edit_gps_baud.text()),
+                               current_status=sta)
                 self.gps.sig_msg.connect(self.monitor_gps_status)
                 self.gps.start()
+            elif self.ui.last_gps_read.text() == "Connected":
+                self.monitor_gps_status(False)
 
     def get_internet_gps_data(self):
         while not self.igps_stop.is_set():
@@ -238,16 +242,7 @@ class MainWnd(QMainWindow):
                 data = response.json()
                 if data['status'] == 'success':
                     if self.ui.gps_connection_status.text() == "Disconnected":
-                        self.ui.gps_connection_status.setStyleSheet("""
-                            padding: 5px;
-                            border: 1px solid black;
-                            color: green;
-                            """)
-                        self.ui.gps_connection_status.setText("Connected")
-                        if self.ui.edit_gps_noti.text() == "1":
-                            self.notify_thread = threading.Thread(target=self.beep_sound)
-                            self.notify_thread.start()
-
+                        self.monitor_gps_status(True)
                     self.cur_lat, self.cur_lon = data['lat'], data['lon']
                     milliseconds_time = int(time.time() * 1_000_000)
                     if self.last_lat is not None:
@@ -259,15 +254,7 @@ class MainWnd(QMainWindow):
                     self.last_utctime = milliseconds_time
             except Exception:
                 if self.ui.gps_connection_status.text() == "Connected":
-                    self.ui.gps_connection_status.setStyleSheet("""
-                                                padding: 5px;
-                                                border: 1px solid black;
-                                                color: red;
-                                                """)
-                    self.ui.gps_connection_status.setText("Disconnected")
-                    if self.ui.edit_gps_noti.text() == "1":
-                        self.notify_thread = threading.Thread(target=self.beep_sound)
-                        self.notify_thread.start()
+                    self.monitor_gps_status(False)
             time.sleep(.1)
 
     def beep_sound(self):

@@ -14,7 +14,7 @@ class GPS(QThread):
 
     sig_msg = Signal(bool)
 
-    def __init__(self, port, baud_rate=BAUD_RATE_GPS):
+    def __init__(self, port, baud_rate=BAUD_RATE_GPS, current_status=False):
         super().__init__()
         self.port = port
         self.baud_rate = baud_rate
@@ -22,7 +22,7 @@ class GPS(QThread):
         self._b_stop = threading.Event()
         self._data = {}
         self._sdata = [0, 0]
-        self.connectivity = False
+        self.connectivity = current_status
 
     def _connect(self):
         """Attempts to connect to the GPS module."""
