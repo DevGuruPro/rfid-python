@@ -103,6 +103,9 @@ class MainWnd(QMainWindow):
             self.gps.sig_msg.connect(self.monitor_gps_status)
             self.gps.start()
 
+        self.internet_gps = threading.Thread(target=self.get_internet_gps_data)
+        self.igps_stop = threading.Event()
+
         self.rfid = RFID()
         self.rfid.sig_msg.connect(self.monitor_rfid_status)
         self.rfid.start()
@@ -176,6 +179,10 @@ class MainWnd(QMainWindow):
         self.last_lat = None
         self.last_lon = None
         self.last_utctime = None
+        self.cur_lat = None
+        self.cur_lon = None
+        self.bearing = None
+        self.speed = None
 
     def on_log_out(self):
         self.close()
@@ -210,13 +217,38 @@ class MainWnd(QMainWindow):
 
     def on_gps_type(self):
         if self.ui.radio_internet_gps.isChecked():
+            self.igps_stop.clear()
+            self.internet_gps = threading.Thread(target=self.get_internet_gps_data)
+            self.internet_gps.start()
             self.gps.stop()
         elif self.ui.radio_external_gps.isChecked():
-            self.gps.stop()
+            self.igps_stop.set()
+            self.internet_gps.join(.1)
             if self.ui.edit_gps_port.text() != "" and self.ui.edit_gps_baud.text() != "":
                 self.gps = GPS(port=self.ui.edit_gps_port.text(), baud_rate=int(self.ui.edit_gps_baud.text()))
                 self.gps.sig_msg.connect(self.monitor_gps_status)
                 self.gps.start()
+
+    def get_internet_gps_data(self):
+        while not self.igps_stop.is_set():
+            self.cur_lat, self.cur_lon, self.speed, self.bearing = 0, 0, 0, 0
+            try:
+                response = requests.get('http://ip-api.com/json/', timeout=0.5)
+                response.raise_for_status()
+                data = response.json()
+                if data['status'] == 'success':
+                    self.cur_lat, self.cur_lon = data['lat'], data['lon']
+                    milliseconds_time = int(time.time() * 1_000_000)
+                    if self.last_lat is not None:
+                        self.speed, self.bearing = calculate_speed_bearing(self.last_lat, self.last_lon,
+                                                                           self.last_utctime, self.cur_lat, self.cur_lon,
+                                                                           milliseconds_time)
+                    self.last_lat = self.cur_lat
+                    self.last_lon = self.cur_lon
+                    self.last_utctime = milliseconds_time
+            except Exception:
+                pass
+            time.sleep(.1)
 
     def beep_sound(self):
         pygame.mixer.init()
@@ -355,8 +387,7 @@ class MainWnd(QMainWindow):
             self.ui.rfid_connection_status.setText("Disconnected")
         elif status == 3:
             tag = self.rfid.tag_data[0]
-            lat, lon = 0, 0
-            speed, bearing = 0, 0
+            lat, lon, speed, bearing = 0, 0, 0, 0
             if self.ui.radio_external_gps.isChecked():
                 lat, lon = extract_from_gps(self.gps.get_data())
                 if lat != 0 and lon != 0:
@@ -365,23 +396,7 @@ class MainWnd(QMainWindow):
                     self.last_utctime = int(time.time() * 1_000_000)
                 speed, bearing = self.gps.get_sdata()
             elif self.ui.radio_internet_gps.isChecked():
-                try:
-                    response = requests.get('http://ip-api.com/json/', timeout=0.5)
-                    response.raise_for_status()
-                    data = response.json()
-                    if data['status'] == 'success':
-                        lat, lon = data['lat'], data['lon']
-                        milliseconds_time = int(time.time() * 1_000_000)
-                        if self.last_lat is not None:
-                            speed, bearing = calculate_speed_bearing(self.last_lat, self.last_lon, self.last_utctime,
-                                                                     lat, lon, milliseconds_time)
-                        self.last_lat = lat
-                        self.last_lon = lon
-                        self.last_utctime = milliseconds_time
-                    else:
-                        logger.error("Unable to get location data.")
-                except Exception as e:
-                    logger.error("An unexpected error occurred while getting location data.")
+                lat, lon, speed, bearing = self.cur_lat, self.cur_lon, self.speed, self.bearing
             logger.debug(f"gps:{lat},{lon},{speed},{bearing}")
             upload_flag = True
             if self.ui.speed_limit.isChecked():
@@ -426,7 +441,8 @@ class MainWnd(QMainWindow):
                 ))
                 self.db_connection.commit()
             self.refresh_data_table([tag['EPC-96'], f"{tag['AntennaID']}", f"{tag['PeakRSSI']}",
-                                     f"{lat}, {lon}", f"{bearing}"])
+                                     f"{lat:.4f}".rstrip('0').rstrip('.')+", "+f"{lon:.4f}".rstrip('0').rstrip('.'),
+                                     f"{bearing}"])
             self.ui.last_rfid_read.setText(tag['EPC-96'])
             self.ui.last_rfid_time.setText(get_date_from_utc(tag['LastSeenTimestampUTC']))
             self.ui.last_gps_read.setText(f"{lat}, {lon}")
@@ -577,7 +593,7 @@ class MainWnd(QMainWindow):
 
     def resize_columns_to_fit(self):
         width = self.ui.tableWidget.viewport().width()
-        column_proportions = [0.4, 0.15, 0.15, 0.15]
+        column_proportions = [0.4, 0.12, 0.12, 0.24]
         wid = 0
         for i in range(4):
             self.ui.tableWidget.setColumnWidth(i, width * column_proportions[i])
@@ -591,6 +607,8 @@ class MainWnd(QMainWindow):
     def closeEvent(self, event):
         self.db_connection.close()
         self.gps.stop()
+        self.igps_stop.set()
+        self.internet_gps.join(.1)
         self.rfid.stop()
         self._stop.set()
         schedule.clear()
