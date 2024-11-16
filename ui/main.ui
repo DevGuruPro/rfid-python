@@ -268,7 +268,7 @@ QTableWidget::item {
              </column>
              <column>
               <property name="text">
-               <string>Last Updated</string>
+               <string>Heading</string>
               </property>
              </column>
              <item row="0" column="0">

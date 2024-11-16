@@ -179,6 +179,9 @@ class MainWnd(QMainWindow):
 
     def on_log_out(self):
         self.close()
+        if os.path.isfile('setting/login.cre'):
+            os.remove('setting/login.cre')
+            logger.debug("Credential file has been deleted successfully.")
         self.main_closed.emit()
 
     def on_speed_check(self):
@@ -382,7 +385,7 @@ class MainWnd(QMainWindow):
             logger.debug(f"gps:{lat},{lon},{speed},{bearing}")
             upload_flag = True
             if self.ui.speed_limit.isChecked():
-                if speed < int(self.ui.setting_min_speed.text()) or speed > int(self.ui.setting_max_speed.text()):
+                if speed < int(self.ui.setting_min_speed.text())    or speed > int(self.ui.setting_max_speed.text()):
                     upload_flag = False
             if upload_flag and self.ui.rssi_limit.isChecked():
                 if (tag['PeakRSSI'] < int(self.ui.setting_min_rssi.text()) or
@@ -423,7 +426,7 @@ class MainWnd(QMainWindow):
                 ))
                 self.db_connection.commit()
             self.refresh_data_table([tag['EPC-96'], f"{tag['AntennaID']}", f"{tag['PeakRSSI']}",
-                                     f"{lat}, {lon}", get_date_from_utc(tag['LastSeenTimestampUTC'])])
+                                     f"{lat}, {lon}", f"{bearing}"])
             self.ui.last_rfid_read.setText(tag['EPC-96'])
             self.ui.last_rfid_time.setText(get_date_from_utc(tag['LastSeenTimestampUTC']))
             self.ui.last_gps_read.setText(f"{lat}, {lon}")
@@ -574,7 +577,7 @@ class MainWnd(QMainWindow):
 
     def resize_columns_to_fit(self):
         width = self.ui.tableWidget.viewport().width()
-        column_proportions = [0.36, 0.1, 0.1, 0.1]
+        column_proportions = [0.4, 0.15, 0.15, 0.15]
         wid = 0
         for i in range(4):
             self.ui.tableWidget.setColumnWidth(i, width * column_proportions[i])

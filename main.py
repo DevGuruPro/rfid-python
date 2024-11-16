@@ -12,6 +12,7 @@ class InventorySystem(object):
         self.login.login_closed.connect(self.close_login)
         self.login.show()
         self.main = None
+        self.login.load_credential()
 
     def close_login(self):
         self.main = MainWnd(self.login.userName, self.login.token)
