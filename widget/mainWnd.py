@@ -461,7 +461,7 @@ class MainWnd(QMainWindow):
             self.ui.edit_api_heading.setText(f"{bearing}")
             self.ui.edit_api_speed.setText(f"{speed}")
             self.ui.edit_api_rssi.setText(f"{tag['PeakRSSI']}")
-        if self.ui.edit_rfid_noti.text() == "1":
+        if status != 3 and self.ui.edit_rfid_noti.text() == "1":
             self.notify_thread = threading.Thread(target=self.beep_sound)
             self.notify_thread.start()
 
