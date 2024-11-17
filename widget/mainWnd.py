@@ -292,10 +292,10 @@ class MainWnd(QMainWindow):
                 self.ui.widget_17.setEnabled(True)
             if setting_data['rssi']['checked']:
                 self.ui.rssi_limit.setChecked(True)
-                self.ui.widget_14.setDisabled(True)
+                self.ui.widget_14.setEnabled(True)
             if setting_data['tag_range']['checked']:
                 self.ui.tag_limit.setChecked(True)
-                self.ui.widget_24.setDisabled(True)
+                self.ui.widget_24.setEnabled(True)
             self.ui.edit_gps_noti.setText(setting_data['gps']['notify'])
             self.ui.edit_gps_hand.setText(setting_data['gps']['handshake'])
             self.ui.edit_gps_port.setText(setting_data['gps']['port'])
