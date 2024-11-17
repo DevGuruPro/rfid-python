@@ -428,15 +428,18 @@ class MainWnd(QMainWindow):
             logger.debug(f"gps:{lat},{lon},{speed},{bearing}")
             upload_flag = True
             if self.ui.speed_limit.isChecked():
-                if speed < int(self.ui.setting_min_speed.text()) or speed > int(self.ui.setting_max_speed.text()):
+                if (self.ui.setting_min_speed.text() != "" and self.ui.setting_max_speed.text() != "" and
+                        (speed < int(self.ui.setting_min_speed.text()) or speed > int(self.ui.setting_max_speed.text()))):
                     upload_flag = False
             if upload_flag and self.ui.rssi_limit.isChecked():
-                if (tag['PeakRSSI'] < int(self.ui.setting_min_rssi.text()) or
-                        tag['PeakRSSI'] > int(self.ui.setting_min_rssi.text())):
+                if (self.ui.setting_min_rssi.text() != "" and self.ui.setting_max_rssi.text() != "" and
+                        (tag['PeakRSSI'] < int(self.ui.setting_min_rssi.text()) or
+                         tag['PeakRSSI'] > int(self.ui.setting_max_rssi.text()))):
                     upload_flag = False
             if upload_flag and self.ui.tag_limit.isChecked():
-                if (int(tag['EPC-96']) < int(self.ui.setting_start_tag.text()) or
-                        int(tag['EPC-96']) > int(self.ui.setting_end_tag.text())):
+                if (self.ui.setting_start_tag.text() != "" and self.ui.setting_end_tag.text() != "" and
+                        (int(tag['EPC-96']) < int(self.ui.setting_start_tag.text()) or
+                         int(tag['EPC-96']) > int(self.ui.setting_end_tag.text()))):
                     upload_flag = False
             if upload_flag:
                 self.db_cursor.execute('''
