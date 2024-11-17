@@ -93,6 +93,31 @@ class MainWnd(QMainWindow):
                               ~Qt.ItemFlag.ItemIsEnabled)
                 self.ui.tableWidget.setItem(row, column, item)
 
+        self.ui.radio_api_default.clicked.connect(self.select_api_type)
+        self.ui.radio_api_custom.clicked.connect(self.select_api_type)
+        self.ui.radio_api_both.clicked.connect(self.select_api_type)
+
+        self.ui.radio_login_basic.clicked.connect(self.select_login_type)
+        self.ui.radio_login_token.clicked.connect(self.select_login_type)
+
+        self.ui.token_widget.hide()
+        self.ui.custom_widget.hide()
+
+        self.ui.edit_rfid_host.textChanged.connect(self.on_rfid_host_text_changed)
+        self.ui.gps_checkBox.clicked.connect(self.on_gps_checked)
+        self.ui.radio_external_gps.clicked.connect(self.on_gps_type)
+        self.ui.radio_internet_gps.clicked.connect(self.on_gps_type)
+        self.ui.setting_save_btn.released.connect(self.setting_save)
+        self.ui.api_save_btn.released.connect(self.api_save)
+
+        self.ui.speed_limit.clicked.connect(self.on_speed_check)
+        self.ui.tag_limit.clicked.connect(self.on_tag_check)
+        self.ui.rssi_limit.clicked.connect(self.on_rssi_check)
+
+        self.ui.widget_17.setDisabled(True)
+        self.ui.widget_24.setDisabled(True)
+        self.ui.widget_14.setDisabled(True)
+
         self.load_setting()
 
         self._stop = threading.Event()
@@ -123,31 +148,6 @@ class MainWnd(QMainWindow):
 
         self.userName = user_name
         self.token = token
-
-        self.ui.radio_api_default.clicked.connect(self.select_api_type)
-        self.ui.radio_api_custom.clicked.connect(self.select_api_type)
-        self.ui.radio_api_both.clicked.connect(self.select_api_type)
-
-        self.ui.radio_login_basic.clicked.connect(self.select_login_type)
-        self.ui.radio_login_token.clicked.connect(self.select_login_type)
-
-        self.ui.token_widget.hide()
-        self.ui.custom_widget.hide()
-
-        self.ui.edit_rfid_host.textChanged.connect(self.on_rfid_host_text_changed)
-        self.ui.gps_checkBox.clicked.connect(self.on_gps_checked)
-        self.ui.radio_external_gps.clicked.connect(self.on_gps_type)
-        self.ui.radio_internet_gps.clicked.connect(self.on_gps_type)
-        self.ui.setting_save_btn.released.connect(self.setting_save)
-        self.ui.api_save_btn.released.connect(self.api_save)
-
-        self.ui.speed_limit.clicked.connect(self.on_speed_check)
-        self.ui.tag_limit.clicked.connect(self.on_tag_check)
-        self.ui.rssi_limit.clicked.connect(self.on_rssi_check)
-
-        self.ui.widget_17.setDisabled(True)
-        self.ui.widget_24.setDisabled(True)
-        self.ui.widget_14.setDisabled(True)
 
         self.db_connection = sqlite3.connect('database.db')
         self.db_cursor = self.db_connection.cursor()
@@ -289,10 +289,13 @@ class MainWnd(QMainWindow):
                 self.ui.radio_internet_gps.setChecked(True)
             if setting_data['speed']['checked']:
                 self.ui.speed_limit.setChecked(True)
+                self.ui.widget_17.setEnabled(True)
             if setting_data['rssi']['checked']:
                 self.ui.rssi_limit.setChecked(True)
+                self.ui.widget_14.setDisabled(True)
             if setting_data['tag_range']['checked']:
                 self.ui.tag_limit.setChecked(True)
+                self.ui.widget_24.setDisabled(True)
             self.ui.edit_gps_noti.setText(setting_data['gps']['notify'])
             self.ui.edit_gps_hand.setText(setting_data['gps']['handshake'])
             self.ui.edit_gps_port.setText(setting_data['gps']['port'])
