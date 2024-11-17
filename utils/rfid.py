@@ -115,13 +115,20 @@ class RFID(QThread):
             config = LLRPReaderConfig(factory_args)
             reader = LLRPReaderClient(host, port, config)
             reader.add_tag_report_callback(self.tag_seen_callback)
+            reader.add_disconnected_callback(self.disconnected_callback)
             self.reader_clients.append(reader)
+
+    def disconnected_callback(self,reader):
+        logger.debug("----------------Disconneceted!!!!")
 
     def _connect_reader(self):
         for reader in self.reader_clients:
-            # logger.debug(f'rfid lost{reader.on_lost_connection()}')
-            if reader.on_lost_connection():
-                logger.error(f"rfid disconnected")
+            logger.debug(f'rfid lost{reader.on_lost_connection()}')
+            logger.debug(f'rfid alive{reader.is_alive()}')
+            try:
+                reader.connect()
+            except Exception as e:
+                logger.error(f"rfid disconnected:{e}")
                 if self.connectivity is True:
                     self.connectivity = False
                     self.sig_msg.emit(2)
