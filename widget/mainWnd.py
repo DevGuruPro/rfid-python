@@ -114,6 +114,7 @@ class MainWnd(QMainWindow):
         self.ui.tag_limit.clicked.connect(self.on_tag_check)
         self.ui.rssi_limit.clicked.connect(self.on_rssi_check)
 
+        self.ui.widget_47.setDisabled(True)
         self.ui.widget_17.setDisabled(True)
         self.ui.widget_24.setDisabled(True)
         self.ui.widget_14.setDisabled(True)
@@ -283,6 +284,7 @@ class MainWnd(QMainWindow):
 
             if setting_data['gps']['checked']:
                 self.ui.gps_checkBox.setChecked(True)
+                self.ui.widget_47.setEnabled(True)
             if setting_data['gps']['is_external']:
                 self.ui.radio_external_gps.setChecked(True)
             else:
