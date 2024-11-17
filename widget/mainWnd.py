@@ -179,10 +179,10 @@ class MainWnd(QMainWindow):
         self.last_lat = None
         self.last_lon = None
         self.last_utctime = None
-        self.cur_lat = None
-        self.cur_lon = None
-        self.bearing = None
-        self.speed = None
+        self.cur_lat = 0
+        self.cur_lon = 0
+        self.bearing = 0
+        self.speed = 0
 
     def on_log_out(self):
         self.close()
@@ -423,7 +423,7 @@ class MainWnd(QMainWindow):
             logger.debug(f"gps:{lat},{lon},{speed},{bearing}")
             upload_flag = True
             if self.ui.speed_limit.isChecked():
-                if speed < int(self.ui.setting_min_speed.text())    or speed > int(self.ui.setting_max_speed.text()):
+                if speed < int(self.ui.setting_min_speed.text()) or speed > int(self.ui.setting_max_speed.text()):
                     upload_flag = False
             if upload_flag and self.ui.rssi_limit.isChecked():
                 if (tag['PeakRSSI'] < int(self.ui.setting_min_rssi.text()) or
