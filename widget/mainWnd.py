@@ -92,8 +92,9 @@ class MainWnd(QMainWindow):
                 item.setFlags(item.flags() & ~Qt.ItemFlag.ItemIsSelectable & ~Qt.ItemFlag.ItemIsEditable &
                               ~Qt.ItemFlag.ItemIsEnabled)
                 self.ui.tableWidget.setItem(row, column, item)
-        # self.ui.tableWidget.item(0, 0).setText("004837065827700000000333 - 1")
-        # self.ui.tableWidget.item(0, 4).setText("5/20/2024 11:09:35 PM")
+
+        self.load_setting()
+
         self._stop = threading.Event()
 
         pp = find_gps_port()
@@ -147,7 +148,6 @@ class MainWnd(QMainWindow):
         self.ui.widget_17.setDisabled(True)
         self.ui.widget_24.setDisabled(True)
         self.ui.widget_14.setDisabled(True)
-        self.load_setting()
 
         self.db_connection = sqlite3.connect('database.db')
         self.db_cursor = self.db_connection.cursor()
@@ -252,9 +252,6 @@ class MainWnd(QMainWindow):
                     self.last_lat = self.cur_lat
                     self.last_lon = self.cur_lon
                     self.last_utctime = milliseconds_time
-                else:
-                    if self.ui.gps_connection_status.text() == "Connected":
-                        self.monitor_gps_status(False)
             except Exception:
                 if self.ui.gps_connection_status.text() == "Connected":
                     self.monitor_gps_status(False)
@@ -284,6 +281,18 @@ class MainWnd(QMainWindow):
             self.ui.edit_rfid_ra1.setText(setting_data['RFID']['ra1'])
             self.ui.edit_rfid_ra2.setText(setting_data['RFID']['ra2'])
 
+            if setting_data['gps']['checked']:
+                self.ui.gps_checkBox.setChecked(True)
+            if setting_data['gps']['is_external']:
+                self.ui.radio_external_gps.setChecked(True)
+            else:
+                self.ui.radio_internet_gps.setChecked(True)
+            if setting_data['speed']['checked']:
+                self.ui.speed_limit.setChecked(True)
+            if setting_data['rssi']['checked']:
+                self.ui.rssi_limit.setChecked(True)
+            if setting_data['tag_range']['checked']:
+                self.ui.tag_limit.setChecked(True)
             self.ui.edit_gps_noti.setText(setting_data['gps']['notify'])
             self.ui.edit_gps_hand.setText(setting_data['gps']['handshake'])
             self.ui.edit_gps_port.setText(setting_data['gps']['port'])
@@ -305,13 +314,17 @@ class MainWnd(QMainWindow):
                      'rsa1': self.ui.edit_rfid_rsa1.text(), 'rsa2': self.ui.edit_rfid_rsa2.text(),
                      'lsa1': self.ui.edit_rfid_lsa1.text(), 'lsa2': self.ui.edit_rfid_lsa2.text(),
                      'ra1': self.ui.edit_rfid_ra1.text(), 'ra2': self.ui.edit_rfid_ra2.text()},
-            'gps': {'notify': self.ui.edit_gps_noti.text(), 'handshake': self.ui.edit_gps_hand.text(),
+            'gps': {'checked': self.ui.gps_checkBox.isChecked(), 'is_external': self.ui.radio_external_gps.isChecked(),
+                    'notify': self.ui.edit_gps_noti.text(), 'handshake': self.ui.edit_gps_hand.text(),
                     'port': self.ui.edit_gps_port.text(), 'data_bits': self.ui.edit_gps_dbits.text(),
                     'stop_bits': self.ui.edit_gps_sbits.text(), 'parity': self.ui.edit_gps_parity.text(),
                     'baud_rate': self.ui.edit_gps_baud.text()},
-            'speed': {'min': self.ui.setting_min_speed.text(), 'max': self.ui.setting_max_speed.text()},
-            'rssi': {'min': self.ui.setting_min_rssi.text(), 'max': self.ui.setting_max_rssi.text()},
-            'tag_range': {'min': self.ui.setting_start_tag.text(), 'max': self.ui.setting_end_tag.text()}
+            'speed': {'checked': self.ui.speed_limit.isChecked(), 'min': self.ui.setting_min_speed.text(),
+                      'max': self.ui.setting_max_speed.text()},
+            'rssi': {'checked': self.ui.rssi_limit.isChecked(), 'min': self.ui.setting_min_rssi.text(),
+                     'max': self.ui.setting_max_rssi.text()},
+            'tag_range': {'checked': self.ui.tag_limit.isChecked(), 'min': self.ui.setting_start_tag.text(),
+                          'max': self.ui.setting_end_tag.text()}
         }
         if not os.path.exists('setting'):
             os.makedirs('setting')
@@ -452,7 +465,7 @@ class MainWnd(QMainWindow):
                 self.db_connection.commit()
             self.refresh_data_table([tag['EPC-96'], f"{tag['AntennaID']}", f"{tag['PeakRSSI']}",
                                      f"{lat:.4f}".rstrip('0').rstrip('.')+", "+f"{lon:.4f}".rstrip('0').rstrip('.'),
-                                     f"{bearing}"])
+                                     f"{speed}", f"{bearing}"])
             self.ui.last_rfid_read.setText(tag['EPC-96'])
             self.ui.last_rfid_time.setText(get_date_from_utc(tag['LastSeenTimestampUTC']))
             self.ui.last_gps_read.setText(f"{lat}, {lon}")
@@ -603,16 +616,18 @@ class MainWnd(QMainWindow):
 
     def resize_columns_to_fit(self):
         width = self.ui.tableWidget.viewport().width()
-        column_proportions = [0.4, 0.12, 0.12, 0.24]
+        column_proportions = [0.38, 0.12, 0.08, 0.2, 0.09]
         wid = 0
-        for i in range(4):
+        for i in range(self.ui.tableWidget.columnCount()-1):
             self.ui.tableWidget.setColumnWidth(i, width * column_proportions[i])
             wid = wid + self.ui.tableWidget.columnWidth(i)
-        self.ui.tableWidget.setColumnWidth(4, width - wid)
+        self.ui.tableWidget.setColumnWidth(self.ui.tableWidget.columnCount()-1, width - wid)
         height = self.ui.tableWidget.viewport().height()
-        for i in range(5):
-            self.ui.tableWidget.setRowHeight(i, height / 6)
-        self.ui.tableWidget.setRowHeight(5, height - int(height / 6) * 5)
+        for i in range(self.ui.tableWidget.rowCount()-1):
+            self.ui.tableWidget.setRowHeight(i, height / self.ui.tableWidget.rowCount())
+        self.ui.tableWidget.setRowHeight(self.ui.tableWidget.rowCount()-1, height -
+                                         int(height / self.ui.tableWidget.rowCount()) *
+                                         (self.ui.tableWidget.rowCount()-1))
 
     def closeEvent(self, event):
         self.setting_save()
