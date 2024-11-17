@@ -252,6 +252,9 @@ class MainWnd(QMainWindow):
                     self.last_lat = self.cur_lat
                     self.last_lon = self.cur_lon
                     self.last_utctime = milliseconds_time
+                else:
+                    if self.ui.gps_connection_status.text() == "Connected":
+                        self.monitor_gps_status(False)
             except Exception:
                 if self.ui.gps_connection_status.text() == "Connected":
                     self.monitor_gps_status(False)
