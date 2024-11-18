@@ -14,21 +14,6 @@ Software for reading live tag and gps module.
     ```shell
     sudo apt install python3.9
     ```
-    
-- Install python libraries.
-
-    ```shell
-    cd CCKC_EOL
-    pip install -r requirement.txt
-    ```
-
-  - Use this command in Raspberry Pi OS.
-
-    ```shell
-    cd CCKC_EOL
-    pip install -r requirement.txt --break-system-packages
-    ```
-
 
 # Getting Started
 
@@ -38,11 +23,24 @@ Software for reading live tag and gps module.
     cd ~
     git clone https://github.com/prosperinfotech/rfid-python
     ```
-
-- And start!
+  
+- Install python libraries.
 
     ```shell
     cd rfid-python
+    pip install -r requirement.txt
+    ```
+
+  - Use this command in Raspberry Pi OS.
+
+    ```shell
+    cd rfid-python
+    pip install -r requirement.txt --break-system-packages
+    ```
+    
+- And start!
+
+    ```shell
     python main.py
     ```
 
@@ -53,6 +51,12 @@ Software for reading live tag and gps module.
     ```shell
     pip install pyinstaller
     ```
+  
+  - Use this command in Raspberry Pi OS.
+
+      ```shell
+      pip install pyinstaller --break-system-packages
+      ```
   
 - Navigate to Project Directory
 
