@@ -425,7 +425,7 @@ class MainWnd(QMainWindow):
                 speed, bearing = self.gps.get_sdata()
             elif self.ui.radio_internet_gps.isChecked():
                 lat, lon, speed, bearing = self.cur_lat, self.cur_lon, self.speed, self.bearing
-            logger.debug(f"gps:{lat},{lon},{speed},{bearing}")
+            # logger.debug(f"gps:{lat},{lon},{speed},{bearing}")
             upload_flag = True
             if self.ui.speed_limit.isChecked():
                 if (self.ui.setting_min_speed.text() != "" and self.ui.setting_max_speed.text() != "" and
@@ -496,9 +496,9 @@ class MainWnd(QMainWindow):
         }
         for i in range(3):
             try:
-                logger.debug(f"scanned:{headers}, {payload}")
+                # logger.debug(f"scanned:{headers}, {payload}")
                 response = requests.post(RECORD_UPLOAD_URL, headers=headers, json=payload)
-                logger.debug(f"response:{response}")
+                # logger.debug(f"response:{response}")
                 if response.status_code == 200:
                     data = response.json()
                     if data['metadata']['code'] == '200':
@@ -531,9 +531,9 @@ class MainWnd(QMainWindow):
             "dateTime": datetime.now().strftime("%Y-%m-%dT%H:%M:%S")
         }
         try:
-            logger.debug(f"health:{headers}, {payload}")
+            # logger.debug(f"health:{headers}, {payload}")
             response = requests.post(HEALTH_UPLOAD_URL, headers=headers, json=payload)
-            logger.debug(f"response:{response}")
+            # logger.debug(f"response:{response}")
             if response.status_code == 200:
                 data = response.json()
                 if data['metadata']['code'] == '200':
