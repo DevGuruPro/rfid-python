@@ -117,7 +117,7 @@ class RFID(QThread):
             reader = LLRPReaderClient(host, port, config)
             reader.add_tag_report_callback(self.tag_seen_callback)
             self.reader_clients.append(reader)
-        self.connectivity = False
+        self.connectivity = True
 
     def _connect_reader(self):
         for reader in self.reader_clients:
