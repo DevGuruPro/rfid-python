@@ -71,7 +71,7 @@ class RFID(QThread):
         super().__init__()
         self._b_stop = threading.Event()
         self.tag_data = None
-        self.connectivity = True
+        self.connectivity = False
         self.reader_clients = []
         self.set_reader(RFID_CARD_READER)
 
