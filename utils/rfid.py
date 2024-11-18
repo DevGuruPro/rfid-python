@@ -130,6 +130,7 @@ class RFID(QThread):
                         self.connectivity = False
                         self.sig_msg.emit(2)
                 elif "Already connected" in str(e):
+                    logger.error("#####")
                     if self.connectivity is False:
                         self.connectivity = True
                         self.sig_msg.emit(1)
