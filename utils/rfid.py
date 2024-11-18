@@ -71,7 +71,7 @@ class RFID(QThread):
         super().__init__()
         self._b_stop = threading.Event()
         self.tag_data = None
-        self.connectivity = False
+        self.connectivity = None
         self.reader_clients = []
         self.set_reader(RFID_CARD_READER)
 
@@ -106,7 +106,6 @@ class RFID(QThread):
             impinj_search_mode=args.impinj_search_mode,
             impinj_tag_content_selector=None,
         )
-
         self.reader_clients.clear()
         for host in args.host:
             if ':' in host:
@@ -118,6 +117,7 @@ class RFID(QThread):
             reader = LLRPReaderClient(host, port, config)
             reader.add_tag_report_callback(self.tag_seen_callback)
             self.reader_clients.append(reader)
+        self.connectivity = False
 
     def _connect_reader(self):
         for reader in self.reader_clients:
