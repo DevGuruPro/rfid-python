@@ -121,27 +121,30 @@ class RFID(QThread):
 
     def _connect_reader(self):
         for reader in self.reader_clients:
-            try:
-                reader.connect()
-            except ReaderConfigurationError as e:
-                if "Not connected" in str(e):
-                    if self.connectivity is True:
-                        self.connectivity = False
-                        self.sig_msg.emit(2)
-                elif "Already connected" in str(e):
+            if not self.connectivity or reader.disconnect_requested.is_set():
+                logger.debug("disconnected")
+                try:
+                    reader.connect()
                     if self.connectivity is False:
                         self.connectivity = True
                         self.sig_msg.emit(1)
-                return
-            except Exception as e:
-                logger.error(f"rfid connection error:{e}")
-                if self.connectivity is True:
-                    self.connectivity = False
-                    self.sig_msg.emit(2)
-                return
-        if self.connectivity is False:
-            self.connectivity = True
-            self.sig_msg.emit(1)
+                except ReaderConfigurationError as e:
+                    logger.debug(f"error-{e}")
+                    if "Not connected" in str(e):
+                        if self.connectivity is True:
+                            self.connectivity = False
+                            self.sig_msg.emit(2)
+                    elif "Already connected" in str(e):
+                        if self.connectivity is False:
+                            self.connectivity = True
+                            self.sig_msg.emit(1)
+                    return
+                except Exception as e:
+                    logger.error(f"rfid connection error:{e}")
+                    if self.connectivity is True:
+                        self.connectivity = False
+                        self.sig_msg.emit(2)
+                    return
 
     def tag_seen_callback(self, reader, tags):
         """Function to run each time the reader reports seeing tags."""
