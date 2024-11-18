@@ -126,9 +126,14 @@ class RFID(QThread):
                 reader.connect()
             except ReaderConfigurationError as e:
                 logger.error(f"rfid connection error:{e}")
-                if self.connectivity is True:
-                    self.connectivity = False
-                    self.sig_msg.emit(2)
+                if "Not connected" in str(e):
+                    if self.connectivity is True:
+                        self.connectivity = False
+                        self.sig_msg.emit(2)
+                elif "Already connected" in str(e):
+                    if self.connectivity is False:
+                        self.connectivity = True
+                        self.sig_msg.emit(1)
                 return
             except Exception as e:
                 logger.error(f"rfid connection error:{e}")
