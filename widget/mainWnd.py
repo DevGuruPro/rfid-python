@@ -238,7 +238,7 @@ class MainWnd(QMainWindow):
         while not self.igps_stop.is_set():
             self.cur_lat, self.cur_lon, self.speed, self.bearing = 0, 0, 0, 0
             try:
-                response = requests.get('http://ip-api.com/json/', timeout=0.5)
+                response = requests.get('http://ip-api.com/json/', timeout=1)
                 response.raise_for_status()
                 data = response.json()
                 if data['status'] == 'success':

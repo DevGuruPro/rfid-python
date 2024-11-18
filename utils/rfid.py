@@ -121,11 +121,9 @@ class RFID(QThread):
 
     def _connect_reader(self):
         for reader in self.reader_clients:
-            logger.debug(reader.disconnect_requested.is_set())
             try:
                 reader.connect()
             except ReaderConfigurationError as e:
-                logger.error(f"rfid connection error:{e}")
                 if "Not connected" in str(e):
                     if self.connectivity is True:
                         self.connectivity = False
