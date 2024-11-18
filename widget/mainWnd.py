@@ -267,7 +267,7 @@ class MainWnd(QMainWindow):
 
     def on_rfid_host_text_changed(self, text):
         if is_ipv4_address(text):
-            self.rfid.set_reader(text)
+            self.rfid.set_reader(text, True if self.ui.rfid_connection_status.text() == "Connected" else False)
 
     def load_setting(self):
         if not os.path.isfile('setting/module.setting'):

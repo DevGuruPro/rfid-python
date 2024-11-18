@@ -73,9 +73,9 @@ class RFID(QThread):
         self.tag_data = None
         self.connectivity = True
         self.reader_clients = []
-        self.set_reader(RFID_CARD_READER)
+        self.set_reader(RFID_CARD_READER, True)
 
-    def set_reader(self, port):
+    def set_reader(self, port, status):
         args = parse_args(port)
         enabled_antennas = [int(x.strip()) for x in args.antennas.split(',')]
         factory_args = dict(
@@ -117,7 +117,7 @@ class RFID(QThread):
             reader = LLRPReaderClient(host, port, config)
             reader.add_tag_report_callback(self.tag_seen_callback)
             self.reader_clients.append(reader)
-        self.connectivity = True
+        self.connectivity = status
 
     def _connect_reader(self):
         for reader in self.reader_clients:
