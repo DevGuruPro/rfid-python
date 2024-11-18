@@ -7,7 +7,7 @@ Software for reading live tag and gps module.
 
   - Windows
 
-    Download [python](https://www.python.org/ftp/python/3.9.13/python-3.9.13-amd64.exe) and run .exe
+    Download [python](https://www.python.org/ftp/python/3.9.13/python-3.9.13-amd64.exe) and run .exe(Select the option to add Python to the environment path.)
   
   - Ubuntu / Raspberry pi
   
