@@ -191,7 +191,7 @@ class MainWnd(QMainWindow):
         self.close()
         if os.path.isfile('setting/login.cre'):
             os.remove('setting/login.cre')
-            logger.debug("Credential file has been deleted successfully.")
+            # logger.debug("Credential file has been deleted successfully.")
         self.main_closed.emit()
 
     def on_speed_check(self):
@@ -243,7 +243,7 @@ class MainWnd(QMainWindow):
                 response = requests.get('http://ip-api.com/json/', timeout=4)
                 response.raise_for_status()
                 data = response.json()
-                logger.debug(f"gps response:{response},{data}")
+                # logger.debug(f"gps response:{response},{data}")
                 if data['status'] == 'success':
                     if self.ui.gps_connection_status.text() == "Disconnected":
                         self.monitor_gps_status(True)
@@ -258,7 +258,6 @@ class MainWnd(QMainWindow):
                     self.last_lon = self.cur_lon
                     self.last_utctime = milliseconds_time
             except Exception:
-                logger.debug("Disconnected")
                 if self.ui.gps_connection_status.text() == "Connected":
                     self.monitor_gps_status(False)
             time.sleep(.1)
@@ -274,7 +273,7 @@ class MainWnd(QMainWindow):
 
     def load_setting(self):
         if not os.path.isfile('setting/module.setting'):
-            logger.debug("Setting file does not exist.")
+            # logger.debug("Setting file does not exist.")
             return
         with open('setting/module.setting', 'r') as load_file:
             setting_data = json.load(load_file)
@@ -340,7 +339,7 @@ class MainWnd(QMainWindow):
             os.makedirs('setting')
         with open('setting/module.setting', 'w') as save_file:
             json.dump(setting_data, save_file, indent=4)
-        logger.info("Reader and GPS configuration saved.")
+        # logger.info("Reader and GPS configuration saved.")
 
     def api_save(self):
         api_data = {
@@ -355,7 +354,7 @@ class MainWnd(QMainWindow):
             os.makedirs('setting')
         with open('setting/api_integration.setting', 'w') as save_file:
             json.dump(api_data, save_file, indent=4)
-        logger.info("API configuration saved.")
+        # logger.info("API configuration saved.")
 
     def select_api_type(self):
         if self.ui.radio_api_default.isChecked():

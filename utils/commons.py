@@ -26,7 +26,7 @@ def convert_to_decimal(coord, direction, is_latitude):
         decimal_coord = sign * (degrees + minutes / 60)
         return decimal_coord
     except ValueError as e:
-        logger.error(f"Error converting coordinate: {e}")
+        # logger.error(f"Error converting coordinate: {e}")
         return 0
 
 
@@ -39,10 +39,10 @@ def extract_from_gps(gps_data):
         longitude = convert_to_decimal(gps_data['lon'], gps_data['lon_dir'], is_latitude=False)
         return latitude, longitude
     except KeyError as e:
-        logger.error(f"Missing key in GPS data: {e}")
+        # logger.error(f"Missing key in GPS data: {e}")
         return 0, 0
     except ValueError as e:
-        logger.error(f"Error: {e}")
+        # logger.error(f"Error: {e}")
         return 0, 0
 
 
@@ -102,12 +102,12 @@ def find_gps_port():
                 # Try reading from the port
                 line = ser.readline().decode('utf-8', errors='ignore').strip()
                 if line.startswith('$G'):
-                    logger.info(f"GPS found on port: {port}")
+                    # logger.info(f"GPS found on port: {port}")
                     return port
         except (OSError, serial.SerialException):
             pass  # Ignore if the port can't be opened
 
-    logger.info("No GPS port found")
+    # logger.info("No GPS port found")
     return None
 
 

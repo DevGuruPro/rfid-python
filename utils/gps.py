@@ -31,13 +31,13 @@ class GPS(QThread):
             if self.connectivity is False:
                 self.connectivity = True
                 self.sig_msg.emit(True)
-            logger.info(f"Connected to gps module-{self.port}.")
+            # logger.info(f"Connected to gps module-{self.port}.")
             return _ser
         except serial.SerialException as e:
             if self.connectivity is True:
                 self.connectivity = False
                 self.sig_msg.emit(False)
-            logger.error(f"Failed to connect to gps module-{self.port}: {e}")
+            # logger.error(f"Failed to connect to gps module-{self.port}: {e}")
             return None
 
     def read_serial_data(self):
@@ -62,7 +62,7 @@ class GPS(QThread):
                 course_degrees = msg.true_course if msg.true_course is not None else 0
                 self._sdata = [speed_knots * 1.15078, course_degrees]
             except pynmea2.ParseError as e:
-                logger.error(f"Parse error: {e}")
+                # logger.error(f"Parse error: {e}")
                 self._sdata = [0, 0]
 
     def run(self):
@@ -87,7 +87,7 @@ class GPS(QThread):
                     if self.connectivity is True:
                         self.connectivity = False
                         self.sig_msg.emit(False)
-                    logger.error(f"Serial reading error : {er}")
+                    # logger.error(f"Serial reading error : {er}")
 
     def stop(self):
         self._b_stop.set()
@@ -98,7 +98,7 @@ class GPS(QThread):
         """Closes the serial connection."""
         if self._ser and self._ser.is_open:
             self._ser.close()
-            logger.info("Serial connection closed.")
+            # logger.info("Serial connection closed.")
         self._ser = None
 
     def get_data(self):
