@@ -58,7 +58,6 @@ class GPS(QThread):
         elif line.startswith('$GPRMC') or line.startswith('$GNRMC'):
             try:
                 msg = pynmea2.parse(line)
-                logger.debug(f"speed:{msg}")
                 speed_knots = msg.spd_over_grnd if msg.spd_over_grnd is not None else 0
                 course_degrees = msg.true_course if msg.true_course is not None else 0
                 self._sdata = [speed_knots * 1.15078, course_degrees]
