@@ -615,7 +615,7 @@ class MainWnd(QMainWindow):
                 delete2 = self.upload_to_custom(payload_custom)
                 delete = delete1 or delete2
             if delete:
-                ids_to_delete = [row[0] for row in chunk]
+                # ids_to_delete = [row[0] for row in chunk]
                 # self.db_cursor.execute('''
                 # DELETE FROM records
                 # WHERE id IN (%s)
@@ -668,7 +668,7 @@ class MainWnd(QMainWindow):
 
     def closeEvent(self, event):
         self.setting_save()
-        self.db_connection.close()
+        # self.db_connection.close()
         self.gps.stop()
         self.igps_stop.set()
         if self.internet_gps.is_alive():
