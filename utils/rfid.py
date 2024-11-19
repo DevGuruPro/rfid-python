@@ -1,4 +1,5 @@
 import threading
+import time
 
 from PySide6.QtCore import QThread, Signal
 from sllurp.llrp import LLRP_DEFAULT_PORT, LLRPReaderConfig, LLRPReaderClient
@@ -117,47 +118,8 @@ class RFID(QThread):
         config = LLRPReaderConfig(factory_args)
         self.reader = LLRPReaderClient(host, port, config)
         self.reader.add_tag_report_callback(self.tag_seen_callback)
-        self.reader.add_disconnected_callback(self.on_disconnected)
-        self.reader.add_event_callback(self.on_event)
-
-    def on_event(self, reader):
-        logger.debug("event")
-
-    def on_disconnected(self, reader):
-        logger.debug("Disconneceted")
-
-    # def _connect_reader(self):
-    #     for reader in self.reader_clients:
-    #         try:
-    #             reader.connect()
-    #             logger.debug("RFID connected.")
-    #         except ReaderConfigurationError as e:
-    #             if "Not connected" in str(e):
-    #                 logger.error("Not connected")
-    #                 if self.connectivity is True:
-    #                     self.connectivity = False
-    #                     self.sig_msg.emit(2)
-    #             elif "Already connected" in str(e):
-    #                 reader.disconnect()
-    #                 logger.error("#####")
-    #                 if self.connectivity is False:
-    #                     self.connectivity = True
-    #                     self.sig_msg.emit(1)
-    #             else:
-    #                 logger.error(f"rfid configuration error:{e}")
-    #                 if self.connectivity is True:
-    #                     self.connectivity = False
-    #                     self.sig_msg.emit(2)
-    #             return
-    #         except Exception as e:
-    #             logger.error(f"rfid connection error:{e}")
-    #             if self.connectivity is True:
-    #                 self.connectivity = False
-    #                 self.sig_msg.emit(2)
-    #             return
-    #     if self.connectivity is False:
-    #         self.connectivity = True
-    #         self.sig_msg.emit(1)
+        self.reader.connect()
+        self.reader.disconnect()
 
     def tag_seen_callback(self, reader, tags):
         """Function to run each time the reader reports seeing tags."""
@@ -174,6 +136,7 @@ class RFID(QThread):
                     self.connectivity = True
                     self.sig_msg.emit(1)
                 logger.debug("RFID connected")
+                self.reader.disconnect()
             except ReaderConfigurationError as e:
                 logger.error(f"rfid configuration error:{e}")
                 if "Not connected" in str(e):
@@ -193,12 +156,7 @@ class RFID(QThread):
                 if self.connectivity is True:
                     self.connectivity = False
                     self.sig_msg.emit(2)
-
-        logger.debug("RFID connected")
-
-        while not self._b_stop.is_set():
-            pass
-            # self._connect_reader()
+            time.sleep(.1)
 
     def stop(self):
         self._b_stop.set()
