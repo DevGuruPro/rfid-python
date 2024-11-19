@@ -228,7 +228,7 @@ class Ui_MainWindow(object):
         self.rfid_connection_status.setFont(font2)
         self.rfid_connection_status.setStyleSheet(u"padding: 5px;\n"
 "border: 1px solid black;\n"
-"color: green;")
+"color: red;")
 
         self.gridLayout_2.addWidget(self.rfid_connection_status, 0, 1, 1, 1)
 
@@ -2007,7 +2007,7 @@ class Ui_MainWindow(object):
         self.label.setText(QCoreApplication.translate("MainWindow", u"RFID Health Status", None))
         self.last_rfid_read.setText("")
         self.label_2.setText(QCoreApplication.translate("MainWindow", u"RFID Connection Status", None))
-        self.rfid_connection_status.setText(QCoreApplication.translate("MainWindow", u"Connected", None))
+        self.rfid_connection_status.setText(QCoreApplication.translate("MainWindow", u"Disconnected", None))
         self.label_4.setText(QCoreApplication.translate("MainWindow", u"Last RFID Tag Read", None))
         self.label_6.setText(QCoreApplication.translate("MainWindow", u"Last RFID Read Time", None))
         self.last_rfid_time.setText("")

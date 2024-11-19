@@ -170,6 +170,9 @@ class RFID(QThread):
         while not self._b_stop.is_set():
             try:
                 self.reader.connect()
+                if self.connectivity is False:
+                    self.connectivity = True
+                    self.sig_msg.emit(1)
                 break
             except ReaderConfigurationError as e:
                 logger.error(f"rfid configuration error:{e}")
@@ -185,13 +188,11 @@ class RFID(QThread):
                     if self.connectivity is True:
                         self.connectivity = False
                         self.sig_msg.emit(2)
-                return
             except Exception as e:
                 logger.error(f"rfid connection error:{e}")
                 if self.connectivity is True:
                     self.connectivity = False
                     self.sig_msg.emit(2)
-                return
 
         logger.debug("RFID connected")
 
