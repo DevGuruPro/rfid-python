@@ -118,8 +118,6 @@ class RFID(QThread):
         config = LLRPReaderConfig(factory_args)
         self.reader = LLRPReaderClient(host, port, config)
         self.reader.add_tag_report_callback(self.tag_seen_callback)
-        self.reader.connect()
-        self.reader.disconnect()
 
     def tag_seen_callback(self, reader, tags):
         """Function to run each time the reader reports seeing tags."""
