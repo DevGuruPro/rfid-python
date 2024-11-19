@@ -194,6 +194,7 @@ class RFID(QThread):
                 return
 
         logger.debug("RFID connected")
+
         while not self._b_stop.is_set():
             pass
             # self._connect_reader()
