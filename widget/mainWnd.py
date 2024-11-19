@@ -150,32 +150,34 @@ class MainWnd(QMainWindow):
         self.userName = user_name
         self.token = token
 
-        self.db_connection = sqlite3.connect('database.db')
-        self.db_cursor = self.db_connection.cursor()
-        self.db_cursor.execute('''
-            CREATE TABLE IF NOT EXISTS records (
-                id INTEGER PRIMARY KEY,
-                rfidTag TEXT NOT NULL,
-                antenna INTEGER NOT NULL,
-                RSSI INTEGER NOT NULL,
-                latitude REAL NOT NULL,
-                longitude REAL NOT NULL,
-                speed REAL NOT NULL,
-                heading REAL NOT NULL,
-                locationCode TEXT NOT NULL,
-                username TEXT NOT NULL,
-                tag1 TEXT NOT NULL,
-                value1 TEXT NOT NULL,
-                tag2 TEXT NOT NULL,
-                value2 TEXT NOT NULL,
-                tag3 TEXT NOT NULL,
-                value3 TEXT NOT NULL,
-                tag4 TEXT NOT NULL,
-                value4 TEXT NOT NULL,
-                timestamp INTEGER NOT NULL
-            )
-        ''')
-        self.db_connection.commit()
+        # self.db_connection = sqlite3.connect('database.db')
+        # self.db_cursor = self.db_connection.cursor()
+        # self.db_cursor.execute('''
+        #     CREATE TABLE IF NOT EXISTS records (
+        #         id INTEGER PRIMARY KEY,
+        #         rfidTag TEXT NOT NULL,
+        #         antenna INTEGER NOT NULL,
+        #         RSSI INTEGER NOT NULL,
+        #         latitude REAL NOT NULL,
+        #         longitude REAL NOT NULL,
+        #         speed REAL NOT NULL,
+        #         heading REAL NOT NULL,
+        #         locationCode TEXT NOT NULL,
+        #         username TEXT NOT NULL,
+        #         tag1 TEXT NOT NULL,
+        #         value1 TEXT NOT NULL,
+        #         tag2 TEXT NOT NULL,
+        #         value2 TEXT NOT NULL,
+        #         tag3 TEXT NOT NULL,
+        #         value3 TEXT NOT NULL,
+        #         tag4 TEXT NOT NULL,
+        #         value4 TEXT NOT NULL,
+        #         timestamp INTEGER NOT NULL
+        #     )
+        # ''')
+        # self.db_connection.commit()
+
+        self.database = []
 
         self.last_lat = None
         self.last_lon = None
@@ -249,7 +251,8 @@ class MainWnd(QMainWindow):
                     milliseconds_time = int(time.time() * 1_000_000)
                     if self.last_lat is not None:
                         self.speed, self.bearing = calculate_speed_bearing(self.last_lat, self.last_lon,
-                                                                           self.last_utctime, self.cur_lat, self.cur_lon,
+                                                                           self.last_utctime, self.cur_lat,
+                                                                           self.cur_lon,
                                                                            milliseconds_time)
                     self.last_lat = self.cur_lat
                     self.last_lon = self.cur_lon
@@ -431,7 +434,8 @@ class MainWnd(QMainWindow):
             upload_flag = True
             if self.ui.speed_limit.isChecked():
                 if (self.ui.setting_min_speed.text() != "" and self.ui.setting_max_speed.text() != "" and
-                        (speed < int(self.ui.setting_min_speed.text()) or speed > int(self.ui.setting_max_speed.text()))):
+                        (speed < int(self.ui.setting_min_speed.text()) or speed > int(
+                            self.ui.setting_max_speed.text()))):
                     upload_flag = False
             if upload_flag and self.ui.rssi_limit.isChecked():
                 if (self.ui.setting_min_rssi.text() != "" and self.ui.setting_max_rssi.text() != "" and
@@ -444,37 +448,51 @@ class MainWnd(QMainWindow):
                          int(tag['EPC-96']) > int(self.ui.setting_end_tag.text()))):
                     upload_flag = False
             if upload_flag:
-                self.db_cursor.execute('''
-                    SELECT * FROM records
-                    WHERE rfidTag = ?
-                    AND ABS(timestamp - ?) < 10000000
-                    ''', (tag['EPC-96'], tag['LastSeenTimestampUTC']))
-                rows = self.db_cursor.fetchall()
-                if rows:
-                    upload_flag = False
+                # self.db_cursor.execute('''
+                #     SELECT * FROM records
+                #     WHERE rfidTag = ?
+                #     AND ABS(timestamp - ?) < 10000000
+                #     ''', (tag['EPC-96'], tag['LastSeenTimestampUTC']))
+                # # rows = self.db_cursor.fetchall()
+                # if rows:
+                #     upload_flag = False
+                for i in range(len(self.database) - 1, -1, -1):
+                    if tag['LastSeenTimestampUTC'] - self.database[i][10] > 10_000_000:
+                        break
+                    if tag['EPC-96'] == self.database[i][1]:
+                        upload_flag = False
+                        break
             if upload_flag:
-                self.db_cursor.execute('''
-                    SELECT id FROM records
-                    ORDER BY id ASC
-                    ''')
-                used_ids = self.db_cursor.fetchall()
-                self.db_cursor.execute('''
-                INSERT INTO records
-                (id, rfidTag, antenna, RSSI, latitude, longitude, speed, heading, locationCode, username,
-                timestamp, tag1, value1, tag2, value2, tag3, value3, tag4, value4)
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-                ''', (
-                    find_smallest_available_id(used_ids), tag['EPC-96'], f"{tag['AntennaID']}", f"{tag['PeakRSSI']}",
-                    lat, lon,
-                    speed, bearing, "-", self.userName, tag['LastSeenTimestampUTC'],
-                    self.ui.edit_api_ctag1.text(), self.ui.edit_api_cval1.text(),
-                    self.ui.edit_api_ctag2.text(), self.ui.edit_api_cval2.text(),
-                    self.ui.edit_api_ctag3.text(), self.ui.edit_api_cval3.text(),
-                    self.ui.edit_api_ctag4.text(), self.ui.edit_api_cval4.text()
-                ))
-                self.db_connection.commit()
+                # self.db_cursor.execute('''
+                #     SELECT id FROM records
+                #     ORDER BY id ASC
+                #     ''')
+                # used_ids = self.db_cursor.fetchall()
+                # self.db_cursor.execute('''
+                # INSERT INTO records
+                # (id, rfidTag, antenna, RSSI, latitude, longitude, speed, heading, locationCode, username,
+                # timestamp, tag1, value1, tag2, value2, tag3, value3, tag4, value4)
+                # VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                # ''', (
+                #     find_smallest_available_id(used_ids), tag['EPC-96'], f"{tag['AntennaID']}", f"{tag['PeakRSSI']}",
+                #     lat, lon,
+                #     speed, bearing, "-", self.userName, tag['LastSeenTimestampUTC'],
+                #     self.ui.edit_api_ctag1.text(), self.ui.edit_api_cval1.text(),
+                #     self.ui.edit_api_ctag2.text(), self.ui.edit_api_cval2.text(),
+                #     self.ui.edit_api_ctag3.text(), self.ui.edit_api_cval3.text(),
+                #     self.ui.edit_api_ctag4.text(), self.ui.edit_api_cval4.text()
+                # ))
+                # self.db_connection.commit()
+                new_data = [upload_flag, tag['EPC-96'], f"{tag['AntennaID']}", f"{tag['PeakRSSI']}",
+                            lat, lon,
+                            speed, bearing, "-", self.userName, tag['LastSeenTimestampUTC'],
+                            self.ui.edit_api_ctag1.text(), self.ui.edit_api_cval1.text(),
+                            self.ui.edit_api_ctag2.text(), self.ui.edit_api_cval2.text(),
+                            self.ui.edit_api_ctag3.text(), self.ui.edit_api_cval3.text(),
+                            self.ui.edit_api_ctag4.text(), self.ui.edit_api_cval4.text()]
+                self.database.append(new_data)
             self.refresh_data_table([tag['EPC-96'], f"{tag['AntennaID']}", f"{tag['PeakRSSI']}",
-                                     f"{lat:.4f}".rstrip('0').rstrip('.')+", "+f"{lon:.4f}".rstrip('0').rstrip('.'),
+                                     f"{lat:.4f}".rstrip('0').rstrip('.') + ", " + f"{lon:.4f}".rstrip('0').rstrip('.'),
                                      f"{speed}", f"{bearing}"])
             self.ui.last_rfid_read.setText(tag['EPC-96'])
             self.ui.last_rfid_time.setText(get_date_from_utc(tag['LastSeenTimestampUTC']))
@@ -552,16 +570,17 @@ class MainWnd(QMainWindow):
 
     def upload_scanned_data(self):
         logger.info('Uploading scanned data initiated...')
-        self.db_cursor.execute('''
-            SELECT id, rfidTag, antenna, RSSI, latitude, longitude, speed, heading,
-            locationCode, username, tag1, value1, tag2, value2, tag3, value3, tag4, value4
-            FROM records
-            ORDER BY timestamp ASC
-            ''')
-        data = self.db_cursor.fetchall()
+        # self.db_cursor.execute('''
+        #     SELECT id, rfidTag, antenna, RSSI, latitude, longitude, speed, heading,
+        #     locationCode, username, tag1, value1, tag2, value2, tag3, value3, tag4, value4
+        #     FROM records
+        #     ORDER BY timestamp ASC
+        #     ''')
+        # data = self.db_cursor.fetchall()
         chunk_size = 1000
-        for i in range(0, len(data), chunk_size):
-            chunk = data[i:i + chunk_size]
+        start_index = 0
+        while start_index < len(self.database):
+            chunk = self.database[start_index:start_index + chunk_size]
             data_list_default = []
             data_list_custom = []
             for row in chunk:
@@ -597,17 +616,25 @@ class MainWnd(QMainWindow):
                 delete = delete1 or delete2
             if delete:
                 ids_to_delete = [row[0] for row in chunk]
-                self.db_cursor.execute('''
-                DELETE FROM records
-                WHERE id IN (%s)
-                ''' % ','.join('?' * len(ids_to_delete)), ids_to_delete)
+                # self.db_cursor.execute('''
+                # DELETE FROM records
+                # WHERE id IN (%s)
+                # ''' % ','.join('?' * len(ids_to_delete)), ids_to_delete)
+                self.database = self.database[:start_index] + self.database[start_index + chunk_size:]
+            else:
+                start_index = start_index + chunk_size
         logger.info("Uploading scanned data finished.")
         microsecond_timestamp = int(time.time() * 1_000_000)
-        self.db_cursor.execute('''
-            DELETE FROM records
-            WHERE ABS(timestamp - ?) > 600000000
-        ''', [microsecond_timestamp])
-        self.db_connection.commit()
+        # self.db_cursor.execute('''
+        #     DELETE FROM records
+        #     WHERE ABS(timestamp - ?) > 600000000
+        # ''', [microsecond_timestamp])
+        # self.db_connection.commit()
+        i = 0
+        for i in range(len(self.database)):
+            if microsecond_timestamp - self.database[i][10] < 600_000_000:
+                break
+        self.database = self.database[i:]
         logger.info('Deleted old data.')
 
     def refresh_data_table(self, new_data):
@@ -628,16 +655,16 @@ class MainWnd(QMainWindow):
         width = self.ui.tableWidget.viewport().width()
         column_proportions = [0.38, 0.12, 0.08, 0.2, 0.09]
         wid = 0
-        for i in range(self.ui.tableWidget.columnCount()-1):
+        for i in range(self.ui.tableWidget.columnCount() - 1):
             self.ui.tableWidget.setColumnWidth(i, width * column_proportions[i])
             wid = wid + self.ui.tableWidget.columnWidth(i)
-        self.ui.tableWidget.setColumnWidth(self.ui.tableWidget.columnCount()-1, width - wid)
+        self.ui.tableWidget.setColumnWidth(self.ui.tableWidget.columnCount() - 1, width - wid)
         height = self.ui.tableWidget.viewport().height()
-        for i in range(self.ui.tableWidget.rowCount()-1):
+        for i in range(self.ui.tableWidget.rowCount() - 1):
             self.ui.tableWidget.setRowHeight(i, height / self.ui.tableWidget.rowCount())
-        self.ui.tableWidget.setRowHeight(self.ui.tableWidget.rowCount()-1, height -
+        self.ui.tableWidget.setRowHeight(self.ui.tableWidget.rowCount() - 1, height -
                                          int(height / self.ui.tableWidget.rowCount()) *
-                                         (self.ui.tableWidget.rowCount()-1))
+                                         (self.ui.tableWidget.rowCount() - 1))
 
     def closeEvent(self, event):
         self.setting_save()
