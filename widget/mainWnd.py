@@ -538,7 +538,7 @@ class MainWnd(QMainWindow):
                     data = response.json()
                     if data['metadata']['code'] == '200':
                         return True
-            except requests.exceptions.RequestException:
+            except Exception:
                 pass
         return False
 
@@ -577,7 +577,7 @@ class MainWnd(QMainWindow):
                     logger.error("Uploading health data failed.")
             else:
                 logger.error("Uploading health data failed.")
-        except requests.exceptions.RequestException as e:
+        except Exception as e:
             logger.error("Error occurred while uploading health data, ", e)
 
     def emit_upload_scanned_data(self):
