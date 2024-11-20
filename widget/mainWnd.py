@@ -10,8 +10,6 @@ import requests
 import schedule
 import json
 import sqlite3
-from requests.adapters import HTTPAdapter
-from urllib3.util.retry import Retry
 
 from PySide6.QtCore import QUrl, Signal
 from PySide6.QtGui import Qt
@@ -22,7 +20,7 @@ from PySide6.QtMultimedia import QSoundEffect
 from settings import HEALTH_UPLOAD_URL, RECORD_UPLOAD_URL
 from ui.ui_main import Ui_MainWindow
 from utils.commons import extract_from_gps, get_date_from_utc, find_gps_port, is_ipv4_address, \
-    find_smallest_available_id, calculate_speed_bearing, convert_formatted_payload
+    find_smallest_available_id, calculate_speed_bearing
 
 from utils.gps import GPS
 from utils.logger import logger
@@ -115,12 +113,6 @@ class MainWnd(QMainWindow):
         self.ui.speed_limit.clicked.connect(self.on_speed_check)
         self.ui.tag_limit.clicked.connect(self.on_tag_check)
         self.ui.rssi_limit.clicked.connect(self.on_rssi_check)
-        self.ui.check_run_db.clicked.connect(self.on_run_db_check)
-
-        self.ui.gps_wid.setDisabled(True)
-        self.ui.speed_chw.setDisabled(True)
-        self.ui.rssi_chw.setDisabled(True)
-        self.ui.tag_chw.setDisabled(True)
 
         self.load_setting()
 
@@ -153,35 +145,34 @@ class MainWnd(QMainWindow):
         self.userName = user_name
         self.token = token
 
-        self.db_connection = sqlite3.connect('database.db')
-        self.db_cursor = self.db_connection.cursor()
-        self.db_cursor.execute('''
-            CREATE TABLE IF NOT EXISTS records (
-                id INTEGER PRIMARY KEY,
-                rfidTag TEXT NOT NULL,
-                antenna INTEGER NOT NULL,
-                RSSI INTEGER NOT NULL,
-                latitude REAL NOT NULL,
-                longitude REAL NOT NULL,
-                speed REAL NOT NULL,
-                heading REAL NOT NULL,
-                locationCode TEXT NOT NULL,
-                username TEXT NOT NULL,
-                tag1 TEXT NOT NULL,
-                value1 TEXT NOT NULL,
-                tag2 TEXT NOT NULL,
-                value2 TEXT NOT NULL,
-                tag3 TEXT NOT NULL,
-                value3 TEXT NOT NULL,
-                tag4 TEXT NOT NULL,
-                value4 TEXT NOT NULL,
-                timestamp INTEGER NOT NULL
-            )
-        ''')
-        self.db_connection.commit()
+        # self.db_connection = sqlite3.connect('database.db')
+        # self.db_cursor = self.db_connection.cursor()
+        # self.db_cursor.execute('''
+        #     CREATE TABLE IF NOT EXISTS records (
+        #         id INTEGER PRIMARY KEY,
+        #         rfidTag TEXT NOT NULL,
+        #         antenna INTEGER NOT NULL,
+        #         RSSI INTEGER NOT NULL,
+        #         latitude REAL NOT NULL,
+        #         longitude REAL NOT NULL,
+        #         speed REAL NOT NULL,
+        #         heading REAL NOT NULL,
+        #         locationCode TEXT NOT NULL,
+        #         username TEXT NOT NULL,
+        #         tag1 TEXT NOT NULL,
+        #         value1 TEXT NOT NULL,
+        #         tag2 TEXT NOT NULL,
+        #         value2 TEXT NOT NULL,
+        #         tag3 TEXT NOT NULL,
+        #         value3 TEXT NOT NULL,
+        #         tag4 TEXT NOT NULL,
+        #         value4 TEXT NOT NULL,
+        #         timestamp INTEGER NOT NULL
+        #     )
+        # ''')
+        # self.db_connection.commit()
 
         self.database = []
-        self.use_db = False
 
         self.last_lat = None
         self.last_lon = None
@@ -190,12 +181,6 @@ class MainWnd(QMainWindow):
         self.cur_lon = 0
         self.bearing = 0
         self.speed = 0
-
-    def on_run_db_check(self):
-        if self.ui.check_run_db.isChecked():
-            self.use_db = True
-        else:
-            self.use_db = False
 
     def on_log_out(self):
         self.close()
@@ -250,25 +235,24 @@ class MainWnd(QMainWindow):
         while not self.igps_stop.is_set():
             self.cur_lat, self.cur_lon, self.speed, self.bearing = 0, 0, 0, 0
             try:
-                response = requests.get('http://ip-api.com/json/', timeout=8)
+                response = requests.get('http://ip-api.com/json/', timeout=4)
                 response.raise_for_status()
                 data = response.json()
-                logger.debug(f"gps response:{response},{data}")
-                # if data['status'] == 'success':
-                if self.ui.gps_connection_status.text() == "Disconnected":
-                    self.monitor_gps_status(True)
-                self.cur_lat, self.cur_lon = data['lat'], data['lon']
-                milliseconds_time = int(time.time() * 1_000_000)
-                if self.last_lat is not None:
-                    self.speed, self.bearing = calculate_speed_bearing(self.last_lat, self.last_lon,
-                                                                       self.last_utctime, self.cur_lat,
-                                                                       self.cur_lon,
-                                                                       milliseconds_time)
-                self.last_lat = self.cur_lat
-                self.last_lon = self.cur_lon
-                self.last_utctime = milliseconds_time
+                # logger.debug(f"gps response:{response},{data}")
+                if data['status'] == 'success':
+                    if self.ui.gps_connection_status.text() == "Disconnected":
+                        self.monitor_gps_status(True)
+                    self.cur_lat, self.cur_lon = data['lat'], data['lon']
+                    milliseconds_time = int(time.time() * 1_000_000)
+                    if self.last_lat is not None:
+                        self.speed, self.bearing = calculate_speed_bearing(self.last_lat, self.last_lon,
+                                                                           self.last_utctime, self.cur_lat,
+                                                                           self.cur_lon,
+                                                                           milliseconds_time)
+                    self.last_lat = self.cur_lat
+                    self.last_lon = self.cur_lon
+                    self.last_utctime = milliseconds_time
             except Exception:
-                logger.debug("gps disconnected")
                 if self.ui.gps_connection_status.text() == "Connected":
                     self.monitor_gps_status(False)
             time.sleep(.1)
@@ -300,6 +284,9 @@ class MainWnd(QMainWindow):
             if setting_data['gps']['checked']:
                 self.ui.gps_checkBox.setChecked(True)
                 self.ui.gps_wid.setEnabled(True)
+            else:
+                self.ui.gps_checkBox.setChecked(False)
+                self.ui.gps_wid.setDisabled(True)
             if setting_data['gps']['is_external']:
                 self.ui.radio_external_gps.setChecked(True)
             else:
@@ -307,12 +294,21 @@ class MainWnd(QMainWindow):
             if setting_data['speed']['checked']:
                 self.ui.speed_limit.setChecked(True)
                 self.ui.speed_chw.setEnabled(True)
+            else:
+                self.ui.speed_limit.setChecked(False)
+                self.ui.speed_chw.setDisabled(True)
             if setting_data['rssi']['checked']:
                 self.ui.rssi_limit.setChecked(True)
                 self.ui.rssi_chw.setEnabled(True)
+            else:
+                self.ui.rssi_limit.setChecked(False)
+                self.ui.rssi_chw.setDisabled(True)
             if setting_data['tag_range']['checked']:
                 self.ui.tag_limit.setChecked(True)
-                self.ui.widget_24.setEnabled(True)
+                self.ui.tag_chw.setEnabled(True)
+            else:
+                self.ui.tag_limit.setChecked(False)
+                self.ui.tag_chw.setDisabled(True)
             self.ui.edit_gps_noti.setText(setting_data['gps']['notify'])
             self.ui.edit_gps_hand.setText(setting_data['gps']['handshake'])
             self.ui.edit_gps_port.setText(setting_data['gps']['port'])
@@ -327,9 +323,6 @@ class MainWnd(QMainWindow):
             self.ui.setting_max_rssi.setText(setting_data['rssi']['max'])
             self.ui.setting_start_tag.setText(setting_data['tag_range']['min'])
             self.ui.setting_end_tag.setText(setting_data['tag_range']['max'])
-
-            if setting_data['use_db']:
-                self.ui.check_run_db.setChecked(True)
 
     def setting_save(self):
         setting_data = {
@@ -347,8 +340,7 @@ class MainWnd(QMainWindow):
             'rssi': {'checked': self.ui.rssi_limit.isChecked(), 'min': self.ui.setting_min_rssi.text(),
                      'max': self.ui.setting_max_rssi.text()},
             'tag_range': {'checked': self.ui.tag_limit.isChecked(), 'min': self.ui.setting_start_tag.text(),
-                          'max': self.ui.setting_end_tag.text()},
-            'use_db': self.ui.check_run_db.isChecked()
+                          'max': self.ui.setting_end_tag.text()}
         }
         if not os.path.exists('setting'):
             os.makedirs('setting')
@@ -462,53 +454,49 @@ class MainWnd(QMainWindow):
                          int(tag['EPC-96']) > int(self.ui.setting_end_tag.text()))):
                     upload_flag = False
             if upload_flag:
-                if self.use_db:
-                    self.db_cursor.execute('''
-                        SELECT * FROM records
-                        WHERE rfidTag = ?
-                        AND ABS(timestamp - ?) < 10000000
-                        ''', (tag['EPC-96'], tag['LastSeenTimestampUTC']))
-                    rows = self.db_cursor.fetchall()
-                    if rows:
+                # self.db_cursor.execute('''
+                #     SELECT * FROM records
+                #     WHERE rfidTag = ?
+                #     AND ABS(timestamp - ?) < 10000000
+                #     ''', (tag['EPC-96'], tag['LastSeenTimestampUTC']))
+                # # rows = self.db_cursor.fetchall()
+                # if rows:
+                #     upload_flag = False
+                for i in range(len(self.database) - 1, -1, -1):
+                    if tag['LastSeenTimestampUTC'] - self.database[i][10] > 10_000_000:
+                        break
+                    if tag['EPC-96'] == self.database[i][1]:
                         upload_flag = False
-                else:
-                    for i in range(len(self.database) - 1, -1, -1):
-                        if tag['LastSeenTimestampUTC'] - self.database[i][10] > 10_000_000:
-                            break
-                        if tag['EPC-96'] == self.database[i][1]:
-                            upload_flag = False
-                            break
+                        break
             if upload_flag:
-                if self.use_db:
-                    self.db_cursor.execute('''
-                        SELECT id FROM records
-                        ORDER BY id ASC
-                        ''')
-                    used_ids = self.db_cursor.fetchall()
-                    self.db_cursor.execute('''
-                    INSERT INTO records
-                    (id, rfidTag, antenna, RSSI, latitude, longitude, speed, heading, locationCode, username,
-                    timestamp, tag1, value1, tag2, value2, tag3, value3, tag4, value4)
-                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-                    ''', (
-                        find_smallest_available_id(used_ids), tag['EPC-96'], f"{tag['AntennaID']}",
-                        f"{tag['PeakRSSI']}", lat, lon,
-                        speed, bearing, "-", self.userName, tag['LastSeenTimestampUTC'],
-                        self.ui.edit_api_ctag1.text(), self.ui.edit_api_cval1.text(),
-                        self.ui.edit_api_ctag2.text(), self.ui.edit_api_cval2.text(),
-                        self.ui.edit_api_ctag3.text(), self.ui.edit_api_cval3.text(),
-                        self.ui.edit_api_ctag4.text(), self.ui.edit_api_cval4.text()
-                    ))
-                    self.db_connection.commit()
-                else:
-                    new_data = [upload_flag, tag['EPC-96'], f"{tag['AntennaID']}", f"{tag['PeakRSSI']}",
-                                lat, lon,
-                                speed, bearing, "-", self.userName, tag['LastSeenTimestampUTC'],
-                                self.ui.edit_api_ctag1.text(), self.ui.edit_api_cval1.text(),
-                                self.ui.edit_api_ctag2.text(), self.ui.edit_api_cval2.text(),
-                                self.ui.edit_api_ctag3.text(), self.ui.edit_api_cval3.text(),
-                                self.ui.edit_api_ctag4.text(), self.ui.edit_api_cval4.text()]
-                    self.database.append(new_data)
+                # self.db_cursor.execute('''
+                #     SELECT id FROM records
+                #     ORDER BY id ASC
+                #     ''')
+                # used_ids = self.db_cursor.fetchall()
+                # self.db_cursor.execute('''
+                # INSERT INTO records
+                # (id, rfidTag, antenna, RSSI, latitude, longitude, speed, heading, locationCode, username,
+                # timestamp, tag1, value1, tag2, value2, tag3, value3, tag4, value4)
+                # VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                # ''', (
+                #     find_smallest_available_id(used_ids), tag['EPC-96'], f"{tag['AntennaID']}", f"{tag['PeakRSSI']}",
+                #     lat, lon,
+                #     speed, bearing, "-", self.userName, tag['LastSeenTimestampUTC'],
+                #     self.ui.edit_api_ctag1.text(), self.ui.edit_api_cval1.text(),
+                #     self.ui.edit_api_ctag2.text(), self.ui.edit_api_cval2.text(),
+                #     self.ui.edit_api_ctag3.text(), self.ui.edit_api_cval3.text(),
+                #     self.ui.edit_api_ctag4.text(), self.ui.edit_api_cval4.text()
+                # ))
+                # self.db_connection.commit()
+                new_data = [upload_flag, tag['EPC-96'], f"{tag['AntennaID']}", f"{tag['PeakRSSI']}",
+                            lat, lon,
+                            speed, bearing, "-", self.userName, tag['LastSeenTimestampUTC'],
+                            self.ui.edit_api_ctag1.text(), self.ui.edit_api_cval1.text(),
+                            self.ui.edit_api_ctag2.text(), self.ui.edit_api_cval2.text(),
+                            self.ui.edit_api_ctag3.text(), self.ui.edit_api_cval3.text(),
+                            self.ui.edit_api_ctag4.text(), self.ui.edit_api_cval4.text()]
+                self.database.append(new_data)
             self.refresh_data_table([tag['EPC-96'], f"{tag['AntennaID']}", f"{tag['PeakRSSI']}",
                                      f"{lat:.4f}".rstrip('0').rstrip('.') + ", " + f"{lon:.4f}".rstrip('0').rstrip('.'),
                                      f"{speed}", f"{bearing}"])
@@ -532,24 +520,17 @@ class MainWnd(QMainWindow):
             "Authorization": f"Bearer {self.token}",
             "Content-Type": "application/json"  # Ensure the payload is interpreted as JSON
         }
-        session = requests.Session()
-        try:
-            retries = Retry(total=3,
-                            backoff_factor=1,
-                            status_forcelist=[500, 502, 503, 504])
-            adapter = HTTPAdapter(max_retries=retries)
-            session.mount('https://', adapter)
-            # logger.debug(f"scanned:{headers}, {payload}")
-            response = requests.post(RECORD_UPLOAD_URL, headers=headers, json=payload)
-            # logger.debug(f"response:{response}")
-            if response.status_code == 200:
-                data = response.json()
-                if data['metadata']['code'] == '200':
-                    return True
-        except requests.exceptions.RequestException:
-            pass
-        finally:
-            session.close()
+        for i in range(3):
+            try:
+                # logger.debug(f"scanned:{headers}, {payload}")
+                response = requests.post(RECORD_UPLOAD_URL, headers=headers, json=payload)
+                # logger.debug(f"response:{response}")
+                if response.status_code == 200:
+                    data = response.json()
+                    if data['metadata']['code'] == '200':
+                        return True
+            except requests.exceptions.RequestException:
+                pass
         return False
 
     def upload_to_custom(self, payload):
@@ -575,15 +556,9 @@ class MainWnd(QMainWindow):
             "lng": lon,
             "dateTime": datetime.now().strftime("%Y-%m-%dT%H:%M:%S")
         }
-        session = requests.Session()
         try:
-            retries = Retry(total=3,
-                            backoff_factor=1,
-                            status_forcelist=[500, 502, 503, 504])
-            adapter = HTTPAdapter(max_retries=retries)
-            session.mount('https://', adapter)
             # logger.debug(f"health:{headers}, {payload}")
-            response = requests.post(HEALTH_UPLOAD_URL, headers=headers, json=payload, timeout=4)
+            response = requests.post(HEALTH_UPLOAD_URL, headers=headers, json=payload)
             # logger.debug(f"response:{response}")
             if response.status_code == 200:
                 data = response.json()
@@ -595,70 +570,77 @@ class MainWnd(QMainWindow):
                 logger.error("Uploading health data failed.")
         except requests.exceptions.RequestException as e:
             logger.error("Error occurred while uploading health data, ", e)
-        finally:
-            session.close()
 
     def emit_upload_scanned_data(self):
         self.upload_record.emit()
 
-    def upload_data(self, payload_default, payload_custom):
-        delete = None
-        if self.ui.radio_api_default.isChecked():
-            delete = self.upload_to_default(payload_default)
-        elif self.ui.radio_api_custom.isChecked():
-            delete = self.upload_to_custom(payload_custom)
-        elif self.ui.radio_api_both.isChecked():
-            delete1 = self.upload_to_default(payload_default)
-            delete2 = self.upload_to_custom(payload_custom)
-            delete = delete1 or delete2
-        return delete
-
     def upload_scanned_data(self):
         logger.info('Uploading scanned data initiated...')
-        if self.use_db:
-            self.db_cursor.execute('''
-                SELECT id, rfidTag, antenna, RSSI, latitude, longitude, speed, heading,
-                locationCode, username, tag1, value1, tag2, value2, tag3, value3, tag4, value4
-                FROM records
-                ORDER BY timestamp ASC
-                ''')
-            data = self.db_cursor.fetchall()
-            chunk_size = 1000
-            for i in range(0, len(data), chunk_size):
-                chunk = data[i:i + chunk_size]
-                payload_default, payload_custom = convert_formatted_payload(chunk)
-                delete = self.upload_data(payload_default, payload_custom)
-                if delete:
-                    ids_to_delete = [row[0] for row in chunk]
-                    self.db_cursor.execute('''
-                            DELETE FROM records
-                            WHERE id IN (%s)
-                            ''' % ','.join('?' * len(ids_to_delete)), ids_to_delete)
-            logger.info("Uploading scanned data finished.")
-            microsecond_timestamp = int(time.time() * 1_000_000)
-            self.db_cursor.execute('''
-                        DELETE FROM records
-                        WHERE ABS(timestamp - ?) > 600000000
-                    ''', [microsecond_timestamp])
-            self.db_connection.commit()
-        else:
-            chunk_size = 1000
-            start_index = 0
-            while start_index < len(self.database):
-                chunk = self.database[start_index:start_index + chunk_size]
-                payload_default, payload_custom = convert_formatted_payload(chunk)
-                delete = self.upload_data(payload_default, payload_custom)
-                if delete:
-                    self.database = self.database[:start_index] + self.database[start_index + chunk_size:]
-                else:
-                    start_index = start_index + chunk_size
-            logger.info("Uploading scanned data finished.")
-            microsecond_timestamp = int(time.time() * 1_000_000)
-            i = 0
-            for i in range(len(self.database)):
-                if microsecond_timestamp - self.database[i][10] < 600_000_000:
-                    break
-            self.database = self.database[i:]
+        # self.db_cursor.execute('''
+        #     SELECT id, rfidTag, antenna, RSSI, latitude, longitude, speed, heading,
+        #     locationCode, username, tag1, value1, tag2, value2, tag3, value3, tag4, value4
+        #     FROM records
+        #     ORDER BY timestamp ASC
+        #     ''')
+        # data = self.db_cursor.fetchall()
+        chunk_size = 1000
+        start_index = 0
+        while start_index < len(self.database):
+            chunk = self.database[start_index:start_index + chunk_size]
+            data_list_default = []
+            data_list_custom = []
+            for row in chunk:
+                default_data = {
+                    "rfidTag": row[1],
+                    "antenna": row[2],
+                    "RSSI": row[3],
+                    "latitude": row[4],
+                    "longitude": row[5],
+                    "speed": row[6],
+                    "heading": row[7],
+                    "locationCode": row[8],
+                    "username": row[9],
+                }
+                custom_data = {}
+                for idx in range(10, 17, 2):
+                    key, value = row[idx], row[idx + 1]
+                    if key and value:
+                        custom_data[key] = value
+                custom_data = default_data | custom_data
+                data_list_default.append(default_data)
+                data_list_custom.append(custom_data)
+            payload_default = {"data": data_list_default}
+            payload_custom = {"data": data_list_custom}
+            delete = None
+            if self.ui.radio_api_default.isChecked():
+                delete = self.upload_to_default(payload_default)
+            elif self.ui.radio_api_custom.isChecked():
+                delete = self.upload_to_custom(payload_custom)
+            elif self.ui.radio_api_both.isChecked():
+                delete1 = self.upload_to_default(payload_default)
+                delete2 = self.upload_to_custom(payload_custom)
+                delete = delete1 or delete2
+            if delete:
+                # ids_to_delete = [row[0] for row in chunk]
+                # self.db_cursor.execute('''
+                # DELETE FROM records
+                # WHERE id IN (%s)
+                # ''' % ','.join('?' * len(ids_to_delete)), ids_to_delete)
+                self.database = self.database[:start_index] + self.database[start_index + chunk_size:]
+            else:
+                start_index = start_index + chunk_size
+        logger.info("Uploading scanned data finished.")
+        microsecond_timestamp = int(time.time() * 1_000_000)
+        # self.db_cursor.execute('''
+        #     DELETE FROM records
+        #     WHERE ABS(timestamp - ?) > 600000000
+        # ''', [microsecond_timestamp])
+        # self.db_connection.commit()
+        i = 0
+        for i in range(len(self.database)):
+            if microsecond_timestamp - self.database[i][10] < 600_000_000:
+                break
+        self.database = self.database[i:]
         logger.info('Deleted old data.')
 
     def refresh_data_table(self, new_data):
@@ -692,7 +674,7 @@ class MainWnd(QMainWindow):
 
     def closeEvent(self, event):
         self.setting_save()
-        self.db_connection.close()
+        # self.db_connection.close()
         self.gps.stop()
         self.igps_stop.set()
         if self.internet_gps.is_alive():
