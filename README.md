@@ -94,4 +94,4 @@ Software for reading live tag and gps module.
 
   - Ubuntu / Raspberry Pi
     
-    - Place "setup.sh" in the same directory as "main" and run shell script.
+    - Place "setup.sh" in the same directory as "main" and run shell script with sudo.
