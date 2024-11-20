@@ -5,6 +5,9 @@ __pycache__/
 .idea/
 build/
 dist/
+setting/
+script/setup-py.bat
+script/setup-py.sh
 # C extensions
 *.so
 
