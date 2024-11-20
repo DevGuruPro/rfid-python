@@ -7,3 +7,4 @@ pygame
 geopy
 geographiclib
 ping3
+urllib3
