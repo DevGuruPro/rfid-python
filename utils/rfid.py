@@ -8,7 +8,7 @@ from argparse import ArgumentParser
 from settings import RFID_CARD_READER
 from utils.logger import logger
 
-from ping3 import ping, verbose_ping
+from ping3 import ping
 
 
 def convert_to_unicode(obj):
@@ -118,8 +118,6 @@ class RFID(QThread):
         config = LLRPReaderConfig(factory_args)
         self.reader = LLRPReaderClient(host, port, config)
         self.reader.add_tag_report_callback(self.tag_seen_callback)
-        self.reader.add_disconnected_callback(self.on_disconnected)
-        self.reader.add_event_callback(self.on_event)
 
     # def _connect_reader(self):
     #     for reader in self.reader_clients:
