@@ -574,8 +574,8 @@ class MainWnd(QMainWindow):
             "lng": lon,
             "dateTime": datetime.now().strftime("%Y-%m-%dT%H:%M:%S")
         }
+        session = requests.Session()
         try:
-            session = requests.Session()
             retries = Retry(total=3,
                             backoff_factor=1,
                             status_forcelist=[500, 502, 503, 504])
