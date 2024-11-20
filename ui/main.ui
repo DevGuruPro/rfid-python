@@ -10,8 +10,15 @@
     <height>578</height>
    </rect>
   </property>
+  <property name="cursor">
+   <cursorShape>ArrowCursor</cursorShape>
+  </property>
   <property name="windowTitle">
    <string>MainWindow</string>
+  </property>
+  <property name="windowIcon">
+   <iconset resource="res.qrc">
+    <normaloff>:/img/wicon.png</normaloff>:/img/wicon.png</iconset>
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QVBoxLayout" name="verticalLayout_20">
@@ -184,6 +191,12 @@ QTableWidget::item {
              </property>
              <property name="selectionMode">
               <enum>QAbstractItemView::NoSelection</enum>
+             </property>
+             <property name="iconSize">
+              <size>
+               <width>0</width>
+               <height>0</height>
+              </size>
              </property>
              <property name="textElideMode">
               <enum>Qt::ElideLeft</enum>
@@ -713,7 +726,7 @@ QCheckBox::indicator:checked {
                </widget>
               </item>
               <item>
-               <widget class="QWidget" name="widget_47" native="true">
+               <widget class="QWidget" name="gps_wid" native="true">
                 <layout class="QVBoxLayout" name="verticalLayout_32">
                  <property name="spacing">
                   <number>5</number>
@@ -1490,7 +1503,7 @@ QRadioButton::indicator:checked {
                <number>0</number>
               </property>
               <property name="topMargin">
-               <number>0</number>
+               <number>10</number>
               </property>
               <property name="rightMargin">
                <number>0</number>
@@ -1499,16 +1512,52 @@ QRadioButton::indicator:checked {
                <number>0</number>
               </property>
               <item>
-               <widget class="QCheckBox" name="tag_limit">
-                <property name="font">
-                 <font>
-                  <pointsize>10</pointsize>
-                  <weight>50</weight>
-                  <bold>false</bold>
-                 </font>
-                </property>
-                <property name="styleSheet">
-                 <string notr="true">QCheckBox{
+               <widget class="QWidget" name="widget_21" native="true">
+                <layout class="QHBoxLayout" name="horizontalLayout_18">
+                 <property name="spacing">
+                  <number>0</number>
+                 </property>
+                 <property name="leftMargin">
+                  <number>0</number>
+                 </property>
+                 <property name="topMargin">
+                  <number>0</number>
+                 </property>
+                 <property name="rightMargin">
+                  <number>0</number>
+                 </property>
+                 <property name="bottomMargin">
+                  <number>0</number>
+                 </property>
+                 <item>
+                  <widget class="QWidget" name="widget_24" native="true">
+                   <layout class="QVBoxLayout" name="verticalLayout_34">
+                    <property name="spacing">
+                     <number>10</number>
+                    </property>
+                    <property name="leftMargin">
+                     <number>0</number>
+                    </property>
+                    <property name="topMargin">
+                     <number>0</number>
+                    </property>
+                    <property name="rightMargin">
+                     <number>0</number>
+                    </property>
+                    <property name="bottomMargin">
+                     <number>0</number>
+                    </property>
+                    <item>
+                     <widget class="QCheckBox" name="check_run_db">
+                      <property name="font">
+                       <font>
+                        <pointsize>10</pointsize>
+                        <weight>50</weight>
+                        <bold>false</bold>
+                       </font>
+                      </property>
+                      <property name="styleSheet">
+                       <string notr="true">QCheckBox{
 	color: white; 
 }
 
@@ -1526,139 +1575,29 @@ QCheckBox::indicator:checked {
 	border: 2px solid gray;   
     image: url(:/img/checkmark.png);  /* Use a custom image if needed */  
  }</string>
-                </property>
-                <property name="text">
-                 <string>Enable Tag Range Limit</string>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <widget class="QWidget" name="widget_21" native="true">
-                <layout class="QHBoxLayout" name="horizontalLayout_18">
-                 <property name="leftMargin">
-                  <number>0</number>
-                 </property>
-                 <property name="topMargin">
-                  <number>0</number>
-                 </property>
-                 <property name="rightMargin">
-                  <number>0</number>
-                 </property>
-                 <property name="bottomMargin">
-                  <number>0</number>
-                 </property>
-                 <item>
-                  <widget class="QWidget" name="widget_24" native="true">
-                   <layout class="QHBoxLayout" name="horizontalLayout_19">
-                    <property name="leftMargin">
-                     <number>10</number>
-                    </property>
-                    <property name="topMargin">
-                     <number>0</number>
-                    </property>
-                    <property name="rightMargin">
-                     <number>10</number>
-                    </property>
-                    <property name="bottomMargin">
-                     <number>0</number>
-                    </property>
-                    <item>
-                     <widget class="QWidget" name="widget_22" native="true">
-                      <property name="sizePolicy">
-                       <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
-                        <horstretch>0</horstretch>
-                        <verstretch>0</verstretch>
-                       </sizepolicy>
                       </property>
-                      <layout class="QVBoxLayout" name="verticalLayout_17">
-                       <property name="spacing">
-                        <number>20</number>
-                       </property>
-                       <property name="leftMargin">
-                        <number>0</number>
-                       </property>
-                       <property name="topMargin">
-                        <number>0</number>
-                       </property>
-                       <property name="rightMargin">
-                        <number>0</number>
-                       </property>
-                       <property name="bottomMargin">
-                        <number>0</number>
-                       </property>
-                       <item>
-                        <widget class="QLabel" name="label_42">
-                         <property name="sizePolicy">
-                          <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
-                           <horstretch>0</horstretch>
-                           <verstretch>0</verstretch>
-                          </sizepolicy>
-                         </property>
-                         <property name="font">
-                          <font>
-                           <pointsize>10</pointsize>
-                           <weight>50</weight>
-                           <bold>false</bold>
-                          </font>
-                         </property>
-                         <property name="styleSheet">
-                          <string notr="true">QLabel {  
-    color: white;  /* Change 'blue' to your preferred color */  
-}  </string>
-                         </property>
-                         <property name="text">
-                          <string>Start Tag Value</string>
-                         </property>
-                        </widget>
-                       </item>
-                       <item>
-                        <widget class="QLabel" name="label_43">
-                         <property name="sizePolicy">
-                          <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
-                           <horstretch>0</horstretch>
-                           <verstretch>0</verstretch>
-                          </sizepolicy>
-                         </property>
-                         <property name="font">
-                          <font>
-                           <pointsize>10</pointsize>
-                           <weight>50</weight>
-                           <bold>false</bold>
-                          </font>
-                         </property>
-                         <property name="styleSheet">
-                          <string notr="true">QLabel {  
-    color: white;  /* Change 'blue' to your preferred color */  
-}  </string>
-                         </property>
-                         <property name="text">
-                          <string>End Tag Value</string>
-                         </property>
-                        </widget>
-                       </item>
-                      </layout>
+                      <property name="text">
+                       <string>Run with Local DB</string>
+                      </property>
+                      <property name="checked">
+                       <bool>false</bool>
+                      </property>
                      </widget>
                     </item>
                     <item>
-                     <widget class="QWidget" name="widget_23" native="true">
-                      <layout class="QVBoxLayout" name="verticalLayout_19">
-                       <property name="spacing">
-                        <number>20</number>
-                       </property>
+                     <widget class="QWidget" name="widget_49" native="true">
+                      <layout class="QVBoxLayout" name="verticalLayout_33">
                        <property name="leftMargin">
                         <number>0</number>
                        </property>
                        <property name="topMargin">
-                        <number>0</number>
+                        <number>20</number>
                        </property>
                        <property name="rightMargin">
                         <number>0</number>
                        </property>
-                       <property name="bottomMargin">
-                        <number>0</number>
-                       </property>
                        <item>
-                        <widget class="QLineEdit" name="setting_start_tag">
+                        <widget class="QCheckBox" name="tag_limit">
                          <property name="font">
                           <font>
                            <pointsize>10</pointsize>
@@ -1667,34 +1606,172 @@ QCheckBox::indicator:checked {
                           </font>
                          </property>
                          <property name="styleSheet">
-                          <string notr="true">QLineEdit {  
+                          <string notr="true">QCheckBox{
+	color: white; 
+}
+
+QCheckBox::indicator {  
+    width: 20px;  
+    height: 20px;  
+}  
+
+QCheckBox::indicator:unchecked {  
     border: 2px solid gray;  
-    border-radius: 10px;  
-    padding: 0 8px;  
-    background: white;  
-    selection-background-color: darkgray;  
-}  </string>
+    background-color: white;  
+}
+
+QCheckBox::indicator:checked { 
+	border: 2px solid gray;   
+    image: url(:/img/checkmark.png);  /* Use a custom image if needed */  
+ }</string>
+                         </property>
+                         <property name="text">
+                          <string>Enable Tag Range Limit</string>
                          </property>
                         </widget>
                        </item>
                        <item>
-                        <widget class="QLineEdit" name="setting_end_tag">
-                         <property name="font">
-                          <font>
-                           <pointsize>10</pointsize>
-                           <weight>50</weight>
-                           <bold>false</bold>
-                          </font>
-                         </property>
-                         <property name="styleSheet">
-                          <string notr="true">QLineEdit {  
+                        <widget class="QWidget" name="tag_chw" native="true">
+                         <layout class="QHBoxLayout" name="horizontalLayout_9">
+                          <item>
+                           <widget class="QWidget" name="widget_22" native="true">
+                            <property name="sizePolicy">
+                             <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
+                              <horstretch>0</horstretch>
+                              <verstretch>0</verstretch>
+                             </sizepolicy>
+                            </property>
+                            <layout class="QVBoxLayout" name="verticalLayout_17">
+                             <property name="spacing">
+                              <number>20</number>
+                             </property>
+                             <property name="leftMargin">
+                              <number>0</number>
+                             </property>
+                             <property name="topMargin">
+                              <number>0</number>
+                             </property>
+                             <property name="rightMargin">
+                              <number>0</number>
+                             </property>
+                             <property name="bottomMargin">
+                              <number>0</number>
+                             </property>
+                             <item>
+                              <widget class="QLabel" name="label_42">
+                               <property name="sizePolicy">
+                                <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
+                                 <horstretch>0</horstretch>
+                                 <verstretch>0</verstretch>
+                                </sizepolicy>
+                               </property>
+                               <property name="font">
+                                <font>
+                                 <pointsize>10</pointsize>
+                                 <weight>50</weight>
+                                 <bold>false</bold>
+                                </font>
+                               </property>
+                               <property name="styleSheet">
+                                <string notr="true">QLabel {  
+    color: white;  /* Change 'blue' to your preferred color */  
+}  </string>
+                               </property>
+                               <property name="text">
+                                <string>Start Tag Value</string>
+                               </property>
+                              </widget>
+                             </item>
+                             <item>
+                              <widget class="QLabel" name="label_43">
+                               <property name="sizePolicy">
+                                <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
+                                 <horstretch>0</horstretch>
+                                 <verstretch>0</verstretch>
+                                </sizepolicy>
+                               </property>
+                               <property name="font">
+                                <font>
+                                 <pointsize>10</pointsize>
+                                 <weight>50</weight>
+                                 <bold>false</bold>
+                                </font>
+                               </property>
+                               <property name="styleSheet">
+                                <string notr="true">QLabel {  
+    color: white;  /* Change 'blue' to your preferred color */  
+}  </string>
+                               </property>
+                               <property name="text">
+                                <string>End Tag Value</string>
+                               </property>
+                              </widget>
+                             </item>
+                            </layout>
+                           </widget>
+                          </item>
+                          <item>
+                           <widget class="QWidget" name="widget_23" native="true">
+                            <layout class="QVBoxLayout" name="verticalLayout_19">
+                             <property name="spacing">
+                              <number>20</number>
+                             </property>
+                             <property name="leftMargin">
+                              <number>0</number>
+                             </property>
+                             <property name="topMargin">
+                              <number>0</number>
+                             </property>
+                             <property name="rightMargin">
+                              <number>0</number>
+                             </property>
+                             <property name="bottomMargin">
+                              <number>0</number>
+                             </property>
+                             <item>
+                              <widget class="QLineEdit" name="setting_start_tag">
+                               <property name="font">
+                                <font>
+                                 <pointsize>10</pointsize>
+                                 <weight>50</weight>
+                                 <bold>false</bold>
+                                </font>
+                               </property>
+                               <property name="styleSheet">
+                                <string notr="true">QLineEdit {  
     border: 2px solid gray;  
     border-radius: 10px;  
     padding: 0 8px;  
     background: white;  
     selection-background-color: darkgray;  
 }  </string>
-                         </property>
+                               </property>
+                              </widget>
+                             </item>
+                             <item>
+                              <widget class="QLineEdit" name="setting_end_tag">
+                               <property name="font">
+                                <font>
+                                 <pointsize>10</pointsize>
+                                 <weight>50</weight>
+                                 <bold>false</bold>
+                                </font>
+                               </property>
+                               <property name="styleSheet">
+                                <string notr="true">QLineEdit {  
+    border: 2px solid gray;  
+    border-radius: 10px;  
+    padding: 0 8px;  
+    background: white;  
+    selection-background-color: darkgray;  
+}  </string>
+                               </property>
+                              </widget>
+                             </item>
+                            </layout>
+                           </widget>
+                          </item>
+                         </layout>
                         </widget>
                        </item>
                       </layout>
@@ -1819,7 +1896,7 @@ QCheckBox::indicator:checked {
                   </widget>
                  </item>
                  <item>
-                  <widget class="QWidget" name="widget_17" native="true">
+                  <widget class="QWidget" name="speed_chw" native="true">
                    <property name="sizePolicy">
                     <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
                      <horstretch>0</horstretch>
@@ -2012,7 +2089,7 @@ QCheckBox::indicator:checked {
                   </widget>
                  </item>
                  <item>
-                  <widget class="QWidget" name="widget_14" native="true">
+                  <widget class="QWidget" name="rssi_chw" native="true">
                    <property name="sizePolicy">
                     <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
                      <horstretch>0</horstretch>

@@ -27,6 +27,10 @@ class Ui_MainWindow(object):
         if not MainWindow.objectName():
             MainWindow.setObjectName(u"MainWindow")
         MainWindow.resize(797, 578)
+        MainWindow.setCursor(QCursor(Qt.CursorShape.ArrowCursor))
+        icon = QIcon()
+        icon.addFile(u":/img/wicon.png", QSize(), QIcon.Mode.Normal, QIcon.State.Off)
+        MainWindow.setWindowIcon(icon)
         self.centralwidget = QWidget(MainWindow)
         self.centralwidget.setObjectName(u"centralwidget")
         self.verticalLayout_20 = QVBoxLayout(self.centralwidget)
@@ -165,6 +169,7 @@ class Ui_MainWindow(object):
 "     \n"
 "} */")
         self.tableWidget.setSelectionMode(QAbstractItemView.NoSelection)
+        self.tableWidget.setIconSize(QSize(0, 0))
         self.tableWidget.setTextElideMode(Qt.ElideLeft)
         self.tableWidget.setRowCount(7)
         self.tableWidget.horizontalHeader().setVisible(True)
@@ -406,13 +411,13 @@ class Ui_MainWindow(object):
 
         self.verticalLayout_9.addWidget(self.widget_9)
 
-        self.widget_47 = QWidget(self.groupBox_2)
-        self.widget_47.setObjectName(u"widget_47")
-        self.verticalLayout_32 = QVBoxLayout(self.widget_47)
+        self.gps_wid = QWidget(self.groupBox_2)
+        self.gps_wid.setObjectName(u"gps_wid")
+        self.verticalLayout_32 = QVBoxLayout(self.gps_wid)
         self.verticalLayout_32.setSpacing(5)
         self.verticalLayout_32.setObjectName(u"verticalLayout_32")
         self.verticalLayout_32.setContentsMargins(0, 0, 0, 0)
-        self.groupBox_3 = QGroupBox(self.widget_47)
+        self.groupBox_3 = QGroupBox(self.gps_wid)
         self.groupBox_3.setObjectName(u"groupBox_3")
         sizePolicy2.setHeightForWidth(self.groupBox_3.sizePolicy().hasHeightForWidth())
         self.groupBox_3.setSizePolicy(sizePolicy2)
@@ -483,7 +488,7 @@ class Ui_MainWindow(object):
 
         self.verticalLayout_32.addWidget(self.groupBox_3)
 
-        self.widget_10 = QWidget(self.widget_47)
+        self.widget_10 = QWidget(self.gps_wid)
         self.widget_10.setObjectName(u"widget_10")
         sizePolicy3 = QSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Maximum)
         sizePolicy3.setHorizontalStretch(0)
@@ -632,7 +637,7 @@ class Ui_MainWindow(object):
         self.verticalLayout_32.addWidget(self.widget_10)
 
 
-        self.verticalLayout_9.addWidget(self.widget_47)
+        self.verticalLayout_9.addWidget(self.gps_wid)
 
 
         self.gridLayout_4.addWidget(self.groupBox_2, 0, 1, 1, 1)
@@ -815,12 +820,54 @@ class Ui_MainWindow(object):
         self.verticalLayout_16 = QVBoxLayout(self.widget_20)
         self.verticalLayout_16.setSpacing(10)
         self.verticalLayout_16.setObjectName(u"verticalLayout_16")
-        self.verticalLayout_16.setContentsMargins(0, 0, 0, 0)
-        self.tag_limit = QCheckBox(self.widget_20)
-        self.tag_limit.setObjectName(u"tag_limit")
+        self.verticalLayout_16.setContentsMargins(0, 10, 0, 0)
+        self.widget_21 = QWidget(self.widget_20)
+        self.widget_21.setObjectName(u"widget_21")
+        self.horizontalLayout_18 = QHBoxLayout(self.widget_21)
+        self.horizontalLayout_18.setSpacing(0)
+        self.horizontalLayout_18.setObjectName(u"horizontalLayout_18")
+        self.horizontalLayout_18.setContentsMargins(0, 0, 0, 0)
+        self.widget_24 = QWidget(self.widget_21)
+        self.widget_24.setObjectName(u"widget_24")
+        self.verticalLayout_34 = QVBoxLayout(self.widget_24)
+        self.verticalLayout_34.setSpacing(10)
+        self.verticalLayout_34.setObjectName(u"verticalLayout_34")
+        self.verticalLayout_34.setContentsMargins(0, 0, 0, 0)
+        self.check_run_db = QCheckBox(self.widget_24)
+        self.check_run_db.setObjectName(u"check_run_db")
         font3 = QFont()
         font3.setPointSize(10)
         font3.setBold(False)
+        self.check_run_db.setFont(font3)
+        self.check_run_db.setStyleSheet(u"QCheckBox{\n"
+"	color: white; \n"
+"}\n"
+"\n"
+"QCheckBox::indicator {  \n"
+"    width: 20px;  \n"
+"    height: 20px;  \n"
+"}  \n"
+"\n"
+"QCheckBox::indicator:unchecked {  \n"
+"    border: 2px solid gray;  \n"
+"    background-color: white;  \n"
+"}\n"
+"\n"
+"QCheckBox::indicator:checked { \n"
+"	border: 2px solid gray;   \n"
+"    image: url(:/img/checkmark.png);  /* Use a custom image if needed */  \n"
+" }")
+        self.check_run_db.setChecked(False)
+
+        self.verticalLayout_34.addWidget(self.check_run_db)
+
+        self.widget_49 = QWidget(self.widget_24)
+        self.widget_49.setObjectName(u"widget_49")
+        self.verticalLayout_33 = QVBoxLayout(self.widget_49)
+        self.verticalLayout_33.setObjectName(u"verticalLayout_33")
+        self.verticalLayout_33.setContentsMargins(0, 20, 0, -1)
+        self.tag_limit = QCheckBox(self.widget_49)
+        self.tag_limit.setObjectName(u"tag_limit")
         self.tag_limit.setFont(font3)
         self.tag_limit.setStyleSheet(u"QCheckBox{\n"
 "	color: white; \n"
@@ -841,19 +888,13 @@ class Ui_MainWindow(object):
 "    image: url(:/img/checkmark.png);  /* Use a custom image if needed */  \n"
 " }")
 
-        self.verticalLayout_16.addWidget(self.tag_limit)
+        self.verticalLayout_33.addWidget(self.tag_limit)
 
-        self.widget_21 = QWidget(self.widget_20)
-        self.widget_21.setObjectName(u"widget_21")
-        self.horizontalLayout_18 = QHBoxLayout(self.widget_21)
-        self.horizontalLayout_18.setObjectName(u"horizontalLayout_18")
-        self.horizontalLayout_18.setContentsMargins(0, 0, 0, 0)
-        self.widget_24 = QWidget(self.widget_21)
-        self.widget_24.setObjectName(u"widget_24")
-        self.horizontalLayout_19 = QHBoxLayout(self.widget_24)
-        self.horizontalLayout_19.setObjectName(u"horizontalLayout_19")
-        self.horizontalLayout_19.setContentsMargins(10, 0, 10, 0)
-        self.widget_22 = QWidget(self.widget_24)
+        self.tag_chw = QWidget(self.widget_49)
+        self.tag_chw.setObjectName(u"tag_chw")
+        self.horizontalLayout_9 = QHBoxLayout(self.tag_chw)
+        self.horizontalLayout_9.setObjectName(u"horizontalLayout_9")
+        self.widget_22 = QWidget(self.tag_chw)
         self.widget_22.setObjectName(u"widget_22")
         sizePolicy1.setHeightForWidth(self.widget_22.sizePolicy().hasHeightForWidth())
         self.widget_22.setSizePolicy(sizePolicy1)
@@ -884,9 +925,9 @@ class Ui_MainWindow(object):
         self.verticalLayout_17.addWidget(self.label_43)
 
 
-        self.horizontalLayout_19.addWidget(self.widget_22)
+        self.horizontalLayout_9.addWidget(self.widget_22)
 
-        self.widget_23 = QWidget(self.widget_24)
+        self.widget_23 = QWidget(self.tag_chw)
         self.widget_23.setObjectName(u"widget_23")
         self.verticalLayout_19 = QVBoxLayout(self.widget_23)
         self.verticalLayout_19.setSpacing(20)
@@ -919,7 +960,13 @@ class Ui_MainWindow(object):
         self.verticalLayout_19.addWidget(self.setting_end_tag)
 
 
-        self.horizontalLayout_19.addWidget(self.widget_23)
+        self.horizontalLayout_9.addWidget(self.widget_23)
+
+
+        self.verticalLayout_33.addWidget(self.tag_chw)
+
+
+        self.verticalLayout_34.addWidget(self.widget_49)
 
 
         self.horizontalLayout_18.addWidget(self.widget_24)
@@ -996,14 +1043,14 @@ class Ui_MainWindow(object):
 
         self.verticalLayout_15.addWidget(self.speed_limit)
 
-        self.widget_17 = QWidget(self.widget_16)
-        self.widget_17.setObjectName(u"widget_17")
-        sizePolicy3.setHeightForWidth(self.widget_17.sizePolicy().hasHeightForWidth())
-        self.widget_17.setSizePolicy(sizePolicy3)
-        self.horizontalLayout_15 = QHBoxLayout(self.widget_17)
+        self.speed_chw = QWidget(self.widget_16)
+        self.speed_chw.setObjectName(u"speed_chw")
+        sizePolicy3.setHeightForWidth(self.speed_chw.sizePolicy().hasHeightForWidth())
+        self.speed_chw.setSizePolicy(sizePolicy3)
+        self.horizontalLayout_15 = QHBoxLayout(self.speed_chw)
         self.horizontalLayout_15.setObjectName(u"horizontalLayout_15")
         self.horizontalLayout_15.setContentsMargins(10, 0, 10, 0)
-        self.widget_18 = QWidget(self.widget_17)
+        self.widget_18 = QWidget(self.speed_chw)
         self.widget_18.setObjectName(u"widget_18")
         sizePolicy2.setHeightForWidth(self.widget_18.sizePolicy().hasHeightForWidth())
         self.widget_18.setSizePolicy(sizePolicy2)
@@ -1035,7 +1082,7 @@ class Ui_MainWindow(object):
 
         self.horizontalLayout_15.addWidget(self.widget_18)
 
-        self.widget_19 = QWidget(self.widget_17)
+        self.widget_19 = QWidget(self.speed_chw)
         self.widget_19.setObjectName(u"widget_19")
         sizePolicy2.setHeightForWidth(self.widget_19.sizePolicy().hasHeightForWidth())
         self.widget_19.setSizePolicy(sizePolicy2)
@@ -1067,7 +1114,7 @@ class Ui_MainWindow(object):
         self.horizontalLayout_15.addWidget(self.widget_19)
 
 
-        self.verticalLayout_15.addWidget(self.widget_17)
+        self.verticalLayout_15.addWidget(self.speed_chw)
 
 
         self.verticalLayout_6.addWidget(self.widget_16)
@@ -1102,14 +1149,14 @@ class Ui_MainWindow(object):
 
         self.verticalLayout_14.addWidget(self.rssi_limit)
 
-        self.widget_14 = QWidget(self.widget_5)
-        self.widget_14.setObjectName(u"widget_14")
-        sizePolicy3.setHeightForWidth(self.widget_14.sizePolicy().hasHeightForWidth())
-        self.widget_14.setSizePolicy(sizePolicy3)
-        self.horizontalLayout_13 = QHBoxLayout(self.widget_14)
+        self.rssi_chw = QWidget(self.widget_5)
+        self.rssi_chw.setObjectName(u"rssi_chw")
+        sizePolicy3.setHeightForWidth(self.rssi_chw.sizePolicy().hasHeightForWidth())
+        self.rssi_chw.setSizePolicy(sizePolicy3)
+        self.horizontalLayout_13 = QHBoxLayout(self.rssi_chw)
         self.horizontalLayout_13.setObjectName(u"horizontalLayout_13")
         self.horizontalLayout_13.setContentsMargins(10, 0, 10, 0)
-        self.widget_13 = QWidget(self.widget_14)
+        self.widget_13 = QWidget(self.rssi_chw)
         self.widget_13.setObjectName(u"widget_13")
         sizePolicy2.setHeightForWidth(self.widget_13.sizePolicy().hasHeightForWidth())
         self.widget_13.setSizePolicy(sizePolicy2)
@@ -1140,7 +1187,7 @@ class Ui_MainWindow(object):
 
         self.horizontalLayout_13.addWidget(self.widget_13)
 
-        self.widget_15 = QWidget(self.widget_14)
+        self.widget_15 = QWidget(self.rssi_chw)
         self.widget_15.setObjectName(u"widget_15")
         sizePolicy2.setHeightForWidth(self.widget_15.sizePolicy().hasHeightForWidth())
         self.widget_15.setSizePolicy(sizePolicy2)
@@ -1172,7 +1219,7 @@ class Ui_MainWindow(object):
         self.horizontalLayout_13.addWidget(self.widget_15)
 
 
-        self.verticalLayout_14.addWidget(self.widget_14)
+        self.verticalLayout_14.addWidget(self.rssi_chw)
 
 
         self.verticalLayout_6.addWidget(self.widget_5)
@@ -2048,6 +2095,7 @@ class Ui_MainWindow(object):
         self.edit_rfid_noti.setText(QCoreApplication.translate("MainWindow", u"-1", None))
         self.edit_rfid_host.setText(QCoreApplication.translate("MainWindow", u"169.254.10.1", None))
         self.edit_rfid_rsa1.setText("")
+        self.check_run_db.setText(QCoreApplication.translate("MainWindow", u"Run with Local DB", None))
         self.tag_limit.setText(QCoreApplication.translate("MainWindow", u"Enable Tag Range Limit", None))
         self.label_42.setText(QCoreApplication.translate("MainWindow", u"Start Tag Value", None))
         self.label_43.setText(QCoreApplication.translate("MainWindow", u"End Tag Value", None))

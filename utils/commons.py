@@ -120,3 +120,29 @@ def find_smallest_available_id(used_ids):
         else:
             break
     return smallest_available_id
+
+
+def convert_formatted_payload(chunk):
+    data_list_default = []
+    data_list_custom = []
+    for row in chunk:
+        default_data = {
+            "rfidTag": row[1],
+            "antenna": row[2],
+            "RSSI": row[3],
+            "latitude": row[4],
+            "longitude": row[5],
+            "speed": row[6],
+            "heading": row[7],
+            "locationCode": row[8],
+            "username": row[9],
+        }
+        custom_data = {}
+        for idx in range(10, 17, 2):
+            key, value = row[idx], row[idx + 1]
+            if key and value:
+                custom_data[key] = value
+        custom_data = default_data | custom_data
+        data_list_default.append(default_data)
+        data_list_custom.append(custom_data)
+    return {"data": data_list_default}, {"data": data_list_custom}
