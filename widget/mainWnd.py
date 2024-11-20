@@ -488,8 +488,8 @@ class MainWnd(QMainWindow):
                     timestamp, tag1, value1, tag2, value2, tag3, value3, tag4, value4)
                     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
                     ''', (
-                        find_smallest_available_id(used_ids), tag['EPC-96'], f"{tag['AntennaID']}", f"{tag['PeakRSSI']}",
-                        lat, lon,
+                        find_smallest_available_id(used_ids), tag['EPC-96'], f"{tag['AntennaID']}",
+                        f"{tag['PeakRSSI']}", lat, lon,
                         speed, bearing, "-", self.userName, tag['LastSeenTimestampUTC'],
                         self.ui.edit_api_ctag1.text(), self.ui.edit_api_cval1.text(),
                         self.ui.edit_api_ctag2.text(), self.ui.edit_api_cval2.text(),
