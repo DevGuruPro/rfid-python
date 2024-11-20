@@ -268,6 +268,7 @@ class MainWnd(QMainWindow):
                 self.last_lon = self.cur_lon
                 self.last_utctime = milliseconds_time
             except Exception:
+                logger.debug("gps disconnected")
                 if self.ui.gps_connection_status.text() == "Connected":
                     self.monitor_gps_status(False)
             time.sleep(.1)
@@ -593,6 +594,8 @@ class MainWnd(QMainWindow):
                 logger.error("Uploading health data failed.")
         except requests.exceptions.RequestException as e:
             logger.error("Error occurred while uploading health data, ", e)
+        finally:
+            session.close()
 
     def emit_upload_scanned_data(self):
         self.upload_record.emit()
