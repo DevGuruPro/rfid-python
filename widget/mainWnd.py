@@ -10,6 +10,8 @@ import requests
 import schedule
 import json
 import sqlite3
+from requests.adapters import HTTPAdapter
+from urllib3.util.retry import Retry
 
 from PySide6.QtCore import QUrl, Signal
 from PySide6.QtGui import Qt
@@ -531,6 +533,12 @@ class MainWnd(QMainWindow):
         }
         for i in range(3):
             try:
+                session = requests.Session()
+                retries = Retry(total=3,
+                                backoff_factor=1,
+                                status_forcelist=[500, 502, 503, 504])
+                adapter = HTTPAdapter(max_retries=retries)
+                session.mount('https://', adapter)
                 # logger.debug(f"scanned:{headers}, {payload}")
                 response = requests.post(RECORD_UPLOAD_URL, headers=headers, json=payload)
                 # logger.debug(f"response:{response}")
@@ -538,7 +546,7 @@ class MainWnd(QMainWindow):
                     data = response.json()
                     if data['metadata']['code'] == '200':
                         return True
-            except Exception:
+            except requests.exceptions.RequestException:
                 pass
         return False
 
@@ -566,8 +574,14 @@ class MainWnd(QMainWindow):
             "dateTime": datetime.now().strftime("%Y-%m-%dT%H:%M:%S")
         }
         try:
+            session = requests.Session()
+            retries = Retry(total=3,
+                            backoff_factor=1,
+                            status_forcelist=[500, 502, 503, 504])
+            adapter = HTTPAdapter(max_retries=retries)
+            session.mount('https://', adapter)
             # logger.debug(f"health:{headers}, {payload}")
-            response = requests.post(HEALTH_UPLOAD_URL, headers=headers, json=payload)
+            response = requests.post(HEALTH_UPLOAD_URL, headers=headers, json=payload, timeout=4)
             # logger.debug(f"response:{response}")
             if response.status_code == 200:
                 data = response.json()
@@ -577,7 +591,7 @@ class MainWnd(QMainWindow):
                     logger.error("Uploading health data failed.")
             else:
                 logger.error("Uploading health data failed.")
-        except Exception as e:
+        except requests.exceptions.RequestException as e:
             logger.error("Error occurred while uploading health data, ", e)
 
     def emit_upload_scanned_data(self):
