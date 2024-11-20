@@ -26,7 +26,7 @@ class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         if not MainWindow.objectName():
             MainWindow.setObjectName(u"MainWindow")
-        MainWindow.resize(797, 578)
+        MainWindow.resize(797, 586)
         MainWindow.setCursor(QCursor(Qt.CursorShape.ArrowCursor))
         icon = QIcon()
         icon.addFile(u":/img/wicon.png", QSize(), QIcon.Mode.Normal, QIcon.State.Off)
