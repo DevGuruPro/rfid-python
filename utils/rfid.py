@@ -166,13 +166,11 @@ class RFID(QThread):
                 self.reader.connect()
                 break
             except Exception as e:
-                logger.error(f"rfid connection error:{e}")
                 if self.connectivity is True:
                     self.connectivity = False
                     self.sig_msg.emit(2)
             time.sleep(.1)
 
-        logger.debug("RFID connected")
         if self.connectivity is False:
             self.connectivity = True
             self.sig_msg.emit(1)
@@ -180,19 +178,15 @@ class RFID(QThread):
         while not self._b_stop.is_set():
             try:
                 response_time = ping(self.host, timeout=3)
-                logger.debug(f"TTT-{response_time}")
                 if response_time:
-                    logger.debug("Connected")
                     if self.connectivity is False:
                         self.connectivity = True
                         self.sig_msg.emit(1)
                 else:
-                    logger.debug("Disconnected")
                     if self.connectivity is True:
                         self.connectivity = False
                         self.sig_msg.emit(2)
             except Exception:
-                logger.debug("Disconnected")
                 if self.connectivity is True:
                     self.connectivity = False
                     self.sig_msg.emit(2)
