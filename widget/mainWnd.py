@@ -532,23 +532,24 @@ class MainWnd(QMainWindow):
             "Authorization": f"Bearer {self.token}",
             "Content-Type": "application/json"  # Ensure the payload is interpreted as JSON
         }
-        for i in range(3):
-            try:
-                session = requests.Session()
-                retries = Retry(total=3,
-                                backoff_factor=1,
-                                status_forcelist=[500, 502, 503, 504])
-                adapter = HTTPAdapter(max_retries=retries)
-                session.mount('https://', adapter)
-                # logger.debug(f"scanned:{headers}, {payload}")
-                response = requests.post(RECORD_UPLOAD_URL, headers=headers, json=payload)
-                # logger.debug(f"response:{response}")
-                if response.status_code == 200:
-                    data = response.json()
-                    if data['metadata']['code'] == '200':
-                        return True
-            except requests.exceptions.RequestException:
-                pass
+        session = requests.Session()
+        try:
+            retries = Retry(total=3,
+                            backoff_factor=1,
+                            status_forcelist=[500, 502, 503, 504])
+            adapter = HTTPAdapter(max_retries=retries)
+            session.mount('https://', adapter)
+            # logger.debug(f"scanned:{headers}, {payload}")
+            response = requests.post(RECORD_UPLOAD_URL, headers=headers, json=payload)
+            # logger.debug(f"response:{response}")
+            if response.status_code == 200:
+                data = response.json()
+                if data['metadata']['code'] == '200':
+                    return True
+        except requests.exceptions.RequestException:
+            pass
+        finally:
+            session.close()
         return False
 
     def upload_to_custom(self, payload):
