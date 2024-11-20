@@ -194,7 +194,6 @@ class RFID(QThread):
         self._b_stop.set()
         self.wait()
         LLRPReaderClient.disconnect_all_readers()
-        self.reader_clients.clear()
 
 
 if __name__ == '__main__':
