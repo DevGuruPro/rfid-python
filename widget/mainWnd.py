@@ -114,11 +114,6 @@ class MainWnd(QMainWindow):
         self.ui.tag_limit.clicked.connect(self.on_tag_check)
         self.ui.rssi_limit.clicked.connect(self.on_rssi_check)
 
-        self.ui.widget_47.setDisabled(True)
-        self.ui.widget_17.setDisabled(True)
-        self.ui.widget_24.setDisabled(True)
-        self.ui.widget_14.setDisabled(True)
-
         self.load_setting()
 
         self._stop = threading.Event()
@@ -196,27 +191,27 @@ class MainWnd(QMainWindow):
 
     def on_speed_check(self):
         if self.ui.speed_limit.isChecked():
-            self.ui.widget_17.setEnabled(True)
+            self.ui.speed_chw.setEnabled(True)
         else:
-            self.ui.widget_17.setDisabled(True)
+            self.ui.speed_chw.setDisabled(True)
 
     def on_tag_check(self):
         if self.ui.tag_limit.isChecked():
-            self.ui.widget_24.setEnabled(True)
+            self.ui.tag_chw.setEnabled(True)
         else:
-            self.ui.widget_24.setDisabled(True)
+            self.ui.tag_chw.setDisabled(True)
 
     def on_rssi_check(self):
         if self.ui.rssi_limit.isChecked():
-            self.ui.widget_14.setEnabled(True)
+            self.ui.rssi_chw.setEnabled(True)
         else:
-            self.ui.widget_14.setDisabled(True)
+            self.ui.rssi_chw.setDisabled(True)
 
     def on_gps_checked(self):
         if self.ui.gps_checkBox.isChecked():
-            self.ui.widget_47.setEnabled(True)
+            self.ui.gps_wid.setEnabled(True)
         else:
-            self.ui.widget_47.setDisabled(True)
+            self.ui.gps_wid.setDisabled(True)
 
     def on_gps_type(self):
         if self.ui.radio_internet_gps.isChecked():
@@ -288,20 +283,32 @@ class MainWnd(QMainWindow):
 
             if setting_data['gps']['checked']:
                 self.ui.gps_checkBox.setChecked(True)
-                self.ui.widget_47.setEnabled(True)
+                self.ui.gps_wid.setEnabled(True)
+            else:
+                self.ui.gps_checkBox.setChecked(False)
+                self.ui.gps_wid.setDisabled(True)
             if setting_data['gps']['is_external']:
                 self.ui.radio_external_gps.setChecked(True)
             else:
                 self.ui.radio_internet_gps.setChecked(True)
             if setting_data['speed']['checked']:
                 self.ui.speed_limit.setChecked(True)
-                self.ui.widget_17.setEnabled(True)
+                self.ui.speed_chw.setEnabled(True)
+            else:
+                self.ui.speed_limit.setChecked(False)
+                self.ui.speed_chw.setDisabled(True)
             if setting_data['rssi']['checked']:
                 self.ui.rssi_limit.setChecked(True)
-                self.ui.widget_14.setEnabled(True)
+                self.ui.rssi_chw.setEnabled(True)
+            else:
+                self.ui.rssi_limit.setChecked(False)
+                self.ui.rssi_chw.setDisabled(True)
             if setting_data['tag_range']['checked']:
                 self.ui.tag_limit.setChecked(True)
-                self.ui.widget_24.setEnabled(True)
+                self.ui.tag_chw.setEnabled(True)
+            else:
+                self.ui.tag_limit.setChecked(False)
+                self.ui.tag_chw.setDisabled(True)
             self.ui.edit_gps_noti.setText(setting_data['gps']['notify'])
             self.ui.edit_gps_hand.setText(setting_data['gps']['handshake'])
             self.ui.edit_gps_port.setText(setting_data['gps']['port'])
