@@ -68,7 +68,7 @@ Software for reading live tag and gps module.
     pyinstaller --onefile --add-data "ui/alarm.wav;ui/alarm.wav" --windowed --icon=icon.ico main.py
     ```
     
-    If the icon remains unchanged, ensure "script/clear_iconcache.bat" is in the same directory as the executable file, run it and restart to refresh the icon cache.
+    If icon doesn't change, run "script/clear_iconcache.bat" and restart to refresh the icon cache.
       
   - Ubuntu / Raspberry Pi OS
     
@@ -76,7 +76,7 @@ Software for reading live tag and gps module.
     pyinstaller --onefile --add-data "ui/alarm.wav*:ui/alarm.wav" --windowed --icon=icon.ico main.py  
     ```
     
-    If the icon remains unchanged, ensure "script/clear_iconcache.sh" is in the same directory as the executable file, run it with sudo and restart to refresh the icon cache.
+    If icon doesn't change, run "script/clear_iconcache.sh" with sudo and restart to refresh the icon cache.
  
     - Install/Update libc6 package.
     
@@ -94,4 +94,4 @@ Software for reading live tag and gps module.
 
   - Ubuntu / Raspberry Pi
     
-    - Place "setup.sh" in the same directory as "main" and run shell script with sudo.
+    - Place "setup.sh" in the same directory as "main" and run shell script.
