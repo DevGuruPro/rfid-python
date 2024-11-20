@@ -577,7 +577,7 @@ class MainWnd(QMainWindow):
         }
         session = requests.Session()
         try:
-            retries = Retry(total=3,
+            retries = Retry(total=1,
                             backoff_factor=1,
                             status_forcelist=[500, 502, 503, 504])
             adapter = HTTPAdapter(max_retries=retries)
