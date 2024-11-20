@@ -6,3 +6,4 @@ schedule~=1.2.2
 pygame
 geopy
 geographiclib
+ping3
