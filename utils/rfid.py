@@ -1,16 +1,14 @@
 import threading
-import time
 
 from PySide6.QtCore import QThread, Signal
 from sllurp.llrp import LLRP_DEFAULT_PORT, LLRPReaderConfig, LLRPReaderClient
 
-# from settings import RFID_CARD_READER
 from argparse import ArgumentParser
-
-from sllurp.llrp_errors import ReaderConfigurationError
 
 from settings import RFID_CARD_READER
 from utils.logger import logger
+
+from ping3 import ping, verbose_ping
 
 
 def convert_to_unicode(obj):
@@ -74,10 +72,12 @@ class RFID(QThread):
         self.tag_data = None
         self.connectivity = None
         self.reader = None
+        self.host = RFID_CARD_READER
         self.set_reader(RFID_CARD_READER, False)
 
     def set_reader(self, port, status):
         self.connectivity = status
+        self.host = port
         args = parse_args(port)
         enabled_antennas = [int(x.strip()) for x in args.antennas.split(',')]
         factory_args = dict(
@@ -118,6 +118,41 @@ class RFID(QThread):
         config = LLRPReaderConfig(factory_args)
         self.reader = LLRPReaderClient(host, port, config)
         self.reader.add_tag_report_callback(self.tag_seen_callback)
+        self.reader.add_disconnected_callback(self.on_disconnected)
+        self.reader.add_event_callback(self.on_event)
+
+    # def _connect_reader(self):
+    #     for reader in self.reader_clients:
+    #         try:
+    #             reader.connect()
+    #             logger.debug("RFID connected.")
+    #         except ReaderConfigurationError as e:
+    #             if "Not connected" in str(e):
+    #                 logger.error("Not connected")
+    #                 if self.connectivity is True:
+    #                     self.connectivity = False
+    #                     self.sig_msg.emit(2)
+    #             elif "Already connected" in str(e):
+    #                 reader.disconnect()
+    #                 logger.error("#####")
+    #                 if self.connectivity is False:
+    #                     self.connectivity = True
+    #                     self.sig_msg.emit(1)
+    #             else:
+    #                 logger.error(f"rfid configuration error:{e}")
+    #                 if self.connectivity is True:
+    #                     self.connectivity = False
+    #                     self.sig_msg.emit(2)
+    #             return
+    #         except Exception as e:
+    #             logger.error(f"rfid connection error:{e}")
+    #             if self.connectivity is True:
+    #                 self.connectivity = False
+    #                 self.sig_msg.emit(2)
+    #             return
+    #     if self.connectivity is False:
+    #         self.connectivity = True
+    #         self.sig_msg.emit(1)
 
     def tag_seen_callback(self, reader, tags):
         """Function to run each time the reader reports seeing tags."""
@@ -130,31 +165,30 @@ class RFID(QThread):
         while not self._b_stop.is_set():
             try:
                 self.reader.connect()
-                if self.connectivity is False:
-                    self.connectivity = True
-                    self.sig_msg.emit(1)
-                logger.debug("RFID connected")
-                self.reader.disconnect()
-            except ReaderConfigurationError as e:
-                logger.error(f"rfid configuration error:{e}")
-                if "Not connected" in str(e):
-                    if self.connectivity is True:
-                        self.connectivity = False
-                        self.sig_msg.emit(2)
-                elif "Already connected" in str(e):
-                    if self.connectivity is False:
-                        self.connectivity = True
-                        self.sig_msg.emit(1)
-                else:
-                    if self.connectivity is True:
-                        self.connectivity = False
-                        self.sig_msg.emit(2)
+                break
             except Exception as e:
                 logger.error(f"rfid connection error:{e}")
                 if self.connectivity is True:
                     self.connectivity = False
                     self.sig_msg.emit(2)
-            time.sleep(.1)
+
+        logger.debug("RFID connected")
+        if self.connectivity is False:
+            self.connectivity = True
+            self.sig_msg.emit(1)
+
+        while not self._b_stop.is_set():
+            try:
+                ping(self.host, timeout=3)
+                logger.debug("Connected")
+                if self.connectivity is False:
+                    self.connectivity = True
+                    self.sig_msg.emit(1)
+            except Exception:
+                logger.debug("Disconnected")
+                if self.connectivity is True:
+                    self.connectivity = False
+                    self.sig_msg.emit(2)
 
     def stop(self):
         self._b_stop.set()
