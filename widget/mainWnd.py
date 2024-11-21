@@ -10,6 +10,8 @@ import requests
 import schedule
 import json
 import sqlite3
+from requests.adapters import HTTPAdapter
+from urllib3.util.retry import Retry
 
 from PySide6.QtCore import QUrl, Signal
 from PySide6.QtGui import Qt
@@ -520,17 +522,28 @@ class MainWnd(QMainWindow):
             "Authorization": f"Bearer {self.token}",
             "Content-Type": "application/json"  # Ensure the payload is interpreted as JSON
         }
-        for i in range(3):
-            try:
-                logger.debug(f"scanned:{headers}, {payload}")
-                response = requests.post(RECORD_UPLOAD_URL, headers=headers, json=payload)
-                logger.debug(f"response:{response}")
-                if response.status_code == 200:
-                    data = response.json()
-                    if data['metadata']['code'] == '200':
-                        return True
-            except requests.exceptions.RequestException:
-                pass
+        retry_strategy = Retry(
+            total=1,  # Total number of retries
+            backoff_factor=1,  # Backoff factor for retries
+            status_forcelist=[429, 500, 502, 503, 504],  # HTTP statuses to retry on
+            allowed_methods=["HEAD", "GET", "OPTIONS", "POST"]  # Methods to retry
+        )
+        # Adapter for requests session
+        adapter = HTTPAdapter(max_retries=retry_strategy)
+        http = requests.Session()
+        http.mount("https://", adapter)
+        try:
+            # logger.debug(f"scanned:{headers}, {payload}")
+            response = requests.post(RECORD_UPLOAD_URL, headers=headers, json=payload)
+            logger.debug(f"response:{response}")
+            if response.status_code == 200:
+                data = response.json()
+                if data['metadata']['code'] == '200':
+                    return True
+        except Exception:
+            pass
+        finally:
+            http.close()
         return False
 
     def upload_to_custom(self, payload):
@@ -556,9 +569,20 @@ class MainWnd(QMainWindow):
             "lng": lon,
             "dateTime": datetime.now().strftime("%Y-%m-%dT%H:%M:%S")
         }
+
+        retry_strategy = Retry(
+            total=1,  # Total number of retries
+            backoff_factor=1,  # Backoff factor for retries
+            status_forcelist=[429, 500, 502, 503, 504],  # HTTP statuses to retry on
+            allowed_methods=["HEAD", "GET", "OPTIONS", "POST"]  # Methods to retry
+        )
+        # Adapter for requests session
+        adapter = HTTPAdapter(max_retries=retry_strategy)
+        http = requests.Session()
+        http.mount("https://", adapter)
         try:
-            logger.debug(f"health:{headers}, {payload}")
-            response = requests.post(HEALTH_UPLOAD_URL, headers=headers, json=payload)
+            # logger.debug(f"health:{headers}, {payload}")
+            response = http.post(HEALTH_UPLOAD_URL, headers=headers, json=payload)
             logger.debug(f"response:{response}")
             if response.status_code == 200:
                 data = response.json()
@@ -568,8 +592,10 @@ class MainWnd(QMainWindow):
                     logger.error("Uploading health data failed.")
             else:
                 logger.error("Uploading health data failed.")
-        except requests.exceptions.RequestException as e:
+        except Exception as e:
             logger.error("Error occurred while uploading health data, ", e)
+        finally:
+            http.close()
 
     def emit_upload_scanned_data(self):
         self.upload_record.emit()
