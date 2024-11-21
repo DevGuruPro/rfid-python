@@ -177,7 +177,7 @@ class RFID(QThread):
 
         while not self._b_stop.is_set():
             try:
-                response_time = ping(self.host, timeout=3)
+                response_time = ping(self.host, timeout=4)
                 if response_time:
                     if self.connectivity is False:
                         self.connectivity = True

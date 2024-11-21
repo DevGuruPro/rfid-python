@@ -401,7 +401,7 @@ class MainWnd(QMainWindow):
             'password': self.password
         }
         try:
-            response = requests.Session().post(LOGIN_URL, json=payload)
+            response = requests.Session().post(LOGIN_URL, json=payload, timeout=4)
             if response.status_code == 200:
                 data = response.json()
                 if data['metadata']['code'] == '200':
