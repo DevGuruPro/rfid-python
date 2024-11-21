@@ -6,7 +6,6 @@ __pycache__/
 setting/
 script/
 ui/wav_to_byte.py
-ui/alarm.wav
 # C extensions
 *.so
 
