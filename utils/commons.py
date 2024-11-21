@@ -3,7 +3,6 @@ from datetime import datetime
 from geopy.distance import geodesic
 
 from settings import BAUD_RATE_GPS
-from utils.logger import logger
 from geographiclib.geodesic import Geodesic
 
 import serial
@@ -25,7 +24,7 @@ def convert_to_decimal(coord, direction, is_latitude):
             minutes = float(coord[3:])
         decimal_coord = sign * (degrees + minutes / 60)
         return decimal_coord
-    except ValueError as e:
+    except ValueError:
         # logger.error(f"Error converting coordinate: {e}")
         return 0
 
@@ -38,10 +37,10 @@ def extract_from_gps(gps_data):
         latitude = convert_to_decimal(gps_data['lat'], gps_data['lat_dir'], is_latitude=True)
         longitude = convert_to_decimal(gps_data['lon'], gps_data['lon_dir'], is_latitude=False)
         return latitude, longitude
-    except KeyError as e:
+    except KeyError:
         # logger.error(f"Missing key in GPS data: {e}")
         return 0, 0
-    except ValueError as e:
+    except ValueError:
         # logger.error(f"Error: {e}")
         return 0, 0
 

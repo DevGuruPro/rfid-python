@@ -81,10 +81,3 @@ class LoginWnd(QMainWindow):
         painter = QPainter(self)
         pixmap = QPixmap(":/img/login_background.png")
         painter.drawPixmap(self.rect(), pixmap)
-
-
-if __name__ == "__main__":
-    app = QApplication(sys.argv)
-    window = LoginWnd()
-    window.show()
-    sys.exit(app.exec())

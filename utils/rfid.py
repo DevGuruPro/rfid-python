@@ -7,7 +7,6 @@ from sllurp.llrp import LLRP_DEFAULT_PORT, LLRPReaderConfig, LLRPReaderClient
 from argparse import ArgumentParser
 
 from settings import RFID_CARD_READER
-from utils.logger import logger
 
 from ping3 import ping
 
@@ -165,7 +164,7 @@ class RFID(QThread):
             try:
                 self.reader.connect()
                 break
-            except Exception as e:
+            except Exception:
                 if self.connectivity is True:
                     self.connectivity = False
                     self.sig_msg.emit(2)
@@ -196,9 +195,3 @@ class RFID(QThread):
         self._b_stop.set()
         self.wait()
         LLRPReaderClient.disconnect_all_readers()
-
-
-if __name__ == '__main__':
-    # Load Sllurp config
-    rfid = RFID()
-    rfid.start()

@@ -5,6 +5,8 @@ __pycache__/
 .idea/
 setting/
 script/
+ui/wav_to_byte.py
+ui/alarm.wav
 # C extensions
 *.so
 

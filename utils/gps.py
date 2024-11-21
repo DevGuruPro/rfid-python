@@ -6,7 +6,7 @@ import pynmea2
 
 from PySide6.QtCore import Signal, QThread
 
-from settings import DEFAULT_SERIAL_PORT_GPS, BAUD_RATE_GPS
+from settings import BAUD_RATE_GPS
 from utils.logger import logger
 
 
@@ -33,7 +33,7 @@ class GPS(QThread):
                 self.sig_msg.emit(True)
             # logger.info(f"Connected to gps module-{self.port}.")
             return _ser
-        except serial.SerialException as e:
+        except serial.SerialException:
             if self.connectivity is True:
                 self.connectivity = False
                 self.sig_msg.emit(False)
@@ -53,7 +53,6 @@ class GPS(QThread):
                     value = getattr(msg, attr)
                     self._data[attr] = value
             except pynmea2.ParseError as e:
-                logger.error(f"Parse error: {e}")
                 self._data = {}
         elif line.startswith('$GPRMC') or line.startswith('$GNRMC'):
             try:
@@ -61,7 +60,7 @@ class GPS(QThread):
                 speed_knots = msg.spd_over_grnd if msg.spd_over_grnd is not None else 0
                 course_degrees = msg.true_course if msg.true_course is not None else 0
                 self._sdata = [speed_knots * 1.15078, course_degrees]
-            except pynmea2.ParseError as e:
+            except pynmea2.ParseError:
                 # logger.error(f"Parse error: {e}")
                 self._sdata = [0, 0]
 
@@ -80,7 +79,7 @@ class GPS(QThread):
                     if self.connectivity is False:
                         self.connectivity = True
                         self.sig_msg.emit(True)
-                except Exception as er:
+                except Exception:
                     self._data = {}
                     self._sdata = [0, 0]
                     self._ser = None
@@ -107,8 +106,3 @@ class GPS(QThread):
 
     def get_sdata(self):
         return self._sdata
-
-
-if __name__ == "__main__":
-    gps = GPS()
-    gps.start()
