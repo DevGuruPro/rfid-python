@@ -3,7 +3,7 @@ import os
 
 _cur_dir = os.path.dirname(os.path.realpath(__file__))
 
-ROOT_DIR = os.path.expanduser('~/.as')
+ROOT_DIR = os.path.expanduser('~/.rfid')
 os.makedirs(ROOT_DIR, exist_ok=True)
 
 DEFAULT_CONFIG = {

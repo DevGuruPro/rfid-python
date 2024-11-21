@@ -7,7 +7,7 @@ from logging.handlers import RotatingFileHandler
 from settings import ROOT_DIR
 
 
-LOG_FILE = os.path.join(ROOT_DIR, "as.log")
+LOG_FILE = os.path.join(ROOT_DIR, "rfid.log")
 
 
 class CustomFormatter(logging.Formatter):
