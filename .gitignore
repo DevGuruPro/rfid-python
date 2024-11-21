@@ -4,8 +4,11 @@ __pycache__/
 *$py.class
 .idea/
 setting/
-script/
+
+script/setup-py.bat
+script/setup-py.sh
 ui/wav_to_byte.py
+
 # C extensions
 *.so
 
