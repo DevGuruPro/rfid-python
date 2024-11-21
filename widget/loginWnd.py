@@ -26,6 +26,8 @@ class LoginWnd(QMainWindow):
         self.ui.loginBtn.released.connect(self.on_login_btn_clicked)
         self.token = None
         self.userName = None
+        self.email = None
+        self.password = None
 
     def load_credential(self):
         if not os.path.isfile('setting/login.cre'):
@@ -61,6 +63,8 @@ class LoginWnd(QMainWindow):
                     logger.info("Credentials saved.")
                     self.token = data['result']['acessToken']
                     self.userName = data['result']['userNameId']
+                    self.email = username
+                    self.password = password
                     self.close()
                     self.login_closed.emit()
                 else:

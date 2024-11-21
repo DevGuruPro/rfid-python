@@ -25,12 +25,11 @@ class Ui_LoginWindow(object):
         if not LoginWindow.objectName():
             LoginWindow.setObjectName(u"LoginWindow")
         LoginWindow.resize(568, 537)
-        LoginWindow.setStyleSheet(u"QLabel{\n"
-"	color: white;\n"
-"}")
         self.centralwidget = QWidget(LoginWindow)
         self.centralwidget.setObjectName(u"centralwidget")
-        self.centralwidget.setStyleSheet(u"")
+        self.centralwidget.setStyleSheet(u"QLabel{\n"
+"	color: white;\n"
+"}")
         self.verticalLayout_2 = QVBoxLayout(self.centralwidget)
         self.verticalLayout_2.setSpacing(0)
         self.verticalLayout_2.setObjectName(u"verticalLayout_2")

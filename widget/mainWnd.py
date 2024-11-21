@@ -19,7 +19,7 @@ from PySide6.QtWidgets import QMainWindow, QApplication, QHeaderView, QTableWidg
     QLabel, QSizePolicy
 from PySide6.QtMultimedia import QSoundEffect
 
-from settings import HEALTH_UPLOAD_URL, RECORD_UPLOAD_URL
+from settings import HEALTH_UPLOAD_URL, RECORD_UPLOAD_URL, LOGIN_URL
 from ui.ui_main import Ui_MainWindow
 from utils.commons import extract_from_gps, get_date_from_utc, find_gps_port, is_ipv4_address, \
     find_smallest_available_id, calculate_speed_bearing
@@ -33,7 +33,7 @@ class MainWnd(QMainWindow):
     main_closed = Signal()
     upload_record = Signal()
 
-    def __init__(self, user_name, token):
+    def __init__(self, user_name, token, email, password):
         super().__init__()
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
@@ -146,6 +146,8 @@ class MainWnd(QMainWindow):
 
         self.userName = user_name
         self.token = token
+        self.email = email
+        self.password = password
 
         # self.db_connection = sqlite3.connect('database.db')
         # self.db_cursor = self.db_connection.cursor()
@@ -388,9 +390,30 @@ class MainWnd(QMainWindow):
         schedule.clear()
         schedule.every(7).seconds.do(self.emit_upload_scanned_data)
         schedule.every(15).seconds.do(self.upload_health_data)
+        schedule.every(100).seconds.do(self.regenerate_token)
         while not self._stop.is_set():
             schedule.run_pending()
             time.sleep(0.1)
+
+    def regenerate_token(self):
+        payload = {
+            'email': self.email,
+            'password': self.password
+        }
+        try:
+            response = requests.Session().post(LOGIN_URL, json=payload)
+            if response.status_code == 200:
+                data = response.json()
+                if data['metadata']['code'] == '200':
+                    logger.debug('Received token successfully!')
+                    self.token = data['result']['acessToken']
+                    self.userName = data['result']['userNameId']
+                else:
+                    logger.error("Token reception failed.")
+            else:
+                logger.error("Token reception failed.")
+        except Exception as e:
+            logger.error("Token reception request error, ", e)
 
     def monitor_gps_status(self, status):
         if status:
