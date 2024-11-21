@@ -522,9 +522,9 @@ class MainWnd(QMainWindow):
         }
         for i in range(3):
             try:
-                # logger.debug(f"scanned:{headers}, {payload}")
+                logger.debug(f"scanned:{headers}, {payload}")
                 response = requests.post(RECORD_UPLOAD_URL, headers=headers, json=payload)
-                # logger.debug(f"response:{response}")
+                logger.debug(f"response:{response}")
                 if response.status_code == 200:
                     data = response.json()
                     if data['metadata']['code'] == '200':
@@ -557,9 +557,9 @@ class MainWnd(QMainWindow):
             "dateTime": datetime.now().strftime("%Y-%m-%dT%H:%M:%S")
         }
         try:
-            # logger.debug(f"health:{headers}, {payload}")
+            logger.debug(f"health:{headers}, {payload}")
             response = requests.post(HEALTH_UPLOAD_URL, headers=headers, json=payload)
-            # logger.debug(f"response:{response}")
+            logger.debug(f"response:{response}")
             if response.status_code == 200:
                 data = response.json()
                 if data['metadata']['code'] == '200':
