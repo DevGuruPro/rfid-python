@@ -1,5 +1,6 @@
 <RCC>
   <qresource prefix="/">
+    <file>img/icon.ico</file>
     <file>img/wicon.png</file>
     <file>img/radiomark.png</file>
     <file>img/checkmark.png</file>

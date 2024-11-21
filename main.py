@@ -1,9 +1,12 @@
 import sys
 
 from PySide6.QtWidgets import QApplication
+from PySide6.QtGui import QIcon
 
 from widget.loginWnd import LoginWnd
 from widget.mainWnd import MainWnd
+
+import ui.res_rc
 
 
 class InventorySystem(object):
@@ -26,7 +29,8 @@ class InventorySystem(object):
 
 
 if __name__ == "__main__":
-
     app = QApplication(sys.argv)
+    app_icon = QIcon(u":/img/icon.ico")
+    app.setWindowIcon(app_icon)
     IS = InventorySystem()
     sys.exit(app.exec())
