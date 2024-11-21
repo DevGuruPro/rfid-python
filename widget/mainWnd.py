@@ -390,7 +390,7 @@ class MainWnd(QMainWindow):
         schedule.clear()
         schedule.every(7).seconds.do(self.emit_upload_scanned_data)
         schedule.every(15).seconds.do(self.upload_health_data)
-        schedule.every(100).seconds.do(self.regenerate_token)
+        schedule.every(28).days.do(self.regenerate_token)
         while not self._stop.is_set():
             schedule.run_pending()
             time.sleep(0.1)
@@ -400,8 +400,19 @@ class MainWnd(QMainWindow):
             'email': self.email,
             'password': self.password
         }
+        retry_strategy = Retry(
+            total=1,  # Total number of retries
+            backoff_factor=1,  # Backoff factor for retries
+            status_forcelist=[429, 500, 502, 503, 504],  # HTTP statuses to retry on
+            allowed_methods=["HEAD", "GET", "OPTIONS", "POST"]  # Methods to retry
+        )
+        # Adapter for requests session
+        adapter = HTTPAdapter(max_retries=retry_strategy)
+        http = requests.Session()
+        http.mount("https://", adapter)
         try:
             response = requests.Session().post(LOGIN_URL, json=payload, timeout=4)
+            response.raise_for_status()
             if response.status_code == 200:
                 data = response.json()
                 if data['metadata']['code'] == '200':
@@ -414,6 +425,8 @@ class MainWnd(QMainWindow):
                 logger.error("Token reception failed.")
         except Exception as e:
             logger.error("Token reception request error, ", e)
+        finally:
+            http.close()
 
     def monitor_gps_status(self, status):
         if status:
