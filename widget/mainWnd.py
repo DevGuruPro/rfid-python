@@ -534,7 +534,8 @@ class MainWnd(QMainWindow):
         http.mount("https://", adapter)
         try:
             # logger.debug(f"scanned:{headers}, {payload}")
-            response = requests.post(RECORD_UPLOAD_URL, headers=headers, json=payload)
+            response = requests.post(RECORD_UPLOAD_URL, headers=headers, json=payload, timeout=4)
+            response.raise_for_status()
             logger.debug(f"response:{response}")
             if response.status_code == 200:
                 data = response.json()
@@ -582,7 +583,8 @@ class MainWnd(QMainWindow):
         http.mount("https://", adapter)
         try:
             # logger.debug(f"health:{headers}, {payload}")
-            response = http.post(HEALTH_UPLOAD_URL, headers=headers, json=payload)
+            response = http.post(HEALTH_UPLOAD_URL, headers=headers, json=payload, timeout=4)
+            response.raise_for_status()
             logger.debug(f"response:{response}")
             if response.status_code == 200:
                 data = response.json()
