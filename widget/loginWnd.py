@@ -73,8 +73,8 @@ class LoginWnd(QMainWindow):
             else:
                 logger.error("Login failed")
                 QMessageBox.critical(self, 'Login', "Login Failed.", QMessageBox.StandardButton.Ok)
-        except requests.exceptions.RequestException as e:
-            logger.error("Login Error, ", e)
+        except Exception:
+            logger.error("Login Error")
             QMessageBox.critical(self, 'Login', "Login Error.", QMessageBox.StandardButton.Ok)
 
     def paintEvent(self, event):

@@ -100,6 +100,9 @@ class GPS(QThread):
             # logger.info("Serial connection closed.")
         self._ser = None
 
+    def is_alive(self):
+        return not self._b_stop.is_set()
+
     def get_data(self):
         """Returns the latest parsed data."""
         return self._data

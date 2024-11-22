@@ -120,24 +120,22 @@ class MainWnd(QMainWindow):
 
         self.use_db = False
 
-        self.load_setting()
-
-        self._stop = threading.Event()
-
         pp = find_gps_port()
-        self.gps = GPS(port=pp)
         if pp is not None:
             self.ui.edit_gps_port.setText(pp)
-            self.gps.sig_msg.connect(self.monitor_gps_status)
-            self.gps.start()
 
-        self.internet_gps = threading.Thread(target=self.get_internet_gps_data)
+        self.gps = GPS(port="")
+
         self.igps_stop = threading.Event()
+        self.internet_gps = threading.Thread(target=self.get_internet_gps_data)
+
+        self.load_setting()
 
         self.rfid = RFID()
         self.rfid.sig_msg.connect(self.monitor_rfid_status)
         self.rfid.start()
 
+        self._stop = threading.Event()
         self.scheduler_thread = threading.Thread(target=self.start_scheduler)
         self.scheduler_thread.start()
 
@@ -232,39 +230,49 @@ class MainWnd(QMainWindow):
 
     def on_gps_type(self):
         if self.ui.radio_internet_gps.isChecked():
+            if self.internet_gps.is_alive():
+                return
+            self.gps.stop()
             self.igps_stop.clear()
             self.internet_gps = threading.Thread(target=self.get_internet_gps_data)
             self.internet_gps.start()
-            self.gps.stop()
         elif self.ui.radio_external_gps.isChecked():
-            self.igps_stop.set()
-            self.internet_gps.join(.1)
+            if self.internet_gps.is_alive():
+                self.igps_stop.set()
+                self.internet_gps.join(.1)
+            if self.gps.is_alive():
+                return
             if self.ui.edit_gps_port.text() != "" and self.ui.edit_gps_baud.text() != "":
-                sta = True if self.ui.last_gps_read.text() == "Connected" else False
+                sta = True if self.ui.gps_connection_status.text() == "Connected" else False
                 self.gps = GPS(port=self.ui.edit_gps_port.text(), baud_rate=int(self.ui.edit_gps_baud.text()),
                                current_status=sta)
                 self.gps.sig_msg.connect(self.monitor_gps_status)
                 self.gps.start()
-            elif self.ui.last_gps_read.text() == "Connected":
+            elif self.ui.gps_connection_status.text() == "Connected":
                 self.monitor_gps_status(False)
 
     def get_internet_gps_data(self):
         while not self.igps_stop.is_set():
             self.cur_lat, self.cur_lon, self.speed, self.bearing = 0, 0, 0, 0
+            print("AA")
+            # Define the retry strategy
+            retry_strategy = Retry(
+                total=1,  # Total number of retries
+                backoff_factor=1,  # Backoff factor for retries
+                status_forcelist=[429, 500, 502, 503, 504],  # HTTP statuses to retry on
+                allowed_methods=["HEAD", "GET", "OPTIONS", "POST"]  # Methods to retry
+            )
+
+            # Adapter for requests session
+            adapter = HTTPAdapter(max_retries=retry_strategy)
+            http = requests.Session()
+            http.mount("http://", adapter)
+            http.mount("https://", adapter)
             try:
-                retry_strategy = Retry(
-                    total=1,  # Total number of retries
-                    backoff_factor=1,  # Backoff factor for retries
-                    status_forcelist=[429, 500, 502, 503, 504],  # HTTP statuses to retry on
-                    allowed_methods=["HEAD", "GET", "OPTIONS", "POST"]  # Methods to retry
-                )
-                # Adapter for requests session
-                adapter = HTTPAdapter(max_retries=retry_strategy)
-                http = requests.Session()
-                http.mount("https://", adapter)
-                response = requests.get('http://ip-api.com/json/', timeout=6)
+                response = requests.get('http://ip-api.com/json/', timeout=3)
                 response.raise_for_status()
                 data = response.json()
+                print("BB")
                 # logger.debug(f"gps response:{response},{data}")
                 if data['status'] == 'success':
                     if self.ui.gps_connection_status.text() == "Disconnected":
@@ -279,10 +287,10 @@ class MainWnd(QMainWindow):
                     self.last_lat = self.cur_lat
                     self.last_lon = self.cur_lon
                     self.last_utctime = milliseconds_time
-            except Exception:
+            except Exception as e:
                 if self.ui.gps_connection_status.text() == "Connected":
                     self.monitor_gps_status(False)
-            time.sleep(.1)
+            time.sleep(4)
 
     def beep_sound(self):
         with tempfile.NamedTemporaryFile(delete=False, suffix='.wav') as tmp_wav:
@@ -291,8 +299,8 @@ class MainWnd(QMainWindow):
         try:
             sound = pygame.mixer.Sound(tmp_wav_path)
             sound.play()
-        except pygame.error as e:
-            logger.error(f"pygame error: {e}")
+        except pygame.error:
+            logger.error(f"pygame error.")
         finally:
             os.unlink(tmp_wav_path)
 
@@ -323,8 +331,18 @@ class MainWnd(QMainWindow):
                 self.ui.gps_wid.setDisabled(True)
             if setting_data['gps']['is_external']:
                 self.ui.radio_external_gps.setChecked(True)
+                pp = self.ui.edit_gps_port.text()
+                if pp == "":
+                    self.ui.edit_gps_port.setText(setting_data['gps']['port'])
+                    pp = setting_data['gps']['port']
+                self.gps = GPS(port=pp)
+                self.gps.sig_msg.connect(self.monitor_gps_status)
+                self.gps.start()
             else:
                 self.ui.radio_internet_gps.setChecked(True)
+                self.igps_stop.clear()
+                self.internet_gps = threading.Thread(target=self.get_internet_gps_data)
+                self.internet_gps.start()
             if setting_data['speed']['checked']:
                 self.ui.speed_limit.setChecked(True)
                 self.ui.speed_chw.setEnabled(True)
@@ -345,7 +363,6 @@ class MainWnd(QMainWindow):
                 self.ui.tag_chw.setDisabled(True)
             self.ui.edit_gps_noti.setText(setting_data['gps']['notify'])
             self.ui.edit_gps_hand.setText(setting_data['gps']['handshake'])
-            self.ui.edit_gps_port.setText(setting_data['gps']['port'])
             self.ui.edit_gps_dbits.setText(setting_data['gps']['data_bits'])
             self.ui.edit_gps_sbits.setText(setting_data['gps']['stop_bits'])
             self.ui.edit_gps_parity.setText(setting_data['gps']['parity'])
@@ -453,8 +470,8 @@ class MainWnd(QMainWindow):
                     logger.error("Token reception failed.")
             else:
                 logger.error("Token reception failed.")
-        except Exception as e:
-            logger.error("Token reception request error, ", e)
+        except Exception:
+            logger.error("Token reception request error.")
         finally:
             http.close()
 
@@ -665,7 +682,7 @@ class MainWnd(QMainWindow):
             # logger.debug(f"health:{headers}, {payload}")
             response = http.post(HEALTH_UPLOAD_URL, headers=headers, json=payload, timeout=4)
             response.raise_for_status()
-            logger.debug(f"response:{response}")
+            # logger.debug(f"response:{response}")
             if response.status_code == 200:
                 data = response.json()
                 if data['metadata']['code'] == '200':
@@ -674,8 +691,8 @@ class MainWnd(QMainWindow):
                     logger.error("Uploading health data failed.")
             else:
                 logger.error("Uploading health data failed.")
-        except Exception as e:
-            logger.error("Error occurred while uploading health data, ", e)
+        except Exception:
+            logger.error("Error occurred while uploading health data.")
         finally:
             http.close()
 
