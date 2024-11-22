@@ -1,5 +1,5 @@
-# RFID-PYTHON
-Software for reading live tag and gps module.
+# RFID-GPS-INVENTORY
+Software for reading live rfid tag and gps module.
 
 # Set up environment-Install python.
 
@@ -77,21 +77,13 @@ Software for reading live tag and gps module.
     ```
     
     If icon doesn't change, run "script/clear_iconcache.sh" with sudo and restart to refresh the icon cache.
- 
-    - Install/Update libc6 package.
-    
-      ```shell
-      sudo apt-get update
-      sudo apt-get install libc6
-      ```
-      
     
 # Run the program at startup.
 
   - Windows
     
-    - Place "setup.bat" in the same directory as "main.exe" and run batch script.
+    - Place "script/setup.bat" in the same directory as "main.exe" and run batch script.
 
   - Ubuntu / Raspberry Pi
     
-    - Place "setup.sh" in the same directory as "main" executable file and run shell script.
+    - Place "script/setup.sh" in the same directory as "main" executable file and run shell script.
