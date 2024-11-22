@@ -13,11 +13,10 @@ import sqlite3
 from requests.adapters import HTTPAdapter
 from urllib3.util.retry import Retry
 
-from PySide6.QtCore import QUrl, Signal
+from PySide6.QtCore import Signal
 from PySide6.QtGui import Qt
 from PySide6.QtWidgets import QMainWindow, QHeaderView, QTableWidget, QTableWidgetItem, QPushButton, \
     QLabel, QSizePolicy
-from PySide6.QtMultimedia import QSoundEffect
 
 from settings import HEALTH_UPLOAD_URL, RECORD_UPLOAD_URL, LOGIN_URL
 from ui.ui_main import Ui_MainWindow
@@ -125,6 +124,8 @@ class MainWnd(QMainWindow):
             self.ui.edit_gps_port.setText(pp)
 
         self.gps = GPS(port="")
+        self.scan_port_stop = threading.Event()
+        self.scan_port_thread = threading.Thread(target=self.monitor_gps_port)
 
         self.igps_stop = threading.Event()
         self.internet_gps = threading.Thread(target=self.get_internet_gps_data)
@@ -140,9 +141,6 @@ class MainWnd(QMainWindow):
         self.scheduler_thread.start()
 
         self.upload_record.connect(self.upload_scanned_data)
-
-        self.sound_effect = QSoundEffect()
-        self.sound_effect.setSource(QUrl.fromLocalFile(":/alarm.wav"))
 
         self.notify_thread = threading.Thread(target=self.beep_sound)
 
@@ -233,6 +231,8 @@ class MainWnd(QMainWindow):
             if self.internet_gps.is_alive():
                 return
             self.gps.stop()
+            self.scan_port_stop.set()
+            self.scan_port_thread.join(.1)
             self.igps_stop.clear()
             self.internet_gps = threading.Thread(target=self.get_internet_gps_data)
             self.internet_gps.start()
@@ -242,19 +242,41 @@ class MainWnd(QMainWindow):
                 self.internet_gps.join(.1)
             if self.gps.is_alive():
                 return
-            if self.ui.edit_gps_port.text() != "" and self.ui.edit_gps_baud.text() != "":
+            pp = find_gps_port()
+            if pp is not None:
                 sta = True if self.ui.gps_connection_status.text() == "Connected" else False
-                self.gps = GPS(port=self.ui.edit_gps_port.text(), baud_rate=int(self.ui.edit_gps_baud.text()),
+                self.gps = GPS(port=pp, baud_rate=int(self.ui.edit_gps_baud.text()),
                                current_status=sta)
                 self.gps.sig_msg.connect(self.monitor_gps_status)
                 self.gps.start()
             elif self.ui.gps_connection_status.text() == "Connected":
                 self.monitor_gps_status(False)
+            self.scan_port_stop.clear()
+            self.scan_port_thread = threading.Thread(target=self.monitor_gps_port)
+            self.scan_port_thread.start()
+
+    def monitor_gps_port(self):
+        while not self.scan_port_stop.is_set():
+            pp = find_gps_port()
+            if pp is None:
+                if self.gps.is_alive():
+                    self.gps.stop()
+                    if self.ui.gps_connection_status.text() == "Connected":
+                        self.monitor_gps_status(False)
+            else:
+                if self.gps.is_alive() and self.gps.port != pp:
+                    self.gps.stop()
+                if not self.gps.is_alive():
+                    sta = True if self.ui.gps_connection_status.text() == "Connected" else False
+                    self.gps = GPS(port=pp, baud_rate=int(self.ui.edit_gps_baud.text()),
+                                   current_status=sta)
+                    self.gps.sig_msg.connect(self.monitor_gps_status)
+                    self.gps.start()
+            time.sleep(1)
 
     def get_internet_gps_data(self):
         while not self.igps_stop.is_set():
             self.cur_lat, self.cur_lon, self.speed, self.bearing = 0, 0, 0, 0
-            print("AA")
             # Define the retry strategy
             retry_strategy = Retry(
                 total=1,  # Total number of retries
@@ -272,7 +294,6 @@ class MainWnd(QMainWindow):
                 response = requests.get('http://ip-api.com/json/', timeout=3)
                 response.raise_for_status()
                 data = response.json()
-                print("BB")
                 # logger.debug(f"gps response:{response},{data}")
                 if data['status'] == 'success':
                     if self.ui.gps_connection_status.text() == "Disconnected":
@@ -335,9 +356,10 @@ class MainWnd(QMainWindow):
                 if pp == "":
                     self.ui.edit_gps_port.setText(setting_data['gps']['port'])
                     pp = setting_data['gps']['port']
-                self.gps = GPS(port=pp)
-                self.gps.sig_msg.connect(self.monitor_gps_status)
-                self.gps.start()
+                if pp != "":
+                    self.gps = GPS(port=pp)
+                    self.gps.sig_msg.connect(self.monitor_gps_status)
+                    self.gps.start()
             else:
                 self.ui.radio_internet_gps.setChecked(True)
                 self.igps_stop.clear()
