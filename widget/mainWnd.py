@@ -119,10 +119,6 @@ class MainWnd(QMainWindow):
 
         self.use_db = False
 
-        pp = find_gps_port()
-        if pp is not None:
-            self.ui.edit_gps_port.setText(pp)
-
         self.gps = GPS(port="")
         self.scan_port_stop = threading.Event()
         self.scan_port_thread = threading.Thread(target=self.monitor_gps_port)
@@ -352,14 +348,15 @@ class MainWnd(QMainWindow):
                 self.ui.gps_wid.setDisabled(True)
             if setting_data['gps']['is_external']:
                 self.ui.radio_external_gps.setChecked(True)
-                pp = self.ui.edit_gps_port.text()
-                if pp == "":
-                    self.ui.edit_gps_port.setText(setting_data['gps']['port'])
-                    pp = setting_data['gps']['port']
-                if pp != "":
+                pp = find_gps_port()
+                if pp is not None:
+                    self.ui.edit_gps_port.setText(pp)
                     self.gps = GPS(port=pp)
                     self.gps.sig_msg.connect(self.monitor_gps_status)
                     self.gps.start()
+                self.scan_port_stop.clear()
+                self.scan_port_thread = threading.Thread(target=self.monitor_gps_port)
+                self.scan_port_thread.start()
             else:
                 self.ui.radio_internet_gps.setChecked(True)
                 self.igps_stop.clear()
