@@ -1,4 +1,5 @@
 @echo off
+
 :: Check if the script is running with administrative privileges
 net session >nul 2>&1
 if %ERRORLEVEL% NEQ 0 (
