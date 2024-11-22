@@ -38,7 +38,7 @@ class MainWnd(QMainWindow):
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
 
-        text_label = QLabel("Internet / Network Connection Status : ", self)
+        text_label = QLabel("Internet Connection Status : ", self)
         text_label.setGeometry(self.geometry().right() - 300, 15, 300, 30)
         text_label.setStyleSheet(u"QLabel{\n"
                                  "font-size: 10pt; /* Font size */\n"
@@ -254,6 +254,7 @@ class MainWnd(QMainWindow):
     def monitor_gps_port(self):
         while not self.scan_port_stop.is_set():
             pp = find_gps_port()
+            logger.debug(f"port:{pp}")
             if pp is None:
                 if self.gps.is_alive():
                     self.gps.stop()
