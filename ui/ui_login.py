@@ -155,6 +155,28 @@ class Ui_LoginWindow(object):
         font2 = QFont()
         font2.setPointSize(14)
         self.radio_dev.setFont(font2)
+        self.radio_dev.setStyleSheet(u"QRadioButton{\n"
+"	color: white;\n"
+"}\n"
+"\n"
+"QRadioButton::indicator {  \n"
+"    width: 16px;  \n"
+"    height: 16px;  \n"
+"	border-radius: 8px;\n"
+"}  \n"
+"\n"
+"QRadioButton::indicator:unchecked {\n"
+"	width: 14px;  \n"
+"    height: 14px;\n"
+"	margin: 1px;\n"
+"    background-color: white;\n"
+"	border-radius: 7px;\n"
+"}\n"
+"\n"
+"QRadioButton::indicator:checked {\n"
+"	border-radius: 8px;\n"
+"    image: url(:/img/radiomark.png);  /* Use a custom image if needed */  \n"
+" }")
         self.radio_dev.setChecked(True)
 
         self.horizontalLayout_2.addWidget(self.radio_dev)
@@ -167,6 +189,28 @@ class Ui_LoginWindow(object):
         font3.setPointSize(14)
         font3.setBold(False)
         self.radio_uat.setFont(font3)
+        self.radio_uat.setStyleSheet(u"QRadioButton{\n"
+"	color: white;\n"
+"}\n"
+"\n"
+"QRadioButton::indicator {  \n"
+"    width: 16px;  \n"
+"    height: 16px;  \n"
+"	border-radius: 8px;\n"
+"}  \n"
+"\n"
+"QRadioButton::indicator:unchecked {\n"
+"	width: 14px;  \n"
+"    height: 14px;\n"
+"	margin: 1px;\n"
+"    background-color: white;\n"
+"	border-radius: 7px;\n"
+"}\n"
+"\n"
+"QRadioButton::indicator:checked {\n"
+"	border-radius: 8px;\n"
+"    image: url(:/img/radiomark.png);  /* Use a custom image if needed */  \n"
+" }")
 
         self.horizontalLayout_2.addWidget(self.radio_uat)
 
@@ -177,6 +221,28 @@ class Ui_LoginWindow(object):
         font4 = QFont()
         font4.setPointSize(15)
         self.radio_prod.setFont(font4)
+        self.radio_prod.setStyleSheet(u"QRadioButton{\n"
+"	color: white;\n"
+"}\n"
+"\n"
+"QRadioButton::indicator {  \n"
+"    width: 16px;  \n"
+"    height: 16px;  \n"
+"	border-radius: 8px;\n"
+"}  \n"
+"\n"
+"QRadioButton::indicator:unchecked {\n"
+"	width: 14px;  \n"
+"    height: 14px;\n"
+"	margin: 1px;\n"
+"    background-color: white;\n"
+"	border-radius: 7px;\n"
+"}\n"
+"\n"
+"QRadioButton::indicator:checked {\n"
+"	border-radius: 8px;\n"
+"    image: url(:/img/radiomark.png);  /* Use a custom image if needed */  \n"
+" }")
 
         self.horizontalLayout_2.addWidget(self.radio_prod)
 

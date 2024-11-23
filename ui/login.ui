@@ -218,6 +218,30 @@ QRadioButton{
               <pointsize>14</pointsize>
              </font>
             </property>
+            <property name="styleSheet">
+             <string notr="true">QRadioButton{
+	color: white;
+}
+
+QRadioButton::indicator {  
+    width: 16px;  
+    height: 16px;  
+	border-radius: 8px;
+}  
+
+QRadioButton::indicator:unchecked {
+	width: 14px;  
+    height: 14px;
+	margin: 1px;
+    background-color: white;
+	border-radius: 7px;
+}
+
+QRadioButton::indicator:checked {
+	border-radius: 8px;
+    image: url(:/img/radiomark.png);  /* Use a custom image if needed */  
+ }</string>
+            </property>
             <property name="text">
              <string>Dev</string>
             </property>
@@ -241,6 +265,30 @@ QRadioButton{
               <bold>false</bold>
              </font>
             </property>
+            <property name="styleSheet">
+             <string notr="true">QRadioButton{
+	color: white;
+}
+
+QRadioButton::indicator {  
+    width: 16px;  
+    height: 16px;  
+	border-radius: 8px;
+}  
+
+QRadioButton::indicator:unchecked {
+	width: 14px;  
+    height: 14px;
+	margin: 1px;
+    background-color: white;
+	border-radius: 7px;
+}
+
+QRadioButton::indicator:checked {
+	border-radius: 8px;
+    image: url(:/img/radiomark.png);  /* Use a custom image if needed */  
+ }</string>
+            </property>
             <property name="text">
              <string>Uat</string>
             </property>
@@ -258,6 +306,30 @@ QRadioButton{
              <font>
               <pointsize>15</pointsize>
              </font>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">QRadioButton{
+	color: white;
+}
+
+QRadioButton::indicator {  
+    width: 16px;  
+    height: 16px;  
+	border-radius: 8px;
+}  
+
+QRadioButton::indicator:unchecked {
+	width: 14px;  
+    height: 14px;
+	margin: 1px;
+    background-color: white;
+	border-radius: 7px;
+}
+
+QRadioButton::indicator:checked {
+	border-radius: 8px;
+    image: url(:/img/radiomark.png);  /* Use a custom image if needed */  
+ }</string>
             </property>
             <property name="text">
              <string>Prod</string>
