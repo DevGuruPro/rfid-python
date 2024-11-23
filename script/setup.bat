@@ -10,7 +10,7 @@ if %ERRORLEVEL% NEQ 0 (
 
 :: Get the directory of the running script
 set "SCRIPT_DIR=%~dp0"
-set "EXECUTABLE_NAME=main.exe"
+set "EXECUTABLE_NAME=RFIDInventory.exe"
 set "TASK_NAME=RFID-GPS"
 
 :: Verify if the executable exists
