@@ -29,18 +29,6 @@ class LoginWnd(QMainWindow):
         self.email = None
         self.password = None
 
-    def load_credential(self):
-        if not os.path.isfile('setting/login.cre'):
-            logger.debug("Credential file does not exist.")
-            return
-        with open('setting/login.cre', 'r') as load_file:
-            credential = json.load(load_file)
-            if credential['username'] != "" and credential['password'] != "":
-                self.login(credential['username'], credential['password'])
-
-    def on_login_btn_clicked(self):
-        self.login(self.ui.user_edit.text(), self.ui.pass_edit.text())
-
     def login(self, username, password):
         payload = {
             'email': username,
@@ -76,6 +64,9 @@ class LoginWnd(QMainWindow):
         except Exception:
             logger.error("Login Error")
             QMessageBox.critical(self, 'Login', "Login Error.", QMessageBox.StandardButton.Ok)
+
+    def on_login_btn_clicked(self):
+        self.login(self.ui.user_edit.text(), self.ui.pass_edit.text())
 
     def paintEvent(self, event):
         painter = QPainter(self)

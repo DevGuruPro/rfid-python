@@ -8,7 +8,7 @@ _cur_dir = os.path.dirname(os.path.realpath(__file__))
 
 ui_folders = [
     _cur_dir,
-    # os.path.join(_cur_dir, 'dialog')
+    os.path.join(_cur_dir, 'dialog')
 ]
 
 

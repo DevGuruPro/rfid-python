@@ -27,6 +27,7 @@ from utils.commons import extract_from_gps, get_date_from_utc, find_gps_port, is
 from utils.gps import GPS
 from utils.logger import logger
 from utils.rfid import RFID
+from widget.loadingDlg import LoadingDlg
 
 
 class MainWnd(QMainWindow):
@@ -82,12 +83,71 @@ class MainWnd(QMainWindow):
         # Connect the button's clicked signal to a slot
         logout_button.clicked.connect(self.on_log_out)
 
+        self.use_db = False
+        self.gps = GPS(port="")
+        self.scan_port_stop = threading.Event()
+        self.scan_port_thread = threading.Thread(target=self.monitor_gps_port)
+        self.igps_stop = threading.Event()
+        self.internet_gps = threading.Thread(target=self.get_internet_gps_data)
+        self.rfid = None
+        self._stop = threading.Event()
+        self.scheduler_thread = None
+        self.notify_thread = threading.Thread(target=self.beep_sound)
+
+        self.userName = user_name
+        self.token = token
+        self.email = email
+        self.password = password
+        self.db_connection = sqlite3.connect('database.db')
+        self.db_cursor = self.db_connection.cursor()
+        self.db_cursor.execute('''
+                    CREATE TABLE IF NOT EXISTS records (
+                        id INTEGER PRIMARY KEY,
+                        rfidTag TEXT NOT NULL,
+                        antenna INTEGER NOT NULL,
+                        RSSI INTEGER NOT NULL,
+                        latitude REAL NOT NULL,
+                        longitude REAL NOT NULL,
+                        speed REAL NOT NULL,
+                        heading REAL NOT NULL,
+                        locationCode TEXT NOT NULL,
+                        username TEXT NOT NULL,
+                        tag1 TEXT NOT NULL,
+                        value1 TEXT NOT NULL,
+                        tag2 TEXT NOT NULL,
+                        value2 TEXT NOT NULL,
+                        tag3 TEXT NOT NULL,
+                        value3 TEXT NOT NULL,
+                        tag4 TEXT NOT NULL,
+                        value4 TEXT NOT NULL,
+                        timestamp INTEGER NOT NULL
+                    )
+                ''')
+        self.db_connection.commit()
+        self.database = []
+
+        self.last_lat = None
+        self.last_lon = None
+        self.last_utctime = None
+        self.cur_lat = 0
+        self.cur_lon = 0
+        self.bearing = 0
+        self.speed = 0
+
+        self.loadingDlg = LoadingDlg()
+
+        self.lt = threading.Thread(target=self.loading_thread)
+        self.lt.start()
+        self.loadingDlg.setModal(True)
+        self.loadingDlg.exec()
+
+    def loading_thread(self):
         # self.setWindowFlags(Qt.WindowType.FramelessWindowHint)  # Qt.WindowType.Popup
         # self.setAttribute(QtCore.Qt.WidgetAttribute.WA_TranslucentBackground)
+
         self.ui.tableWidget.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeMode.Fixed)
         self.ui.tableWidget.setSelectionMode(QTableWidget.SelectionMode.NoSelection)
 
-        # Fill the table with some data and make items non-editable
         for row in range(self.ui.tableWidget.rowCount()):
             for column in range(self.ui.tableWidget.columnCount()):
                 item = QTableWidgetItem("")
@@ -98,33 +158,20 @@ class MainWnd(QMainWindow):
         self.ui.radio_api_default.clicked.connect(self.select_api_type)
         self.ui.radio_api_custom.clicked.connect(self.select_api_type)
         self.ui.radio_api_both.clicked.connect(self.select_api_type)
-
         self.ui.radio_login_basic.clicked.connect(self.select_login_type)
         self.ui.radio_login_token.clicked.connect(self.select_login_type)
-
-        self.ui.token_widget.hide()
-        self.ui.custom_widget.hide()
-
         self.ui.edit_rfid_host.textChanged.connect(self.on_rfid_host_text_changed)
         self.ui.gps_checkBox.clicked.connect(self.on_gps_checked)
         self.ui.radio_external_gps.clicked.connect(self.on_gps_type)
         self.ui.radio_internet_gps.clicked.connect(self.on_gps_type)
         self.ui.setting_save_btn.released.connect(self.setting_save)
         self.ui.api_save_btn.released.connect(self.api_save)
-
         self.ui.speed_limit.clicked.connect(self.on_speed_check)
         self.ui.tag_limit.clicked.connect(self.on_tag_check)
         self.ui.rssi_limit.clicked.connect(self.on_rssi_check)
         self.ui.check_run_db.clicked.connect(self.on_run_db_check)
-
-        self.use_db = False
-
-        self.gps = GPS(port="")
-        self.scan_port_stop = threading.Event()
-        self.scan_port_thread = threading.Thread(target=self.monitor_gps_port)
-
-        self.igps_stop = threading.Event()
-        self.internet_gps = threading.Thread(target=self.get_internet_gps_data)
+        self.ui.token_widget.hide()
+        self.ui.custom_widget.hide()
 
         self.load_setting()
 
@@ -137,54 +184,9 @@ class MainWnd(QMainWindow):
         self.scheduler_thread.start()
 
         self.upload_record.connect(self.upload_scanned_data)
-
-        self.notify_thread = threading.Thread(target=self.beep_sound)
-
-        self.userName = user_name
-        self.token = token
-        self.email = email
-        self.password = password
-
-        self.db_connection = sqlite3.connect('database.db')
-        self.db_cursor = self.db_connection.cursor()
-        self.db_cursor.execute('''
-            CREATE TABLE IF NOT EXISTS records (
-                id INTEGER PRIMARY KEY,
-                rfidTag TEXT NOT NULL,
-                antenna INTEGER NOT NULL,
-                RSSI INTEGER NOT NULL,
-                latitude REAL NOT NULL,
-                longitude REAL NOT NULL,
-                speed REAL NOT NULL,
-                heading REAL NOT NULL,
-                locationCode TEXT NOT NULL,
-                username TEXT NOT NULL,
-                tag1 TEXT NOT NULL,
-                value1 TEXT NOT NULL,
-                tag2 TEXT NOT NULL,
-                value2 TEXT NOT NULL,
-                tag3 TEXT NOT NULL,
-                value3 TEXT NOT NULL,
-                tag4 TEXT NOT NULL,
-                value4 TEXT NOT NULL,
-                timestamp INTEGER NOT NULL
-            )
-        ''')
-        self.db_connection.commit()
-
-        self.database = []
-
-        self.last_lat = None
-        self.last_lon = None
-        self.last_utctime = None
-        self.cur_lat = 0
-        self.cur_lon = 0
-        self.bearing = 0
-        self.speed = 0
-
         pygame.mixer.init()
 
-        print("---")
+        self.loadingDlg.hide()
 
     def on_run_db_check(self):
         if self.ui.check_run_db.isChecked():
@@ -797,6 +799,9 @@ class MainWnd(QMainWindow):
         self.setting_save()
         self.db_connection.close()
         self.gps.stop()
+        self.scan_port_stop.set()
+        if self.scan_port_thread.is_alive():
+            self.scan_port_thread.join(.1)
         self.igps_stop.set()
         if self.internet_gps.is_alive():
             self.internet_gps.join(.1)
