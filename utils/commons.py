@@ -1,4 +1,5 @@
 import re
+import time
 from datetime import datetime
 from geopy.distance import geodesic
 
@@ -98,6 +99,9 @@ def find_gps_port():
         try:
             # Open each port
             with serial.Serial(port, baudrate=BAUD_RATE_GPS, timeout=1) as ser:
+                buffer = ser.in_waiting
+                if buffer < 80:
+                    time.sleep(.2)
                 # Try reading from the port
                 line = ser.readline().decode('utf-8', errors='ignore').strip()
                 if line.startswith('$G'):

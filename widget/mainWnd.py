@@ -255,12 +255,7 @@ class MainWnd(QMainWindow):
         while not self.scan_port_stop.is_set():
             pp = find_gps_port()
             logger.debug(f"port:{pp}")
-            if pp is None:
-                if self.gps.is_alive():
-                    self.gps.stop()
-                    if self.ui.gps_connection_status.text() == "Connected":
-                        self.monitor_gps_status(False)
-            else:
+            if pp is not None:
                 if self.gps.is_alive() and self.gps.port != pp:
                     self.gps.stop()
                 if not self.gps.is_alive():
