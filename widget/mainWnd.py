@@ -635,12 +635,12 @@ class MainWnd(QMainWindow):
         http = requests.Session()
         http.mount("https://", adapter)
         try:
-            logger.debug(f"scanned:{headers}, {payload}")
+            # logger.debug(f"scanned:{headers}, {payload}")
             response = requests.post(RECORD_UPLOAD_URL, headers=headers, json=payload, timeout=4)
             response.raise_for_status()
             if response.status_code == 200:
                 data = response.json()
-                logger.debug(f"response:{data}")
+                # logger.debug(f"response:{data}")
                 if data['metadata']['code'] == '200':
                     return True
         except Exception:
@@ -696,12 +696,12 @@ class MainWnd(QMainWindow):
         http = requests.Session()
         http.mount("https://", adapter)
         try:
-            logger.debug(f"health:{headers}, {payload}")
+            # logger.debug(f"health:{headers}, {payload}")
             response = http.post(HEALTH_UPLOAD_URL, headers=headers, json=payload, timeout=4)
             response.raise_for_status()
             if response.status_code == 200:
                 data = response.json()
-                logger.debug(f"response:{data}")
+                # logger.debug(f"response:{data}")
                 if data['metadata']['code'] == '200':
                     logger.info('Uploading health data successfully finished.')
                 else:
