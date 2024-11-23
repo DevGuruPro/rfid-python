@@ -65,7 +65,7 @@ Software for reading live rfid tag and gps module.
   - Windows
 
     ```shell
-    pyinstaller --onefile --windowed --icon=icon.ico --name=RFIDInventory main.py
+    pyinstaller --clean --onefile --windowed --icon=icon.ico --name=RFIDInventory main.py
     ```
     
     If icon doesn't change, run "script/clear_iconcache.bat" and restart to refresh the icon cache.
@@ -73,10 +73,13 @@ Software for reading live rfid tag and gps module.
   - Ubuntu / Raspberry Pi OS
     
     ```shell
-    pyinstaller --onefile --icon=icon.png --name=RFIDInventory main.py
+    pyinstaller --clean --onefile --icon=icon.png --name=RFIDInventory main.py
     ```
     
-    If icon doesn't change, run "script/clear_iconcache.sh" with sudo and restart to refresh the icon cache.
+    If icon doesn't change
+    - Ensure script/desktop_icon.sh, the RFIDInventory executable and icon.png are in the same directory.
+    - Run "bash desktop_icon.sh".
+    - Reboot and check your application list.
     
 # Run the program at startup.
 
@@ -86,4 +89,6 @@ Software for reading live rfid tag and gps module.
 
   - Ubuntu / Raspberry Pi
     
-    - Place "script/setup.sh" in the same directory as "main" executable file and run shell script.
+    - Ensure script/autostart.sh, the RFIDInventory executable and icon.png are in the same directory.
+    - Run "bash autostart.sh".
+    - Reboot!
