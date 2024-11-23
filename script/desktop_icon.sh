@@ -5,7 +5,7 @@ APP_NAME="RFIDInventory"  # Name of your application
 CURRENT_DIR=$(pwd)  # Current directory
 EXECUTABLE_PATH="$CURRENT_DIR/RFIDInventory"  # Executable in the current directory
 ICON_PATH="$CURRENT_DIR/icon.png"  # Icon file in the current directory
-DESKTOP_FILE_NAME="${APP_NAME,,}.desktop"  # Name for the .desktop file
+DESKTOP_FILE_NAME="${APP_NAME}.desktop"  # Name for the .desktop file
 
 # Create the .desktop file content
 desktop_file_content="[Desktop Entry]
@@ -33,4 +33,5 @@ echo "Desktop entry created: $desktop_file_path"
 echo "Icon set to: $ICON_PATH"
 
 # Inform the user that they might need to refresh their desktop environment
-echo "You may need to refresh your desktop environment or log out and log back in to see the changes take effect.
+echo "You may need to refresh your desktop environment or log out and log back in to see the changes take effect."
+
