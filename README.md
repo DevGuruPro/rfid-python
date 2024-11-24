@@ -74,7 +74,7 @@ Software for reading live rfid tag and gps module.
     
     ```shell
     pyinstaller --clean --onefile --icon=icon.png --name=RFIDInventory main.py
-    bash setup.sh
+    bash script/setup.sh
     ```
     
     If icon doesn't change
