@@ -1,6 +1,7 @@
 import json
 import os
 import sys
+import threading
 
 import requests
 from PySide6.QtWidgets import QApplication
@@ -10,6 +11,7 @@ from settings import LOGIN_URL
 from utils.logger import logger
 from widget.loginWnd import LoginWnd
 from widget.mainWnd import MainWnd
+from widget.loadingDlg import LoadingDlg
 
 import ui.res_rc
 
@@ -64,8 +66,8 @@ class InventorySystem(object):
             else:
                 logger.error("Login failed")
                 self.login.show()
-        except Exception:
-            logger.error("Login Error")
+        except Exception as e :
+            logger.error(f"Login Error{e}")
             self.login.show()
 
     def close_login(self):

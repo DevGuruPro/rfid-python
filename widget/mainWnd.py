@@ -87,8 +87,6 @@ class MainWnd(QMainWindow):
         # self.setAttribute(QtCore.Qt.WidgetAttribute.WA_TranslucentBackground)
         self.ui.tableWidget.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeMode.Fixed)
         self.ui.tableWidget.setSelectionMode(QTableWidget.SelectionMode.NoSelection)
-
-        # Fill the table with some data and make items non-editable
         for row in range(self.ui.tableWidget.rowCount()):
             for column in range(self.ui.tableWidget.columnCount()):
                 item = QTableWidgetItem("")
@@ -99,57 +97,36 @@ class MainWnd(QMainWindow):
         self.ui.radio_api_default.clicked.connect(self.select_api_type)
         self.ui.radio_api_custom.clicked.connect(self.select_api_type)
         self.ui.radio_api_both.clicked.connect(self.select_api_type)
-
         self.ui.radio_login_basic.clicked.connect(self.select_login_type)
         self.ui.radio_login_token.clicked.connect(self.select_login_type)
-
-        self.ui.token_widget.hide()
-        self.ui.custom_widget.hide()
-
         self.ui.edit_rfid_host.textChanged.connect(self.on_rfid_host_text_changed)
         self.ui.gps_checkBox.clicked.connect(self.on_gps_checked)
         self.ui.radio_external_gps.clicked.connect(self.on_gps_type)
         self.ui.radio_internet_gps.clicked.connect(self.on_gps_type)
         self.ui.setting_save_btn.released.connect(self.setting_save)
         self.ui.api_save_btn.released.connect(self.api_save)
-
         self.ui.speed_limit.clicked.connect(self.on_speed_check)
         self.ui.tag_limit.clicked.connect(self.on_tag_check)
         self.ui.rssi_limit.clicked.connect(self.on_rssi_check)
         self.ui.check_run_db.clicked.connect(self.on_run_db_check)
+        self.ui.token_widget.hide()
+        self.ui.custom_widget.hide()
 
-        self.ui.gps_wid.setDisabled(True)
-        self.ui.speed_chw.setDisabled(True)
-        self.ui.rssi_chw.setDisabled(True)
-        self.ui.tag_chw.setDisabled(True)
-
-        self._stop = threading.Event()
-
+        self.use_db = False
         self.gps = GPS(port="")
         self.scan_port_stop = threading.Event()
         self.scan_port_thread = threading.Thread(target=self.monitor_gps_port)
-
-        self.internet_gps = threading.Thread(target=self.get_internet_gps_data)
         self.igps_stop = threading.Event()
-
-        self.load_setting()
-
-        self.rfid = RFID()
-        self.rfid.sig_msg.connect(self.monitor_rfid_status)
-        self.rfid.start()
-
-        self.scheduler_thread = threading.Thread(target=self.start_scheduler)
-        self.scheduler_thread.start()
-
-        self.upload_record.connect(self.upload_scanned_data)
-
+        self.internet_gps = threading.Thread(target=self.get_internet_gps_data)
+        self.rfid = None
+        self._stop = threading.Event()
+        self.scheduler_thread = None
         self.notify_thread = threading.Thread(target=self.beep_sound)
 
         self.userName = user_name
         self.token = token
         self.email = email
         self.password = password
-
         self.db_connection = sqlite3.connect('database.db')
         self.db_cursor = self.db_connection.cursor()
         self.db_cursor.execute('''
@@ -176,9 +153,7 @@ class MainWnd(QMainWindow):
                     )
                 ''')
         self.db_connection.commit()
-
         self.database = []
-        self.use_db = False
 
         self.last_lat = None
         self.last_lon = None
@@ -188,116 +163,33 @@ class MainWnd(QMainWindow):
         self.bearing = 0
         self.speed = 0
 
-    #     self.use_db = False
-    #     self.gps = GPS(port="")
-    #     self.scan_port_stop = threading.Event()
-    #     self.scan_port_thread = threading.Thread(target=self.monitor_gps_port)
-    #     self.igps_stop = threading.Event()
-    #     self.internet_gps = threading.Thread(target=self.get_internet_gps_data)
-    #     self.rfid = None
-    #     self._stop = threading.Event()
-    #     self.scheduler_thread = None
-    #     self.notify_thread = threading.Thread(target=self.beep_sound)
-    #
-    #     self.userName = user_name
-    #     self.token = token
-    #     self.email = email
-    #     self.password = password
-    #     self.db_connection = sqlite3.connect('database.db')
-    #     self.db_cursor = self.db_connection.cursor()
-    #     self.db_cursor.execute('''
-    #                 CREATE TABLE IF NOT EXISTS records (
-    #                     id INTEGER PRIMARY KEY,
-    #                     rfidTag TEXT NOT NULL,
-    #                     antenna INTEGER NOT NULL,
-    #                     RSSI INTEGER NOT NULL,
-    #                     latitude REAL NOT NULL,
-    #                     longitude REAL NOT NULL,
-    #                     speed REAL NOT NULL,
-    #                     heading REAL NOT NULL,
-    #                     locationCode TEXT NOT NULL,
-    #                     username TEXT NOT NULL,
-    #                     tag1 TEXT NOT NULL,
-    #                     value1 TEXT NOT NULL,
-    #                     tag2 TEXT NOT NULL,
-    #                     value2 TEXT NOT NULL,
-    #                     tag3 TEXT NOT NULL,
-    #                     value3 TEXT NOT NULL,
-    #                     tag4 TEXT NOT NULL,
-    #                     value4 TEXT NOT NULL,
-    #                     timestamp INTEGER NOT NULL
-    #                 )
-    #             ''')
-    #     self.db_connection.commit()
-    #     self.database = []
-    #
-    #     self.last_lat = None
-    #     self.last_lon = None
-    #     self.last_utctime = None
-    #     self.cur_lat = 0
-    #     self.cur_lon = 0
-    #     self.bearing = 0
-    #     self.speed = 0
-    #
-    #     self.loadingDlg = LoadingDlg()
-    #
-    #     self.lt = threading.Thread(target=self.loading_thread)
-    #     self.lt.start()
-    #     self.loadingDlg.setModal(True)
-    #     self.loadingDlg.exec()
-    #
-    #     while self.lt.is_alive():
-    #         time.sleep(.5)
-    #
-    # def loading_thread(self):
-    #     # self.setWindowFlags(Qt.WindowType.FramelessWindowHint)  # Qt.WindowType.Popup
-    #     # self.setAttribute(QtCore.Qt.WidgetAttribute.WA_TranslucentBackground)
-    #
-    #     self.ui.tableWidget.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeMode.Fixed)
-    #     self.ui.tableWidget.setSelectionMode(QTableWidget.SelectionMode.NoSelection)
-    #
-    #     for row in range(self.ui.tableWidget.rowCount()):
-    #         for column in range(self.ui.tableWidget.columnCount()):
-    #             item = QTableWidgetItem("")
-    #             item.setFlags(item.flags() & ~Qt.ItemFlag.ItemIsSelectable & ~Qt.ItemFlag.ItemIsEditable &
-    #                           ~Qt.ItemFlag.ItemIsEnabled)
-    #             self.ui.tableWidget.setItem(row, column, item)
-    #
-    #     self.ui.radio_api_default.clicked.connect(self.select_api_type)
-    #     self.ui.radio_api_custom.clicked.connect(self.select_api_type)
-    #     self.ui.radio_api_both.clicked.connect(self.select_api_type)
-    #     self.ui.radio_login_basic.clicked.connect(self.select_login_type)
-    #     self.ui.radio_login_token.clicked.connect(self.select_login_type)
-    #     self.ui.edit_rfid_host.textChanged.connect(self.on_rfid_host_text_changed)
-    #     self.ui.gps_checkBox.clicked.connect(self.on_gps_checked)
-    #     self.ui.radio_external_gps.clicked.connect(self.on_gps_type)
-    #     self.ui.radio_internet_gps.clicked.connect(self.on_gps_type)
-    #     self.ui.setting_save_btn.released.connect(self.setting_save)
-    #     self.ui.api_save_btn.released.connect(self.api_save)
-    #     self.ui.speed_limit.clicked.connect(self.on_speed_check)
-    #     self.ui.tag_limit.clicked.connect(self.on_tag_check)
-    #     self.ui.rssi_limit.clicked.connect(self.on_rssi_check)
-    #     self.ui.check_run_db.clicked.connect(self.on_run_db_check)
-    #     self.ui.token_widget.hide()
-    #     self.ui.custom_widget.hide()
-    #
-    #     self.load_setting()
-    #
-    #     self.rfid = RFID()
-    #     self.rfid.sig_msg.connect(self.monitor_rfid_status)
-    #     self.rfid.start()
-    #
-    #     self._stop = threading.Event()
-    #     self.scheduler_thread = threading.Thread(target=self.start_scheduler)
-    #     self.scheduler_thread.start()
-    #
-    #     self.upload_record.connect(self.upload_scanned_data)
-    #     pygame.mixer.init()
-    #
-    #     while not self.loadingDlg.isVisible():
-    #         time.sleep(1)
-    #
-    #     self.loadingDlg.hide()
+        self.upload_record.connect(self.upload_scanned_data)
+
+        self.loadingDlg = LoadingDlg()
+
+        self.lt = threading.Thread(target=self.loading_thread)
+        self.lt.start()
+        self.loadingDlg.setModal(True)
+        self.loadingDlg.exec()
+
+    def loading_thread(self):
+
+        self.load_setting()
+
+        self.rfid = RFID()
+        self.rfid.sig_msg.connect(self.monitor_rfid_status)
+        self.rfid.start()
+
+        self._stop = threading.Event()
+        self.scheduler_thread = threading.Thread(target=self.start_scheduler)
+        self.scheduler_thread.start()
+
+        pygame.mixer.init()
+
+        while not self.loadingDlg.isVisible():
+            time.sleep(1)
+
+        self.loadingDlg.hide()
 
     def on_run_db_check(self):
         if self.ui.check_run_db.isChecked():
