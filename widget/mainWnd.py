@@ -186,6 +186,9 @@ class MainWnd(QMainWindow):
         self.upload_record.connect(self.upload_scanned_data)
         pygame.mixer.init()
 
+        while not self.loadingDlg.isVisible():
+            time.sleep(1)
+
         self.loadingDlg.hide()
 
     def on_run_db_check(self):
