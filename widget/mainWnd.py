@@ -141,6 +141,9 @@ class MainWnd(QMainWindow):
         self.loadingDlg.setModal(True)
         self.loadingDlg.exec()
 
+        while self.lt.is_alive():
+            time.sleep(.5)
+
     def loading_thread(self):
         # self.setWindowFlags(Qt.WindowType.FramelessWindowHint)  # Qt.WindowType.Popup
         # self.setAttribute(QtCore.Qt.WidgetAttribute.WA_TranslucentBackground)
