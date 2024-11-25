@@ -3,7 +3,7 @@
 # Define package variables
 PACKAGE_NAME=RFIDInventory
 PACKAGE_VERSION=1.0
-ARCHITECTURE=amd64
+ARCHITECTURE=$(dpkg --print-architecture)
 DESCRIPTION="RFID Inventory management software."
 MAINTAINER="User"
 
