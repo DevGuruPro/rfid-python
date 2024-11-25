@@ -4,6 +4,7 @@
 sudo apt update
 
 # Install prerequisites
+sudo apt install -y python3-apt
 sudo apt install -y software-properties-common
 
 # Add deadsnakes PPA (contains newer Python versions)
