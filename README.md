@@ -28,14 +28,16 @@ Software for reading live rfid tag and gps module.
   
     ```shell
     cd rfid-python
-    pip install -r requirement.txt
+    pip install -r requirements.txt
     ```
 
   - Raspberry Pi OS
 
     ```shell
     cd rfid-python
-    pip install -r requirement.txt --break-system-packages
+    python -m venv .venv
+    source .venv/bin/activate
+    pip install -r requirements.txt
     ```
     
 - And start!
@@ -48,17 +50,9 @@ Software for reading live rfid tag and gps module.
 
 - Install PyInstaller
 
-  - Windows / Ubuntu
-
-    ```shell
-    pip install pyinstaller
-    ```
-  
-  - Raspberry Pi OS.
-
-      ```shell
-      pip install pyinstaller --break-system-packages
-      ```
+  ```shell
+  pip install pyinstaller
+  ```
   
 - Navigate to project directory and run PyInstaller
 
