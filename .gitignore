@@ -7,6 +7,7 @@ setting/
 
 script/setup-py.bat
 script/setup-py.sh
+script/setup.sh
 script/clear_iconcache.bat
 ui/wav_to_byte.py
 
