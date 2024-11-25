@@ -24,14 +24,14 @@ Software for reading live rfid tag and gps module.
   
 - Install python libraries.
 
-  - Windows / Ubuntu
+  - Windows
   
     ```shell
     cd rfid-python
     pip install -r requirements.txt
     ```
 
-  - Raspberry Pi OS
+  - Ubuntu / Raspberry Pi OS
 
     ```shell
     cd rfid-python
