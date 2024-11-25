@@ -35,7 +35,7 @@ Software for reading live rfid tag and gps module.
 
     ```shell
     cd rfid-python
-    python -m venv .venv
+    python3 -m venv .venv
     source .venv/bin/activate
     pip install -r requirements.txt
     ```
