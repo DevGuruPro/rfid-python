@@ -67,9 +67,9 @@ Software for reading live rfid tag and gps module.
   - Ubuntu / Raspberry Pi OS
     
     ```shell
-    pyinstaller --clean --onefile --icon=icon.png --name=RFIDInventory main.py
     sudo apt-get update
     sudo apt-get upgrade
+    pyinstaller --clean --onefile --icon=icon.png --name=RFIDInventory main.py
     ```
     
     If icon doesn't change
