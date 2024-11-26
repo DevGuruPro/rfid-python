@@ -10,10 +10,7 @@ Software for reading live rfid tag and gps module.
 - Ubuntu / Raspberry pi
   
   ```shell
-  sudo add-apt-repository ppa:deadsnakes/ppa  
-  sudo apt update  
-  sudo apt install python3.9
-  sudo update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.9 1
+  bash script/install_python.sh
   ```
 
 # Getting Started.
@@ -38,25 +35,42 @@ Software for reading live rfid tag and gps module.
 
     ```shell
     cd rfid-python
-    python3 -m venv .venv
+    python3.9 -m venv .venv
     source .venv/bin/activate
-    pip install -r requirements.txt
+    python3.9 -m pip install --upgrade pip
+    pip3.9 install -r requirements.txt
     ```
     
 - And start!
-
+  
+  - Windows
+  
     ```shell
     python main.py
+    ```
+    
+  - Ubuntu / Raspberry Pi OS
+
+    ```shell
+    python3.9 main.py
     ```
 
 # Convert a project into an executable file.
 
 - Install PyInstaller
 
-  ```shell
-  pip install pyinstaller
-  ```
+  - Windows
   
+    ```shell
+    pip install pyinstaller
+    ```
+    
+  - Ubuntu / Raspberry Pi OS
+
+    ```shell
+    pip3.9 install pyinstaller
+    ```
+    
 - Navigate to project directory and run PyInstaller
 
   - Windows
@@ -70,8 +84,8 @@ Software for reading live rfid tag and gps module.
   - Ubuntu / Raspberry Pi OS
     
     ```shell
-    sudo apt-get update
-    sudo apt-get upgrade
+    sudo apt update
+    sudo apt upgrade
     pyinstaller --clean --onefile --icon=icon.png --name=RFIDInventory main.py
     ```
     
