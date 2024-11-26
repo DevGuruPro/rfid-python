@@ -10,7 +10,7 @@ Software for reading live rfid tag and gps module.
 - Ubuntu / Raspberry pi
   
   ```shell
-  bash script/install_python.sh
+  pip install python3.9
   ```
 
 # Getting Started.
@@ -81,8 +81,8 @@ Software for reading live rfid tag and gps module.
     
     If icon doesn't change, run "script/clear_iconcache.bat" and restart to refresh the icon cache.
       
-  - Ubuntu / Raspberry Pi OS
-    
+  - Ubuntu / Raspberry Pi OS (must build on lowest glibc version.)
+
     ```shell
     sudo apt update
     sudo apt upgrade
