@@ -29,3 +29,6 @@ cd Python-3.9.0
 ./configure --enable-optimizations --enable-shared
 sudo make -j $(nproc)
 sudo make altinstall
+
+echo "/usr/local/lib" | sudo tee /etc/ld.so.conf.d/python3.9.conf
+sudo ldconfig
