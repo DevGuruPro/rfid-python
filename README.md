@@ -10,7 +10,7 @@ Software for reading live rfid tag and gps module.
 - Ubuntu / Raspberry pi
   
   ```shell
-  pip install python3.9
+  bash script/install_python.sh
   ```
 
 # Getting Started.
