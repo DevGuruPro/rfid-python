@@ -14,6 +14,7 @@ mkdir -p ${PACKAGE_NAME}-${PACKAGE_VERSION}/usr/local/bin
 mkdir -p ${PACKAGE_NAME}-${PACKAGE_VERSION}/usr/share/applications
 mkdir -p ${PACKAGE_NAME}-${PACKAGE_VERSION}/usr/share/icons/hicolor/512x512/apps
 mkdir -p ${PACKAGE_NAME}-${PACKAGE_VERSION}/etc/xdg/autostart
+mkdir -p ${PACKAGE_NAME}-${PACKAGE_VERSION}/etc/systemd/system
 
 # Copy files to package
 echo "Copying files..."
@@ -45,6 +46,25 @@ Exec=RFIDInventory
 Icon=${PACKAGE_NAME}
 Terminal=false
 Type=Application
+EOL
+
+# Create systemd service file
+echo "Creating systemd service file..."
+cat > ${PACKAGE_NAME}-${PACKAGE_VERSION}/etc/systemd/system/${PACKAGE_NAME}.service <<EOL
+[Unit]
+Description=RFID Inventory Management Service
+After=network.target
+
+[Service]
+ExecStart=/usr/local/bin/RFIDInventory
+Restart=always
+RestartSec=10
+StandardOutput=syslog
+StandardError=syslog
+SyslogIdentifier=rfidinventory
+
+[Install]
+WantedBy=multi-user.target
 EOL
 
 # Create control file
