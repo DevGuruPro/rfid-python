@@ -126,3 +126,4 @@ Software for reading live rfid tag and gps module.
     sudo systemctl start RFIDInventory.service
     ```
   - Reboot!
+  - Run "sudo dpkg -r RFIDInventory" to uninstall package.
