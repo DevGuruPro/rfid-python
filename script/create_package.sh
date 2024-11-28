@@ -54,17 +54,22 @@ cat > ${PACKAGE_NAME}-${PACKAGE_VERSION}/etc/systemd/system/${PACKAGE_NAME}.serv
 [Unit]
 Description=RFID Inventory Management Service
 After=network.target
+After=graphical.target
 
 [Service]
+User=rfid_user
 ExecStart=/usr/local/bin/RFIDInventory
+Environment=QT_DEBUG_PLUGINS=1
+Environment=DISPLAY=:0
 Restart=always
 RestartSec=10
-StandardOutput=syslog
-StandardError=syslog
+StandardOutput=journal
+StandardError=journal
 SyslogIdentifier=rfidinventory
 
 [Install]
 WantedBy=multi-user.target
+WantedBy=graphical.target
 EOL
 
 # Create control file
@@ -78,6 +83,25 @@ Architecture: ${ARCHITECTURE}
 Maintainer: ${MAINTAINER}
 Description: ${DESCRIPTION}
 EOL
+
+# Create postinst script for adding rfid_user
+echo "Creating postinst script..."
+cat > ${PACKAGE_NAME}-${PACKAGE_VERSION}/DEBIAN/postinst <<EOL
+#!/bin/bash
+
+# Create rfid_user user if it doesn't exist
+if ! id -u "rfid_user" >/dev/null 2>&1; then
+    useradd --system --no-create-home --shell /usr/sbin/nologin rfid_user
+    echo "rfid_user has been added."
+fi
+
+# Enable and start the service
+systemctl enable ${PACKAGE_NAME}.service
+systemctl start ${PACKAGE_NAME}.service
+EOL
+
+# Make the postinst script executable
+chmod 0755 ${PACKAGE_NAME}-${PACKAGE_VERSION}/DEBIAN/postinst
 
 # Build the .deb package
 echo "Building the .deb package..."
