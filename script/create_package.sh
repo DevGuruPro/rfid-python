@@ -95,7 +95,11 @@ if ! id -u "rfidinv" >/dev/null 2>&1; then
     echo "rfidinv has been added with a home directory."
 fi
 
+USER_HOME=$(getent passwd $(logname) | cut -d: -f6)
+sudo -u $(logname) xhost +SI:localuser:rfidinv
+
 # Enable and start the service
+systemctl daemon-reload
 systemctl enable ${PACKAGE_NAME}.service
 systemctl start ${PACKAGE_NAME}.service
 EOL
