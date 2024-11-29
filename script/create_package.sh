@@ -57,7 +57,7 @@ After=network.target
 After=graphical.target
 
 [Service]
-User=rfid_user
+User=rfidinv
 ExecStart=/usr/local/bin/RFIDInventory
 Environment=QT_DEBUG_PLUGINS=1
 Environment=DISPLAY=:0
@@ -84,15 +84,15 @@ Maintainer: ${MAINTAINER}
 Description: ${DESCRIPTION}
 EOL
 
-# Create postinst script for adding rfid_user
+# Create postinst script for adding rfidinv
 echo "Creating postinst script..."
 cat > ${PACKAGE_NAME}-${PACKAGE_VERSION}/DEBIAN/postinst <<EOL
 #!/bin/bash
 
-# Create rfid_user user if it doesn't exist
-if ! id -u "rfid_user" >/dev/null 2>&1; then
-    useradd --system --no-create-home --shell /usr/sbin/nologin rfid_user
-    echo "rfid_user has been added."
+# Create rfidinv user if it doesn't exist
+if ! id -u "rfidinv" >/dev/null 2>&1; then
+    useradd --system --create-home --home-dir /home/rfidinv --shell /usr/sbin/nologin rfidinv
+    echo "rfidinv has been added with a home directory."
 fi
 
 # Enable and start the service
