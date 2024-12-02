@@ -82,17 +82,9 @@ Software for reading live rfid tag and gps module.
     If icon doesn't change, run "script/clear_iconcache.bat" and restart to refresh the icon cache.
       
   - Ubuntu / Raspberry Pi OS (must build on lowest glibc version.)
-
-    - Set Python3.9 as the default python version.
-      ```shell
-      sudo update-alternatives --install /usr/bin/python python /usr/bin/python3.9 1
-      sudo update-alternatives --config python
-      ```
     
     - Build as an executable file.
       ```shell
-      sudo apt update
-      sudo apt upgrade
       sudo apt-get install python3.9-dev
       pyinstaller --clean --onefile --icon=icon.png --name=RFIDInventory main.py
       ```
