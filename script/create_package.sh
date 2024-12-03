@@ -84,7 +84,21 @@ Depends: libxcb-xinerama0, libxcb-cursor0, libx11-xcb1, libxcb1, libxfixes3, lib
 Description: ${DESCRIPTION}
 EOL
 
-# Create postinst script for adding rfidinv
+# Create systemd user service for xhost
+echo "Creating systemd user service for xhost..."
+cat > ${PACKAGE_NAME}-${PACKAGE_VERSION}/etc/skel/.config/systemd/user/xhost-grant.service <<EOL
+[Unit]
+Description=Grant rfidinv user access to X Server
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/xhost +SI:localuser:rfidinv
+
+[Install]
+WantedBy=default.target
+EOL
+
+# Create postinst script to configure system
 echo "Creating postinst script..."
 cat > ${PACKAGE_NAME}-${PACKAGE_VERSION}/DEBIAN/postinst <<EOL
 #!/bin/bash
@@ -95,12 +109,15 @@ if ! id -u "rfidinv" >/dev/null 2>&1; then
     echo "rfidinv user has been added with a home directory."
 fi
 
-# Set correct permissions for accessing the X server
-if ! grep -q 'xhost +SI:localuser:rfidinv' /etc/profile; then
-    echo 'xhost +SI:localuser:rfidinv' >> /etc/profile
-fi
+# Ensure existing users get the new systemd user service
+cp /etc/skel/.config/systemd/user/xhost-grant.service /home/rfidinv/.config/systemd/user/
+chown -R rfidinv:rfidinv /home/rfidinv/.config
+loginctl enable-linger rfidinv
 
-# Enable and start the service
+# Enable and start the service for the rfidinv user
+su - rfidinv -s /bin/bash -c "systemctl --user daemon-reload; systemctl --user enable xhost-grant.service; systemctl --user start xhost-grant.service"
+
+# Enable and start the system service
 systemctl daemon-reload
 systemctl enable ${PACKAGE_NAME}.service
 systemctl start ${PACKAGE_NAME}.service
