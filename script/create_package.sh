@@ -109,12 +109,15 @@ if ! id -u "rfidinv" >/dev/null 2>&1; then
     echo "rfidinv user has been added with a home directory."
 fi
 
-# Ensure existing users get the new systemd user service
-cp /etc/skel/.config/systemd/user/xhost-grant.service /home/rfidinv/.config/systemd/user/
-chown -R rfidinv:rfidinv /home/rfidinv/.config
-loginctl enable-linger rfidinv
+# Setup systemd user service for rfidinv user
+USER_HOME=/home/rfidinv
+SYSTEMD_USER_DIR=\${USER_HOME}/.config/systemd/user
+mkdir -p \${SYSTEMD_USER_DIR}
+cp /usr/share/RFIDInventory/xhost-grant.service \${SYSTEMD_USER_DIR}/
+chown -R rfidinv:rfidinv \${SYSTEMD_USER_DIR}
 
-# Enable and start the service for the rfidinv user
+# Enable linger and the user service
+loginctl enable-linger rfidinv
 su - rfidinv -s /bin/bash -c "systemctl --user daemon-reload; systemctl --user enable xhost-grant.service; systemctl --user start xhost-grant.service"
 
 # Enable and start the system service
