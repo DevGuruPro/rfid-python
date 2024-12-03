@@ -119,9 +119,13 @@ mkdir -p ${SYSTEMD_USER_DIR}
 cp /opt/RFIDInventory/config/systemd/user/xhost-grant.service ${SYSTEMD_USER_DIR}/
 chown -R rfidinv:rfidinv ${SYSTEMD_USER_DIR}
 
-# Enable linger and service for the user
-loginctl enable-linger rfidinv || echo "Warning: couldn't enable linger for rfidinv"
-su - rfidinv -s /bin/bash -c "systemctl --user daemon-reload || true; systemctl --user enable xhost-grant.service || true; systemctl --user start xhost-grant.service || true"
+# Enable linger for the user without attempting to start services lacking an active session
+if loginctl list-sessions | grep -q rfidinv; then
+    loginctl enable-linger rfidinv || echo "Warning: couldn't enable linger for rfidinv"
+    su - rfidinv -s /bin/bash -c "systemctl --user daemon-reload || true; systemctl --user enable xhost-grant.service || true; systemctl --user start xhost-grant.service || true"
+else
+    echo "User session for 'rfidinv' is not active; user services will not be started automatically during package installation."
+fi
 
 # Enable and start the system service
 systemctl daemon-reload
