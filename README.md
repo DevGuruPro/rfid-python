@@ -110,6 +110,6 @@ Software for reading live rfid tag and gps module.
 
   - Ensure script/create_package.sh, the RFIDInventory executable and icon.png are in the same directory.
   - Run "bash create_package.sh".
-  - Run "sudo apt install -i ./RFIDInventory-1.0.deb" to install the package.
+  - Run "sudo apt install ./RFIDInventory-1.0.deb" to install the package.
   - Reboot!
   - Run "bash uninstall_package.sh" to uninstall package.
