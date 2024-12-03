@@ -1,38 +1,35 @@
 #!/bin/bash
 
-# Variables
-PACKAGE_NAME="RFIDInventory"
-VERSION="1.0"
-ARCHITECTURE="amd64"
+# Define package variables
+PACKAGE_NAME=RFIDInventory
+PACKAGE_VERSION=1.0
+ARCHITECTURE=$(dpkg --print-architecture)
 DESCRIPTION="RFID Inventory management software."
-MAINTAINER="Your Name <youremail@example.com>"
-BUILD_DIR="${PACKAGE_NAME}-${VERSION}"
-INSTALL_DIR="${BUILD_DIR}/usr/local/bin"
-ICON_DIR="${BUILD_DIR}/usr/share/icons/hicolor/512x512/apps"
-DESKTOP_DIR="${BUILD_DIR}/usr/share/applications"
-SYSTEMD_DIR="${BUILD_DIR}/etc/systemd/system"
-AUTOSTART_DIR="${BUILD_DIR}/etc/xdg/autostart"
-CONFIG_DIR="${BUILD_DIR}/opt/${PACKAGE_NAME}/config/systemd/user"
-DEBIAN_DIR="${BUILD_DIR}/DEBIAN"
+MAINTAINER="User"
 
-# Clean up previous builds
-rm -rf "${BUILD_DIR}"
-mkdir -p "${INSTALL_DIR}" "${ICON_DIR}" "${DESKTOP_DIR}" "${SYSTEMD_DIR}" "${AUTOSTART_DIR}" "${CONFIG_DIR}" "${DEBIAN_DIR}"
+# Create directory structure
+echo "Creating directory structure..."
+mkdir -p ${PACKAGE_NAME}-${PACKAGE_VERSION}/DEBIAN
+mkdir -p ${PACKAGE_NAME}-${PACKAGE_VERSION}/usr/local/bin
+mkdir -p ${PACKAGE_NAME}-${PACKAGE_VERSION}/usr/share/applications
+mkdir -p ${PACKAGE_NAME}-${PACKAGE_VERSION}/usr/share/icons/hicolor/512x512/apps
+mkdir -p ${PACKAGE_NAME}-${PACKAGE_VERSION}/etc/xdg/autostart
+mkdir -p ${PACKAGE_NAME}-${PACKAGE_VERSION}/etc/systemd/system
 
-# Copy application files
-echo "Copying application files..."
-cp RFIDInventory "${INSTALL_DIR}/"
-cp icon.png "${ICON_DIR}/${PACKAGE_NAME}.png"
+# Copy files to package
+echo "Copying files..."
+cp RFIDInventory ${PACKAGE_NAME}-${PACKAGE_VERSION}/usr/local/bin/
+cp icon.png ${PACKAGE_NAME}-${PACKAGE_VERSION}/usr/share/icons/hicolor/512x512/apps/${PACKAGE_NAME}.png
 
-# Create .desktop file for the application menu
-echo "Creating .desktop file..."
-cat > "${DESKTOP_DIR}/${PACKAGE_NAME}.desktop" <<EOL
+# Create .desktop file for application menu
+echo "Creating application .desktop file..."
+cat > ${PACKAGE_NAME}-${PACKAGE_VERSION}/usr/share/applications/${PACKAGE_NAME}.desktop <<EOL
 [Desktop Entry]
 Version=1.0
 Name=RFID Inventory
 Comment=Manage RFID inventory system
-Exec=${INSTALL_DIR}/RFIDInventory
-Icon=${ICON_DIR}/${PACKAGE_NAME}.png
+Exec=/usr/local/bin/RFIDInventory
+Icon=${PACKAGE_NAME}
 Terminal=false
 Type=Application
 Categories=Utility;
@@ -40,20 +37,20 @@ EOL
 
 # Create autostart .desktop file
 echo "Creating autostart .desktop file..."
-cat > "${AUTOSTART_DIR}/${PACKAGE_NAME}.desktop" <<EOL
+cat > ${PACKAGE_NAME}-${PACKAGE_VERSION}/etc/xdg/autostart/${PACKAGE_NAME}.desktop <<EOL
 [Desktop Entry]
 Version=1.0
 Name=RFID Inventory Autostart
 Comment=Automatically start RFID Inventory application at login
-Exec=${INSTALL_DIR}/RFIDInventory
-Icon=${ICON_DIR}/${PACKAGE_NAME}.png
+Exec=/usr/local/bin/RFIDInventory
+Icon=${PACKAGE_NAME}
 Terminal=false
 Type=Application
 EOL
 
 # Create systemd service file
 echo "Creating systemd service file..."
-cat > "${SYSTEMD_DIR}/${PACKAGE_NAME}.service" <<EOL
+cat > ${PACKAGE_NAME}-${PACKAGE_VERSION}/etc/systemd/system/${PACKAGE_NAME}.service <<EOL
 [Unit]
 Description=RFID Inventory Management Service
 After=network.target
@@ -61,46 +58,53 @@ Wants=display-manager.service
 
 [Service]
 User=rfidinv
-ExecStart=${INSTALL_DIR}/RFIDInventory
+ExecStart=/usr/local/bin/RFIDInventory
+Environment=QT_DEBUG_PLUGINS=1
 Environment=DISPLAY=:0
 Restart=always
 RestartSec=10
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=rfidinventory
 
 [Install]
 WantedBy=multi-user.target
 EOL
 
-# Create systemd user service file for xhost
-echo "Creating systemd user service for xhost..."
-cat > "${CONFIG_DIR}/xhost-grant.service" <<EOL
+# Create a systemd service to set up xhost after boot
+echo "Creating systemd service for granting X server access..."
+cat > ${PACKAGE_NAME}-${PACKAGE_VERSION}/etc/systemd/system/xhost-grant.service <<EOL
 [Unit]
-Description=Grant rfidinv user access to X Server
+Description=Grant rfidinv user access to X Server after boot
+After=graphical.service
 
 [Service]
 Type=oneshot
+Environment=DISPLAY=:0
 ExecStart=/usr/bin/xhost +SI:localuser:rfidinv
 
 [Install]
-WantedBy=default.target
+WantedBy=graphical.target
 EOL
 
-# Create DEBIAN control file
+# Create control file
 echo "Creating DEBIAN control file..."
-cat > "${DEBIAN_DIR}/control" <<EOL
+cat > ${PACKAGE_NAME}-${PACKAGE_VERSION}/DEBIAN/control <<EOL
 Package: ${PACKAGE_NAME}
-Version: ${VERSION}
+Version: ${PACKAGE_VERSION}
 Section: utils
 Priority: optional
 Architecture: ${ARCHITECTURE}
 Maintainer: ${MAINTAINER}
-Depends:
+Depends: libxcb-xinerama0, libxcb-cursor0, libx11-xcb1, libxcb1, libxfixes3, libxi6, libxrender1, libxcb-render0, libxcb-shape0, libxcb-xfixes0, x11-xserver-utils
 Description: ${DESCRIPTION}
 EOL
 
-# Create postinst script to configure the system after package installation
+# Create postinst script to configure system
 echo "Creating postinst script..."
-cat > "${DEBIAN_DIR}/postinst" <<'EOL'
+cat > ${PACKAGE_NAME}-${PACKAGE_VERSION}/DEBIAN/postinst <<'EOL'
 #!/bin/bash
+
 set -e
 
 # Create rfidinv user if it doesn't exist
@@ -109,36 +113,26 @@ if ! id -u "rfidinv" >/dev/null 2>&1; then
     echo "rfidinv user has been added with a home directory."
 fi
 
-# Setup systemd user service for rfidinv user
-USER_HOME=/home/rfidinv
-SYSTEMD_USER_DIR=${USER_HOME}/.config/systemd/user
-mkdir -p ${SYSTEMD_USER_DIR}
-cp /opt/RFIDInventory/config/systemd/user/xhost-grant.service ${SYSTEMD_USER_DIR}/
-chown -R rfidinv:rfidinv ${SYSTEMD_USER_DIR}
-
-# Grant X Server access
-if [ -n "$DISPLAY" ] && pgrep Xorg > /dev/null; then
-    echo "Granting X Server access for the rfidinv user"
-    su - rfidinv -s /bin/bash -c "xhost +SI:localuser:rfidinv" || true
-else
-    echo "X server not accessible. Skipping xhost configuration."
-fi
-
-# Enable and start the system service
+# Enable and start the system service and xhost service
 systemctl daemon-reload
 systemctl enable RFIDInventory.service
+systemctl enable xhost-grant.service
+
+echo "Granting X server access for the rfidinv user"
+systemctl start xhost-grant.service
+
 systemctl start RFIDInventory.service
 EOL
 
 # Make the postinst script executable
-chmod 0755 "${DEBIAN_DIR}/postinst"
+chmod 0755 ${PACKAGE_NAME}-${PACKAGE_VERSION}/DEBIAN/postinst
 
-# Build the Debian package
-echo "Building the Debian package..."
-dpkg-deb --build "${BUILD_DIR}"
+# Build the .deb package
+echo "Building the .deb package..."
+dpkg-deb --build ${PACKAGE_NAME}-${PACKAGE_VERSION}
 
-# Clean up
+# Clean up the build directory
 echo "Cleaning up..."
-rm -rf "${BUILD_DIR}"
+rm -rf ${PACKAGE_NAME}-${PACKAGE_VERSION}
 
-echo "Package ${PACKAGE_NAME}-${VERSION}.deb has been created successfully."
+echo "Package ${PACKAGE_NAME}-${PACKAGE_VERSION}.deb has been created successfully."
