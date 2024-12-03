@@ -77,7 +77,7 @@ install_if_missing() {
     PACKAGE="\$1"
     if ! dpkg -l | grep -q "^ii  $PACKAGE "; then
         echo "Installing missing package: $PACKAGE"
-        sudo apt-get install -y "$PACKAGE"
+        sudo apt install "$PACKAGE"
     else
         echo "$PACKAGE is already installed."
     fi
