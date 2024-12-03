@@ -28,21 +28,21 @@ cat > ${PACKAGE_NAME}-${PACKAGE_VERSION}/usr/share/applications/${PACKAGE_NAME}.
 Version=1.0
 Name=RFID Inventory
 Comment=Manage RFID inventory system
-Exec=RFIDInventory
+Exec=/usr/local/bin/RFIDInventory
 Icon=${PACKAGE_NAME}
 Terminal=false
 Type=Application
 Categories=Utility;
 EOL
 
-# Create .desktop file for autostart
+# Create autostart .desktop file
 echo "Creating autostart .desktop file..."
 cat > ${PACKAGE_NAME}-${PACKAGE_VERSION}/etc/xdg/autostart/${PACKAGE_NAME}.desktop <<EOL
 [Desktop Entry]
 Version=1.0
 Name=RFID Inventory Autostart
 Comment=Automatically start RFID Inventory application at login
-Exec=RFIDInventory
+Exec=/usr/local/bin/RFIDInventory
 Icon=${PACKAGE_NAME}
 Terminal=false
 Type=Application
@@ -54,7 +54,7 @@ cat > ${PACKAGE_NAME}-${PACKAGE_VERSION}/etc/systemd/system/${PACKAGE_NAME}.serv
 [Unit]
 Description=RFID Inventory Management Service
 After=network.target
-After=graphical.target
+Wants=display-manager.service
 
 [Service]
 User=rfidinv
@@ -69,7 +69,6 @@ SyslogIdentifier=rfidinventory
 
 [Install]
 WantedBy=multi-user.target
-WantedBy=graphical.target
 EOL
 
 # Create control file
@@ -93,13 +92,12 @@ cat > ${PACKAGE_NAME}-${PACKAGE_VERSION}/DEBIAN/postinst <<EOL
 # Create rfidinv user if it doesn't exist
 if ! id -u "rfidinv" >/dev/null 2>&1; then
     useradd --system --create-home --home-dir /home/rfidinv --shell /usr/sbin/nologin rfidinv
-    echo "rfidinv has been added with a home directory."
+    echo "rfidinv user has been added with a home directory."
 fi
 
-# Grant X server access to rfidinv user
-LOGGED_IN_USER=$(logname)
-if [ -n "$DISPLAY" ]; then
-    sudo -u $LOGGED_IN_USER xhost +SI:localuser:rfidinv
+# Set correct permissions for accessing the X server
+if ! grep -q 'xhost +SI:localuser:rfidinv' /etc/profile; then
+    echo 'xhost +SI:localuser:rfidinv' >> /etc/profile
 fi
 
 # Enable and start the service
