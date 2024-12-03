@@ -77,11 +77,11 @@ cat > ${PACKAGE_NAME}-${PACKAGE_VERSION}/etc/systemd/system/xhost-grant.service 
 [Unit]
 Description=Grant rfidinv user access to X Server after boot
 After=graphical.service
+Requires=display-manager.service
 
 [Service]
 Type=oneshot
-Environment=DISPLAY=:0
-ExecStart=/usr/bin/xhost +SI:localuser:rfidinv
+ExecStart=/usr/bin/bash -c 'export DISPLAY=:0; /usr/bin/xhost +SI:localuser:rfidinv'
 
 [Install]
 WantedBy=graphical.target
