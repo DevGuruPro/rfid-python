@@ -96,8 +96,11 @@ if ! id -u "rfidinv" >/dev/null 2>&1; then
     echo "rfidinv has been added with a home directory."
 fi
 
-USER_HOME=$(getent passwd $(logname) | cut -d: -f6)
-sudo -u $(logname) xhost +SI:localuser:rfidinv
+# Grant X server access to rfidinv user
+LOGGED_IN_USER=$(logname)
+if [ -n "$DISPLAY" ]; then
+    sudo -u $LOGGED_IN_USER xhost +SI:localuser:rfidinv
+fi
 
 # Enable and start the service
 systemctl daemon-reload
