@@ -48,7 +48,7 @@ ExecStart=/usr/local/bin/RFIDInventory
 Environment=QT_DEBUG_PLUGINS=1
 Environment=DISPLAY=:0
 Restart=always
-RestartSec=10
+RestartSec=5
 StandardOutput=journal
 StandardError=journal
 SyslogIdentifier=rfidinventory
