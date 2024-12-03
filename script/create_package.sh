@@ -53,7 +53,7 @@ echo "Creating systemd service file..."
 cat > ${PACKAGE_NAME}-${PACKAGE_VERSION}/etc/systemd/system/${PACKAGE_NAME}.service <<EOL
 [Unit]
 Description=RFID Inventory Management Service
-After=network.target
+After=graphical.target
 Wants=display-manager.service
 
 [Service]
@@ -76,12 +76,12 @@ echo "Creating systemd service for granting X server access..."
 cat > ${PACKAGE_NAME}-${PACKAGE_VERSION}/etc/systemd/system/xhost-grant.service <<EOL
 [Unit]
 Description=Grant rfidinv user access to X Server after boot
-After=display-manager.service
+After=graphical.target
 
 [Service]
 Type=oneshot
+ExecStart=/bin/bash -c 'sleep 5; /usr/bin/xhost +SI:localuser:rfidinv'
 Environment=DISPLAY=:0
-ExecStart=/usr/bin/xhost +SI:localuser:rfidinv
 
 [Install]
 WantedBy=graphical.target
