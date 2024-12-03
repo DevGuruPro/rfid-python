@@ -87,11 +87,8 @@ install_if_missing() {
 dependencies=(
     libxcb-xinerama0
     libxcb-cursor0
-    libxcb-cursor-dev
     libx11-xcb1
     libxcb1
-    libx11-dev
-    libxext-dev
     libxfixes3
     libxi6
     libxrender1
@@ -117,7 +114,7 @@ Section: utils
 Priority: optional
 Architecture: ${ARCHITECTURE}
 Maintainer: ${MAINTAINER}
-Depends: libxcb-xinerama0, libxcb-cursor0, libxcb-cursor-dev, libx11-xcb1, libxcb1, libx11-dev, libxext-dev, libxfixes3, libxi6, libxrender1, libxcb-render0, libxcb-shape0, libxcb-xfixes0
+Depends: libxcb-xinerama0, libxcb-cursor0, libx11-xcb1, libxcb1, libxfixes3, libxi6, libxrender1, libxcb-render0, libxcb-shape0, libxcb-xfixes0
 Description: ${DESCRIPTION}
 EOL
 
