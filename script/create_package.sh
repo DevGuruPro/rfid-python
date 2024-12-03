@@ -15,6 +15,7 @@ mkdir -p ${PACKAGE_NAME}-${PACKAGE_VERSION}/usr/share/applications
 mkdir -p ${PACKAGE_NAME}-${PACKAGE_VERSION}/usr/share/icons/hicolor/512x512/apps
 mkdir -p ${PACKAGE_NAME}-${PACKAGE_VERSION}/etc/xdg/autostart
 mkdir -p ${PACKAGE_NAME}-${PACKAGE_VERSION}/etc/systemd/system
+mkdir -p ${PACKAGE_NAME}-${PACKAGE_VERSION}/opt/${PACKAGE_NAME}/config/systemd/user
 
 # Copy files to package
 echo "Copying files..."
@@ -71,22 +72,9 @@ SyslogIdentifier=rfidinventory
 WantedBy=multi-user.target
 EOL
 
-# Create control file
-echo "Creating DEBIAN control file..."
-cat > ${PACKAGE_NAME}-${PACKAGE_VERSION}/DEBIAN/control <<EOL
-Package: ${PACKAGE_NAME}
-Version: ${PACKAGE_VERSION}
-Section: utils
-Priority: optional
-Architecture: ${ARCHITECTURE}
-Maintainer: ${MAINTAINER}
-Depends: libxcb-xinerama0, libxcb-cursor0, libx11-xcb1, libxcb1, libxfixes3, libxi6, libxrender1, libxcb-render0, libxcb-shape0, libxcb-xfixes0
-Description: ${DESCRIPTION}
-EOL
-
 # Create systemd user service for xhost
 echo "Creating systemd user service for xhost..."
-cat > ${PACKAGE_NAME}-${PACKAGE_VERSION}/etc/skel/.config/systemd/user/xhost-grant.service <<EOL
+cat > ${PACKAGE_NAME}-${PACKAGE_VERSION}/opt/${PACKAGE_NAME}/config/systemd/user/xhost-grant.service <<EOL
 [Unit]
 Description=Grant rfidinv user access to X Server
 
@@ -98,10 +86,25 @@ ExecStart=/usr/bin/xhost +SI:localuser:rfidinv
 WantedBy=default.target
 EOL
 
+# Create control file
+echo "Creating DEBIAN control file..."
+cat > ${PACKAGE_NAME}-${PACKAGE_VERSION}/DEBIAN/control <<EOL
+Package: ${PACKAGE_NAME}
+Version: ${PACKAGE_VERSION}
+Section: utils
+Priority: optional
+Architecture: ${ARCHITECTURE}
+Maintainer: ${MAINTAINER}
+Depends: libxcb-xinerama0, libxcb-cursor0, libx11-xcb1, libxcb1, libxfixes3, libxi6, libxrender1, libxcb-render0, libxcb-shape0, libxcb-xfixes0, x11-xserver-utils
+Description: ${DESCRIPTION}
+EOL
+
 # Create postinst script to configure system
 echo "Creating postinst script..."
-cat > ${PACKAGE_NAME}-${PACKAGE_VERSION}/DEBIAN/postinst <<EOL
+cat > ${PACKAGE_NAME}-${PACKAGE_VERSION}/DEBIAN/postinst <<'EOL'
 #!/bin/bash
+
+set -e
 
 # Create rfidinv user if it doesn't exist
 if ! id -u "rfidinv" >/dev/null 2>&1; then
@@ -111,19 +114,19 @@ fi
 
 # Setup systemd user service for rfidinv user
 USER_HOME=/home/rfidinv
-SYSTEMD_USER_DIR=\${USER_HOME}/.config/systemd/user
-mkdir -p \${SYSTEMD_USER_DIR}
-cp /usr/share/RFIDInventory/xhost-grant.service \${SYSTEMD_USER_DIR}/
-chown -R rfidinv:rfidinv \${SYSTEMD_USER_DIR}
+SYSTEMD_USER_DIR=${USER_HOME}/.config/systemd/user
+mkdir -p ${SYSTEMD_USER_DIR}
+cp /opt/RFIDInventory/config/systemd/user/xhost-grant.service ${SYSTEMD_USER_DIR}/
+chown -R rfidinv:rfidinv ${SYSTEMD_USER_DIR}
 
-# Enable linger and the user service
-loginctl enable-linger rfidinv
-su - rfidinv -s /bin/bash -c "systemctl --user daemon-reload; systemctl --user enable xhost-grant.service; systemctl --user start xhost-grant.service"
+# Enable linger and service for the user
+loginctl enable-linger rfidinv || echo "Warning: couldn't enable linger for rfidinv"
+su - rfidinv -s /bin/bash -c "systemctl --user daemon-reload || true; systemctl --user enable xhost-grant.service || true; systemctl --user start xhost-grant.service || true"
 
 # Enable and start the system service
 systemctl daemon-reload
-systemctl enable ${PACKAGE_NAME}.service
-systemctl start ${PACKAGE_NAME}.service
+systemctl enable RFIDInventory.service
+systemctl start RFIDInventory.service
 EOL
 
 # Make the postinst script executable
