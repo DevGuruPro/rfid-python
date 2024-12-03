@@ -72,6 +72,42 @@ WantedBy=multi-user.target
 WantedBy=graphical.target
 EOL
 
+# Function to check and install a package if not already installed
+install_if_missing() {
+    PACKAGE="\$1"
+    if ! dpkg -l | grep -q "^ii  $PACKAGE "; then
+        echo "Installing missing package: $PACKAGE"
+        sudo apt-get install -y "$PACKAGE"
+    else
+        echo "$PACKAGE is already installed."
+    fi
+}
+
+# List of dependencies
+dependencies=(
+    libxcb-xinerama0
+    libxcb-cursor0
+    libxcb-cursor-dev
+    libx11-xcb1
+    libxcb1
+    libx11-dev
+    libxext-dev
+    libxfixes3
+    libxi6
+    libxrender1
+    libxcb-render0
+    libxcb-shape0
+    libxcb-xfixes0
+)
+
+# Update package list
+sudo apt-get update
+
+# Install each dependency if missing
+for package in "${dependencies[@]}"; do
+    install_if_missing "$package"
+done
+
 # Create control file
 echo "Creating DEBIAN control file..."
 cat > ${PACKAGE_NAME}-${PACKAGE_VERSION}/DEBIAN/control <<EOL
