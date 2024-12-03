@@ -2,7 +2,7 @@
 
 # Define package variables
 PACKAGE_NAME=RFIDInventory
-PACKAGE_VERSION=1.0
+PACKAGE_VERSION=1.1
 ARCHITECTURE=$(dpkg --print-architecture)
 DESCRIPTION="RFID Inventory management software."
 MAINTAINER="User"
@@ -13,7 +13,6 @@ mkdir -p ${PACKAGE_NAME}-${PACKAGE_VERSION}/DEBIAN
 mkdir -p ${PACKAGE_NAME}-${PACKAGE_VERSION}/usr/local/bin
 mkdir -p ${PACKAGE_NAME}-${PACKAGE_VERSION}/usr/share/applications
 mkdir -p ${PACKAGE_NAME}-${PACKAGE_VERSION}/usr/share/icons/hicolor/512x512/apps
-mkdir -p ${PACKAGE_NAME}-${PACKAGE_VERSION}/etc/xdg/autostart
 mkdir -p ${PACKAGE_NAME}-${PACKAGE_VERSION}/etc/systemd/system
 
 # Copy files to package
@@ -33,19 +32,6 @@ Icon=${PACKAGE_NAME}
 Terminal=false
 Type=Application
 Categories=Utility;
-EOL
-
-# Create autostart .desktop file
-echo "Creating autostart .desktop file..."
-cat > ${PACKAGE_NAME}-${PACKAGE_VERSION}/etc/xdg/autostart/${PACKAGE_NAME}.desktop <<EOL
-[Desktop Entry]
-Version=1.0
-Name=RFID Inventory Autostart
-Comment=Automatically start RFID Inventory application at login
-Exec=/usr/local/bin/RFIDInventory
-Icon=${PACKAGE_NAME}
-Terminal=false
-Type=Application
 EOL
 
 # Create systemd service file
@@ -69,22 +55,6 @@ SyslogIdentifier=rfidinventory
 
 [Install]
 WantedBy=multi-user.target
-EOL
-
-# Create a systemd service to set up xhost after boot
-echo "Creating systemd service for granting X server access..."
-cat > ${PACKAGE_NAME}-${PACKAGE_VERSION}/etc/systemd/system/xhost-grant.service <<EOL
-[Unit]
-Description=Grant rfidinv user access to X Server after boot
-After=graphical.service
-Requires=display-manager.service
-
-[Service]
-Type=oneshot
-ExecStart=/usr/bin/bash -c 'export DISPLAY=:0; /usr/bin/xhost +SI:localuser:rfidinv'
-
-[Install]
-WantedBy=graphical.target
 EOL
 
 # Create control file
@@ -113,13 +83,30 @@ if ! id -u "rfidinv" >/dev/null 2>&1; then
     echo "rfidinv user has been added with a home directory."
 fi
 
-# Enable and start the system service and xhost service
+# Create autostart directory if not exist
+mkdir -p /etc/skel/.config/autostart
+cat > /etc/skel/.config/autostart/xhost-grant.desktop <<EOF
+[Desktop Entry]
+Type=Application
+Exec=xhost +SI:localuser:rfidinv
+Hidden=false
+NoDisplay=false
+X-GNOME-Autostart-enabled=true
+Name=Grant X Access to rfidinv
+EOF
+
+# Ensure that existing users receive this setting
+for user in /home/*; do
+    if [ -d "$user" ]; then
+        mkdir -p "$user/.config/autostart"
+        cp /etc/skel/.config/autostart/xhost-grant.desktop "$user/.config/autostart/"
+        chown $(basename "$user"):$(basename "$user") "$user/.config/autostart/xhost-grant.desktop"
+    fi
+done
+
+# Enable systemd services
 systemctl daemon-reload
 systemctl enable RFIDInventory.service
-systemctl enable xhost-grant.service
-
-echo "Granting X server access for the rfidinv user"
-systemctl start xhost-grant.service
 
 systemctl start RFIDInventory.service
 EOL
