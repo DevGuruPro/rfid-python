@@ -61,6 +61,8 @@ sudo rm -f /usr/share/icons/hicolor/512x512/apps/${PACKAGE_NAME}.png
 echo "Removing executable..."
 sudo rm -f /usr/local/bin/${PACKAGE_NAME}
 
+sudo apt remove rfidinventory
+
 # Remove the system user if desired
 echo "Removing system user..."
 if id -u "${SYSTEM_USER}" >/dev/null 2>&1; then
