@@ -80,7 +80,7 @@ After=graphical.target
 
 [Service]
 Type=oneshot
-ExecStart=/bin/bash -c 'sleep 5; /usr/bin/xhost +SI:localuser:rfidinv'
+ExecStart=/bin/bash -c 'if [ -n "$DISPLAY" ] && [ -n "$(pgrep Xorg)" ]; then /usr/bin/xhost +SI:localuser:rfidinv; else echo "No X display available"; fi'
 Environment=DISPLAY=:0
 
 [Install]
