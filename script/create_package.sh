@@ -15,7 +15,6 @@ mkdir -p ${PACKAGE_NAME}-${PACKAGE_VERSION}/usr/share/applications
 mkdir -p ${PACKAGE_NAME}-${PACKAGE_VERSION}/usr/share/icons/hicolor/512x512/apps
 mkdir -p ${PACKAGE_NAME}-${PACKAGE_VERSION}/etc/xdg/autostart
 mkdir -p ${PACKAGE_NAME}-${PACKAGE_VERSION}/etc/systemd/system
-mkdir -p ${PACKAGE_NAME}-${PACKAGE_VERSION}/opt/${PACKAGE_NAME}/config/systemd/user
 
 # Copy files to package
 echo "Copying files..."
@@ -72,18 +71,20 @@ SyslogIdentifier=rfidinventory
 WantedBy=multi-user.target
 EOL
 
-# Create systemd user service for xhost
-echo "Creating systemd user service for xhost..."
-cat > ${PACKAGE_NAME}-${PACKAGE_VERSION}/opt/${PACKAGE_NAME}/config/systemd/user/xhost-grant.service <<EOL
+# Create a systemd service to set up xhost after boot
+echo "Creating systemd service for granting X server access..."
+cat > ${PACKAGE_NAME}-${PACKAGE_VERSION}/etc/systemd/system/xhost-grant.service <<EOL
 [Unit]
-Description=Grant rfidinv user access to X Server
+Description=Grant rfidinv user access to X Server after boot
+After=display-manager.service
 
 [Service]
 Type=oneshot
+Environment=DISPLAY=:0
 ExecStart=/usr/bin/xhost +SI:localuser:rfidinv
 
 [Install]
-WantedBy=default.target
+WantedBy=graphical.target
 EOL
 
 # Create control file
@@ -112,24 +113,14 @@ if ! id -u "rfidinv" >/dev/null 2>&1; then
     echo "rfidinv user has been added with a home directory."
 fi
 
-# Setup systemd user service for rfidinv user
-USER_HOME=/home/rfidinv
-SYSTEMD_USER_DIR=${USER_HOME}/.config/systemd/user
-mkdir -p ${SYSTEMD_USER_DIR}
-cp /opt/RFIDInventory/config/systemd/user/xhost-grant.service ${SYSTEMD_USER_DIR}/
-chown -R rfidinv:rfidinv ${SYSTEMD_USER_DIR}
-
-# Enable linger for the user without attempting to start services lacking an active session
-if loginctl list-sessions | grep -q rfidinv; then
-    loginctl enable-linger rfidinv || echo "Warning: couldn't enable linger for rfidinv"
-    su - rfidinv -s /bin/bash -c "systemctl --user daemon-reload || true; systemctl --user enable xhost-grant.service || true; systemctl --user start xhost-grant.service || true"
-else
-    echo "User session for 'rfidinv' is not active; user services will not be started automatically during package installation."
-fi
-
-# Enable and start the system service
+# Enable and start the system service and xhost service
 systemctl daemon-reload
 systemctl enable RFIDInventory.service
+systemctl enable xhost-grant.service
+
+echo "Granting X server access for the rfidinv user"
+systemctl start xhost-grant.service
+
 systemctl start RFIDInventory.service
 EOL
 
