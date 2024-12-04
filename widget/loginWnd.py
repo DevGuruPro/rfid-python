@@ -61,8 +61,8 @@ class LoginWnd(QMainWindow):
             else:
                 logger.error("Login failed")
                 QMessageBox.critical(self, 'Login', "Login Failed.", QMessageBox.StandardButton.Ok)
-        except Exception:
-            logger.error("Login Error")
+        except Exception as e:
+            logger.error(f"Login Error{e}")
             QMessageBox.critical(self, 'Login', "Login Error.", QMessageBox.StandardButton.Ok)
 
     def on_login_btn_clicked(self):
