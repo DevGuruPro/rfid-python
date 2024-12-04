@@ -85,7 +85,6 @@ Software for reading live rfid tag and gps module.
     
     - Build as an executable file.
       ```shell
-      sudo apt-get install python3.9-dev
       pyinstaller --clean --onefile --icon=icon.png --name=RFIDInventory main.py
       ```
     
