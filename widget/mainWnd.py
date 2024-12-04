@@ -191,7 +191,7 @@ class MainWnd(QMainWindow):
         except Exception as e:
             logger.error(f"An unexpected error occurred while pygame initialization: {e}")
 
-            #     self.ui.tableWidget.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeMode.Fixed)
+    #     self.ui.tableWidget.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeMode.Fixed)
     #     self.ui.tableWidget.setSelectionMode(QTableWidget.SelectionMode.NoSelection)
     #     for row in range(self.ui.tableWidget.rowCount()):
     #         for column in range(self.ui.tableWidget.columnCount()):

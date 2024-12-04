@@ -9,7 +9,7 @@ from geographiclib.geodesic import Geodesic
 import serial
 import serial.tools.list_ports
 import uuid
-
+from utils.logger import logger
 
 def convert_to_decimal(coord, direction, is_latitude):
     try:
@@ -114,12 +114,12 @@ def find_gps_port():
                 # Try reading from the port
                 line = ser.readline().decode('utf-8', errors='ignore').strip()
                 if line.startswith('$G'):
-                    # logger.info(f"GPS found on port: {port}")
+                    logger.info(f"GPS found on port: {port}")
                     return port
         except (OSError, serial.SerialException):
             pass  # Ignore if the port can't be opened
 
-    # logger.info("No GPS port found")
+    logger.info("No GPS port found")
     return None
 
 
