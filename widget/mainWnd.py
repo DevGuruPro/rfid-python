@@ -185,9 +185,13 @@ class MainWnd(QMainWindow):
         self.cur_lon = 0
         self.bearing = 0
         self.speed = 0
-        pygame.mixer.init()
+        try:
+            pygame.mixer.init()
+            logger.debug("Pygame mixer initialized successfully.")
+        except Exception as e:
+            logger.error(f"An unexpected error occurred while pygame initialization: {e}")
 
-    #     self.ui.tableWidget.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeMode.Fixed)
+            #     self.ui.tableWidget.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeMode.Fixed)
     #     self.ui.tableWidget.setSelectionMode(QTableWidget.SelectionMode.NoSelection)
     #     for row in range(self.ui.tableWidget.rowCount()):
     #         for column in range(self.ui.tableWidget.columnCount()):

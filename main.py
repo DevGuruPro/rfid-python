@@ -59,16 +59,19 @@ class InventorySystem(object):
                     self.login.token = data['result']['acessToken']
                     self.login.email = username
                     self.login.password = password
-                    self.close_login()
                 else:
                     logger.error("Login failed")
                     self.login.show()
+                    return
             else:
                 logger.error("Login failed")
                 self.login.show()
-        except Exception as e :
+                return
+        except Exception as e:
             logger.error(f"Login Error{e}")
             self.login.show()
+            return
+        self.close_login()
 
     def close_login(self):
         self.main = MainWnd(self.login.userName, self.login.token, self.login.email, self.login.password)

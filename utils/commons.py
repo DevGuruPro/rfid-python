@@ -8,6 +8,7 @@ from geographiclib.geodesic import Geodesic
 
 import serial
 import serial.tools.list_ports
+import uuid
 
 
 def convert_to_decimal(coord, direction, is_latitude):
@@ -93,6 +94,14 @@ def is_ipv4_address(ip):
     return False
 
 
+def get_mac_address():
+    mac_address = hex(uuid.getnode())
+
+    # Format the MAC address to be more human-readable and uppercase
+    mac_address = mac_address[2:]  # Remove the '0x' prefix
+    formatted_mac_address = ':'.join(mac_address[i:i + 2] for i in range(0, len(mac_address), 2)).upper()
+    return formatted_mac_address
+
 def find_gps_port():
     serial_ports = [port.device for port in serial.tools.list_ports.comports()]
     for port in serial_ports:
@@ -130,15 +139,16 @@ def convert_formatted_payload(chunk):
     data_list_custom = []
     for row in chunk:
         default_data = {
-            "rfidTag": row[1],
-            "antenna": row[2],
-            "RSSI": row[3],
-            "latitude": row[4],
-            "longitude": row[5],
+            "tag": row[1],
+            "ant": row[2],
+            "rssi": row[3],
+            "lat": row[4],
+            "lng": row[5],
             "speed": row[6],
             "heading": row[7],
             "locationCode": row[8],
-            "username": row[9],
+            "userName": row[9],
+            'macAddress': get_mac_address()
         }
         custom_data = {}
         for idx in range(10, 17, 2):
