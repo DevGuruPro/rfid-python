@@ -44,6 +44,7 @@ Wants=display-manager.service
 
 [Service]
 User=rfidinv
+WorkingDirectory=/var/lib/rfidinventory
 ExecStart=/usr/local/bin/RFIDInventory
 Environment=QT_DEBUG_PLUGINS=1
 Environment=DISPLAY=:0
@@ -81,6 +82,15 @@ set -e
 if ! id -u "rfidinv" >/dev/null 2>&1; then
     useradd --system --create-home --home-dir /home/rfidinv --shell /usr/sbin/nologin rfidinv
     echo "rfidinv user has been added with a home directory."
+fi
+
+# Create data directory for RFIDInventory
+RFID_DATA_DIR=/var/lib/rfidinventory
+if [ ! -d "$RFID_DATA_DIR" ]; then
+    mkdir -p "$RFID_DATA_DIR"
+    chown -R rfidinv:rfidinv "$RFID_DATA_DIR"
+    chmod -R 750 "$RFID_DATA_DIR"
+    echo "Created writable directory at $RFID_DATA_DIR for RFIDInventory data."
 fi
 
 # Create autostart directory if not exist
