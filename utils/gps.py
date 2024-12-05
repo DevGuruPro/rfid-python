@@ -52,7 +52,7 @@ class GPS(QThread):
                     label, attr = field[:2]
                     value = getattr(msg, attr)
                     self._data[attr] = value
-                logger.debug(f'gps-{self._data}')
+                # logger.debug(f'gps-{self._data}')
             except pynmea2.ParseError:
                 self._data = {}
         elif line.startswith('$GPRMC') or line.startswith('$GNRMC'):
