@@ -118,6 +118,7 @@ class RFID(QThread):
         config = LLRPReaderConfig(factory_args)
         self.reader = LLRPReaderClient(host, port, config)
         self.reader.add_tag_report_callback(self.tag_seen_callback)
+        logger.debug("RFID initialized.")
 
     # def _connect_reader(self):
     #     for reader in self.reader_clients:
@@ -176,10 +177,13 @@ class RFID(QThread):
 
         while not self._b_stop.is_set():
             try:
-                response_time = ping(self.host, timeout=4)
+                response_time = ping(self.host, timeout=3)
                 if response_time:
                     if self.connectivity is False:
-                        self.set_reader(self.host, True)
+                        # self.reader = None
+                        # self.set_reader(self.host, True)
+                        self.connectivity = True
+                        self.reader.connect()
                         self.sig_msg.emit(1)
                 else:
                     if self.connectivity is True:
