@@ -179,6 +179,7 @@ class RFID(QThread):
                 response_time = ping(self.host, timeout=4)
                 if response_time:
                     if self.connectivity is False:
+                        self.reader.add_tag_report_callback(self.tag_seen_callback)
                         self.connectivity = True
                         self.sig_msg.emit(1)
                 else:
