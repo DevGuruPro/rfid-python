@@ -102,6 +102,7 @@ def get_mac_address():
     formatted_mac_address = ':'.join(mac_address[i:i + 2] for i in range(0, len(mac_address), 2)).upper()
     return formatted_mac_address
 
+
 def find_gps_port():
     serial_ports = [port.device for port in serial.tools.list_ports.comports()]
     logger.debug(f"Available ports:{serial_ports}")

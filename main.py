@@ -27,6 +27,7 @@ class InventorySystem(object):
         if not os.path.isfile('setting/login.cre'):
             logger.debug("Credential file does not exist.")
             self.login.show()
+            # self.login_server("a@a.com", "123")
             return
         with open('setting/login.cre', 'r') as load_file:
             credential = json.load(load_file)
