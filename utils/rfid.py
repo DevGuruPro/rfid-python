@@ -9,7 +9,7 @@ from argparse import ArgumentParser
 from settings import RFID_CARD_READER
 
 from ping3 import ping
-
+from utils.logger import logger
 
 def convert_to_unicode(obj):
     """
@@ -156,7 +156,7 @@ class RFID(QThread):
         """Function to run each time the reader reports seeing tags."""
         if tags:
             self.tag_data = convert_to_unicode(tags)
-            # logger.debug(f"rfid data:{self.tag_data}")
+            logger.debug(f"rfid data:{self.tag_data}")
             self.sig_msg.emit(3)
 
     def run(self):
@@ -176,10 +176,11 @@ class RFID(QThread):
 
         while not self._b_stop.is_set():
             try:
-                response_time = ping(self.host, timeout=4)
+                response_time = ping(self.host, timeout=3)
                 if response_time:
                     if self.connectivity is False:
                         self.connectivity = True
+                        self.reader.add_tag_report_callback(self.tag_seen_callback)
                         self.sig_msg.emit(1)
                 else:
                     if self.connectivity is True:
