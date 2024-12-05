@@ -112,7 +112,7 @@ def find_gps_port():
             with serial.Serial(port, baudrate=BAUD_RATE_GPS, timeout=1) as ser:
                 buffer = ser.in_waiting
                 if buffer < 80:
-                    time.sleep(.2)
+                    time.sleep(.5)
                 # Try reading from the port
                 line = ser.readline().decode('utf-8', errors='ignore').strip()
                 logger.debug(line)

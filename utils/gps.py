@@ -43,7 +43,7 @@ class GPS(QThread):
     def read_serial_data(self):
         buffer = self._ser.in_waiting
         if buffer < 80:
-            time.sleep(.2)
+            time.sleep(.5)
         line = self._ser.readline().decode('utf-8', errors='ignore').strip()
         if line.startswith('$GNGGA'):
             try:
