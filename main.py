@@ -26,7 +26,7 @@ class InventorySystem(object):
     def load_credential(self):
         if not os.path.isfile('setting/login.cre'):
             logger.debug("Credential file does not exist.")
-            self.login_server("a@a.com", "123")
+            self.login.show()
             return
         with open('setting/login.cre', 'r') as load_file:
             credential = json.load(load_file)
@@ -46,6 +46,15 @@ class InventorySystem(object):
                 data = response.json()
                 if data['metadata']['code'] == '200':
                     logger.debug('Login successful!')
+                    credential = {
+                        'username': username,
+                        'password': password
+                    }
+                    if not os.path.exists('setting'):
+                        os.makedirs('setting')
+                    with open('setting/login.cre', 'w') as save_file:
+                        json.dump(credential, save_file, indent=4)
+                    logger.info("Credentials saved.")
                     self.login.userName = data['result']['userNameId']
                     self.login.token = data['result']['acessToken']
                     self.login.email = username
