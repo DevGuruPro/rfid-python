@@ -115,6 +115,7 @@ def find_gps_port():
                     time.sleep(.2)
                 # Try reading from the port
                 line = ser.readline().decode('utf-8', errors='ignore').strip()
+                logger.debug(line)
                 if line.startswith('$G'):
                     logger.info(f"GPS found on port: {port}")
                     return port
