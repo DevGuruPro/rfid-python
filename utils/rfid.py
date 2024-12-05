@@ -8,7 +8,7 @@ from argparse import ArgumentParser
 
 from settings import RFID_CARD_READER
 from ping3 import ping
-from utils import logger
+from utils.logger import logger
 
 
 def convert_to_unicode(obj):
