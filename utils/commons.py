@@ -104,6 +104,7 @@ def get_mac_address():
 
 def find_gps_port():
     serial_ports = [port.device for port in serial.tools.list_ports.comports()]
+    logger.debug(f"Available ports:{serial_ports}")
     for port in serial_ports:
         try:
             # Open each port
