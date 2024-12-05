@@ -180,10 +180,10 @@ class RFID(QThread):
                 response_time = ping(self.host, timeout=3)
                 if response_time:
                     if self.connectivity is False:
-                        # self.reader = None
-                        # self.set_reader(self.host, True)
-                        self.connectivity = True
+                        self.reader = None
+                        self.set_reader(self.host, True)
                         self.reader.connect()
+                        logger.debug("connected")
                         self.sig_msg.emit(1)
                 else:
                     if self.connectivity is True:
