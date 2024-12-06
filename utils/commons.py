@@ -3,7 +3,7 @@ import time
 from datetime import datetime
 from geopy.distance import geodesic
 
-from settings import BAUD_RATE_GPS
+from settings import BAUD_RATE_GPS, PORT_WRITE, PORT_READ
 from geographiclib.geodesic import Geodesic
 
 import serial
@@ -106,7 +106,16 @@ def get_mac_address():
 def find_gps_port():
     serial_ports = [port.device for port in serial.tools.list_ports.comports()]
     logger.debug(f"Available ports:{serial_ports}")
+
     for port in serial_ports:
+        try:
+            with serial.Serial(port, baudrate=BAUD_RATE_GPS, timeout=1, rtscts=True, dsrdtr=True) as serw:
+                serw.write('AT+QGPS=1\r'.encode())
+                logger.debug(f"AT-{port}")
+                serw.close()
+                time.sleep(.5)
+        except (OSError, serial.SerialException):
+            pass  # Ignore if the port can't be opened
         try:
             # Open each port
             with serial.Serial(port, baudrate=BAUD_RATE_GPS, timeout=1) as ser:

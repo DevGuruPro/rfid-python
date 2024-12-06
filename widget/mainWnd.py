@@ -364,19 +364,20 @@ class MainWnd(QMainWindow):
             self.scan_port_thread.start()
 
     def monitor_gps_port(self):
-        while not self.scan_port_stop.is_set():
-            pp = find_gps_port()
-            logger.debug(f"port:{pp}")
-            if pp is not None:
-                if self.gps.is_alive() and self.gps.port != pp:
-                    self.gps.stop()
-                if not self.gps.is_alive():
-                    sta = True if self.ui.gps_connection_status.text() == "Connected" else False
-                    self.gps = GPS(port=pp, baud_rate=int(self.ui.edit_gps_baud.text()),
-                                   current_status=sta)
-                    self.gps.sig_msg.connect(self.monitor_gps_status)
-                    self.gps.start()
-            time.sleep(1)
+        pass
+        # while not self.scan_port_stop.is_set():
+        #     pp = find_gps_port()
+        #     logger.debug(f"port:{pp}")
+        #     if pp is not None:
+        #         if self.gps.is_alive() and self.gps.port != pp:
+        #             self.gps.stop()
+        #         if not self.gps.is_alive():
+        #             sta = True if self.ui.gps_connection_status.text() == "Connected" else False
+        #             self.gps = GPS(port=pp, baud_rate=int(self.ui.edit_gps_baud.text()),
+        #                            current_status=sta)
+        #             self.gps.sig_msg.connect(self.monitor_gps_status)
+        #             self.gps.start()
+        #     time.sleep(1)
 
     def get_internet_gps_data(self):
         while not self.igps_stop.is_set():
