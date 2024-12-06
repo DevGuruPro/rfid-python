@@ -113,11 +113,10 @@ def find_gps_port():
                 logger.debug(serw.write('AT+QGPS?\r'.encode()))
                 logger.debug(serw.write('AT+QGPS=1\r'.encode()))
                 logger.debug(serw.write('AT+QGPS?\r'.encode()))
-                logger.debug(serw.write('AT+QGPSCFG="outport"\r'.encode()))
                 logger.debug(f"AT-{port}")
-                time.sleep(1)
-                logger.debug(serw.write('AT+QGPSLOC?\r'.encode()))
                 serw.close()
+                time.sleep(1)
+
         except (OSError, serial.SerialException):
             pass  # Ignore if the port can't be opened
 
