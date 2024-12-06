@@ -57,7 +57,7 @@ SyslogIdentifier=rfidinventory
 WantedBy=multi-user.target
 EOL
 
-# Create control file
+# Create DEBIAN control file
 echo "Creating DEBIAN control file..."
 cat > ${PACKAGE_NAME}-${PACKAGE_VERSION}/DEBIAN/control <<EOL
 Package: ${PACKAGE_NAME}
@@ -70,12 +70,15 @@ Depends: libxcb-xinerama0, libxcb-cursor0, libx11-xcb1, libxcb1, libxfixes3, lib
 Description: ${DESCRIPTION}
 EOL
 
-# Create postinst script to configure system
+# Create the postinst script to configure system
 echo "Creating postinst script..."
 cat > ${PACKAGE_NAME}-${PACKAGE_VERSION}/DEBIAN/postinst <<'EOL'
 #!/bin/bash
 
 set -e
+
+# Debugging: Print the package name
+echo "Package Name: RFIDInventory"
 
 # Get the username of the person who installed the package
 INSTALL_USER=$(logname)
@@ -111,10 +114,10 @@ for user in /home/*; do
 done
 
 # Enable systemd services
+echo "Enabling service: RFIDInventory.service"
 systemctl daemon-reload
-systemctl enable ${PACKAGE_NAME}.service
-
-systemctl start ${PACKAGE_NAME}.service
+systemctl enable RFIDInventory.service
+systemctl start RFIDInventory.service
 EOL
 
 # Make the postinst script executable
