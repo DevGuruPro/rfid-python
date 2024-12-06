@@ -93,17 +93,9 @@ Software for reading live rfid tag and gps module.
     - Run "bash desktop_icon.sh".
     - Reboot and check your application list.
     
-# Run the program at startup.
-
-  - Windows
+# Run the program as autostart on windows.
     
-    - Place "script/setup.bat" in the same directory as "main.exe" and run batch script.
-
-  - Ubuntu / Raspberry Pi
-    
-    - Ensure script/autostart.sh, the RFIDInventory executable and icon.png are in the same directory.
-    - Run "bash autostart.sh".
-    - Reboot!
+  - Place "script/setup.bat" in the same directory as "RFIDInventory.exe" and run batch script.
 
 # Generate package on ubuntu/raspberry pi.
 
