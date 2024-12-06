@@ -97,16 +97,18 @@ Software for reading live rfid tag and gps module.
     
   - Place "script/setup.bat" in the same directory as "RFIDInventory.exe" and run batch script.
 
-# Generate package on ubuntu/raspberry pi.
+# Generate package on ubuntu.
 
-  - Ubuntu
-    - Ensure script/create_pkg_ubuntu.sh, the RFIDInventory executable and icon.png are in the same directory.
-    - Run "bash create_pkg_ubuntu.sh".
-    
-  - Raspberry pi
-    - Ensure script/create_pkg_rpi.sh, the RFIDInventory executable and icon.png are in the same directory.
-    - Run "bash create_pkg_rpi.sh".
-    
+  - Ensure script/create_pkg_ubuntu.sh, the RFIDInventory executable and icon.png are in the same directory.
+  - Run "bash create_pkg_ubuntu.sh".
   - Run "sudo apt install ./RFIDInventory-1.0.deb" to install the package.
   - Reboot!
-  - Run "bash ./uninstall_package.sh" to uninstall package.
+  - Run "bash ./uninstall_pkg_ubuntu.sh" to uninstall package.
+
+# Generate package on raspberry pi.
+
+  - Ensure script/create_pkg_rpi.sh, the RFIDInventory executable and icon.png are in the same directory.
+  - Run "bash create_pkg_rpi.sh".
+  - Run "sudo apt install ./RFIDInventory-1.0.deb" to install the package.
+  - Reboot!
+  - Run "bash ./uninstall_pkg_rpi.sh" to uninstall package.

@@ -87,42 +87,24 @@ cat > ${PACKAGE_NAME}-${PACKAGE_VERSION}/DEBIAN/postinst <<'EOL'
 
 set -e
 
-# Create rfidinv user if it doesn't exist
-if ! id -u "rfidinv" >/dev/null 2>&1; then
-    useradd --system --create-home --home-dir /home/rfidinv --shell /usr/sbin/nologin rfidinv
-    echo "rfidinv user has been added with a home directory."
-fi
-
-# Create data directory for RFIDInventory
+# Create a data directory for RFIDInventory
 RFID_DATA_DIR=/var/lib/rfidinventory
 if [ ! -d "$RFID_DATA_DIR" ]; then
     mkdir -p "$RFID_DATA_DIR"
-    chown -R rfidinv:rfidinv "$RFID_DATA_DIR"
     chmod -R 750 "$RFID_DATA_DIR"
     echo "Created writable directory at $RFID_DATA_DIR for RFIDInventory data."
 fi
 
-# Grant X11 access to the rfidinv user
-mkdir -p /etc/skel/.config/autostart
-cat > /etc/skel/.config/autostart/xhost-grant.desktop <<EOF
-[Desktop Entry]
-Type=Application
-Exec=xhost +SI:localuser:rfidinv
-Hidden=false
-NoDisplay=false
-X-GNOME-Autostart-enabled=true
-Name=Grant X Access to rfidinv
-EOF
-
-# Ensure existing users receive this setting
-for user in /home/*; do
-    if [ -d "$user" ]; then
-        mkdir -p "$user/.config/autostart"
-        cp /etc/skel/.config/autostart/xhost-grant.desktop "$user/.config/autostart/"
-        cp /etc/skel/.config/autostart/monitor-rfid.desktop "$user/.config/autostart/"
-        chown $(basename "$user"):$(basename "$user") "$user/.config/autostart/"*
+# Copy autostart configurations to existing users' directories
+for user_dir in /home/*; do
+    if [ -d "$user_dir" -a -w "$user_dir" ]; then
+        user_autostart_dir="$user_dir/.config/autostart"
+        mkdir -p "$user_autostart_dir"
+        cp /etc/skel/.config/autostart/monitor-rfid.desktop "$user_autostart_dir/"
+        chown $(basename "$user_dir"):$(basename "$user_dir") "$user_autostart_dir/monitor-rfid.desktop"
     fi
 done
+
 EOL
 
 # Make the postinst script executable
