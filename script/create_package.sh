@@ -36,13 +36,13 @@ EOL
 
 # Create systemd service file
 echo "Creating systemd service file..."
-cat > ${PACKAGE_NAME}-${PACKAGE_VERSION}/etc/systemd/system/${PACKAGE_NAME}.service <<EOL
+cat > ${PACKAGE_NAME}-${PACKAGE_VERSION}/etc/systemd/system/${PACKAGE_NAME}.service.tpl <<EOL
 [Unit]
 Description=RFID Inventory Management Service
 After=network.target
 
 [Service]
-User=%i
+User=%USER%
 WorkingDirectory=/var/lib/rfidinventory
 ExecStart=/usr/local/bin/RFIDInventory
 Environment=QT_DEBUG_PLUGINS=1
@@ -70,18 +70,21 @@ Depends: libxcb-xinerama0, libxcb-cursor0, libx11-xcb1, libxcb1, libxfixes3, lib
 Description: ${DESCRIPTION}
 EOL
 
-# Create the postinst script to configure system
+# Create postinst script to configure system
 echo "Creating postinst script..."
 cat > ${PACKAGE_NAME}-${PACKAGE_VERSION}/DEBIAN/postinst <<'EOL'
 #!/bin/bash
 
 set -e
 
-# Debugging: Print the package name
-echo "Package Name: RFIDInventory"
-
 # Get the username of the person who installed the package
 INSTALL_USER=$(logname)
+echo "Install user is $INSTALL_USER"
+
+# Replace %USER% with the actual username in the service file
+SERVICE_FILE="/etc/systemd/system/RFIDInventory.service"
+TEMPLATE_FILE="/etc/systemd/system/RFIDInventory.service.tpl"
+sed "s/%USER%/$INSTALL_USER/g" "$TEMPLATE_FILE" > "$SERVICE_FILE"
 
 # Create data directory for RFIDInventory
 RFID_DATA_DIR=/var/lib/rfidinventory
