@@ -1,50 +1,32 @@
 #!/bin/bash  
 
-# Set variables
-PACKAGE_NAME="RFIDInventory"
-SERVICE_NAME="${PACKAGE_NAME}.service"
-SYSTEM_USER="rfidinv"
-DATA_DIR="/var/lib/rfidinventory"
-AUTOSTART_FILE="xhost-grant.desktop"
+PACKAGE_NAME=RFIDInventory
 
-# Stop and disable the systemd service
-echo "Stopping and disabling systemd service..."
-sudo systemctl stop ${SERVICE_NAME}
-sudo systemctl disable ${SERVICE_NAME}
+echo "Uninstalling ${PACKAGE_NAME}..."
 
-# Remove the systemd service file
-if [ -f "/etc/systemd/system/${SERVICE_NAME}" ]; then
-    echo "Removing systemd service file..."
-    sudo rm /etc/systemd/system/${SERVICE_NAME}
+# Remove the package using dpkg
+sudo dpkg --remove ${PACKAGE_NAME}
+
+# Remove configuration files if any exist
+echo "Cleaning up configuration files..."
+sudo apt-get purge ${PACKAGE_NAME}
+
+# Remove specific directories and files created during installation
+echo "Removing application files and directories..."
+sudo rm -f /usr/local/bin/RFIDInventory
+sudo rm -f /usr/local/bin/monitor_rfid.sh
+sudo rm -f /usr/share/applications/${PACKAGE_NAME}.desktop
+sudo rm -f /usr/share/icons/hicolor/512x512/apps/${PACKAGE_NAME}.png
+
+# Remove any lingering data directories
+RFID_DATA_DIR=/var/lib/rfidinventory
+if [ -d "$RFID_DATA_DIR" ]; then
+    sudo rm -rf "$RFID_DATA_DIR"
+    echo "Removed data directory $RFID_DATA_DIR."
 fi
 
-# Reload systemd daemon
-echo "Reloading systemd daemon..."
-sudo systemctl daemon-reload
-
-# Remove the system user and its home directory
-if id "${SYSTEM_USER}" >/dev/null 2>&1; then
-    echo "Removing system user and its home directory..."
-    sudo userdel -r ${SYSTEM_USER}
-fi
-
-# Remove the data directory
-if [ -d "${DATA_DIR}" ]; then
-    echo "Removing data directory..."
-    sudo rm -rf ${DATA_DIR}
-fi
-
-# Remove autostart entries
+# Clean up autostart entries
 echo "Removing autostart entries..."
-sudo rm -f /etc/skel/.config/autostart/${AUTOSTART_FILE}
-for user in /home/*; do
-    if [ -d "$user/.config/autostart" ] && [ -f "$user/.config/autostart/${AUTOSTART_FILE}" ]; then
-        rm -f "$user/.config/autostart/${AUTOSTART_FILE}"
-    fi
-done
+find /home/*/.config/autostart -name "monitor-rfid.desktop" -exec rm -f {} \;
 
-# Uninstall the package
-echo "Removing package..."
-sudo apt purge -y ${PACKAGE_NAME}
-
-echo "Cleanup completed."
+echo "Cleanup complete. ${PACKAGE_NAME} has been uninstalled successfully."
