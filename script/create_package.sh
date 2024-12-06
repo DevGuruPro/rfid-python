@@ -34,15 +34,16 @@ Type=Application
 Categories=Utility;
 EOL
 
-# Create systemd service template file
-echo "Creating systemd service template file..."
-cat > ${PACKAGE_NAME}-${PACKAGE_VERSION}/etc/systemd/system/${PACKAGE_NAME}.service.tpl <<EOL
+# Create systemd service file
+echo "Creating systemd service file..."
+cat > ${PACKAGE_NAME}-${PACKAGE_VERSION}/etc/systemd/system/${PACKAGE_NAME}.service <<EOL
 [Unit]
 Description=RFID Inventory Management Service
 After=network.target
+Wants=display-manager.service
 
 [Service]
-User=%USER%
+User=rfidinv
 WorkingDirectory=/var/lib/rfidinventory
 ExecStart=/usr/local/bin/RFIDInventory
 Environment=QT_DEBUG_PLUGINS=1
@@ -57,7 +58,7 @@ SyslogIdentifier=rfidinventory
 WantedBy=multi-user.target
 EOL
 
-# Create DEBIAN control file
+# Create control file
 echo "Creating DEBIAN control file..."
 cat > ${PACKAGE_NAME}-${PACKAGE_VERSION}/DEBIAN/control <<EOL
 Package: ${PACKAGE_NAME}
@@ -77,37 +78,31 @@ cat > ${PACKAGE_NAME}-${PACKAGE_VERSION}/DEBIAN/postinst <<'EOL'
 
 set -e
 
-# Get the username of the person who installed the package
-INSTALL_USER=$(logname)
-echo "Install user is $INSTALL_USER"
-
-# Replace %USER% with the actual username in the service file
-TEMPLATE_FILE="/etc/systemd/system/RFIDInventory.service.tpl"
-SERVICE_FILE="/etc/systemd/system/RFIDInventory.service"
-sed "s/%USER%/$INSTALL_USER/g" "$TEMPLATE_FILE" > "$SERVICE_FILE"
+# Create rfidinv user if it doesn't exist
+if ! id -u "rfidinv" >/dev/null 2>&1; then
+    useradd --system --create-home --home-dir /home/rfidinv --shell /usr/sbin/nologin rfidinv
+    echo "rfidinv user has been added with a home directory."
+fi
 
 # Create data directory for RFIDInventory
 RFID_DATA_DIR=/var/lib/rfidinventory
 if [ ! -d "$RFID_DATA_DIR" ]; then
     mkdir -p "$RFID_DATA_DIR"
+    chown -R rfidinv:rfidinv "$RFID_DATA_DIR"
+    chmod -R 750 "$RFID_DATA_DIR"
+    echo "Created writable directory at $RFID_DATA_DIR for RFIDInventory data."
 fi
-chown -R "$INSTALL_USER:$INSTALL_USER" "$RFID_DATA_DIR"
-chmod -R 750 "$RFID_DATA_DIR"
-echo "Ensured writable directory at $RFID_DATA_DIR for RFIDInventory data."
-
-# Ensure the binary has execution permissions
-chmod +x /usr/local/bin/RFIDInventory
 
 # Create autostart directory if not exist
 mkdir -p /etc/skel/.config/autostart
 cat > /etc/skel/.config/autostart/xhost-grant.desktop <<EOF
 [Desktop Entry]
 Type=Application
-Exec=xhost +SI:localuser:$INSTALL_USER
+Exec=xhost +SI:localuser:rfidinv
 Hidden=false
 NoDisplay=false
 X-GNOME-Autostart-enabled=true
-Name=Grant X Access to $INSTALL_USER
+Name=Grant X Access to rfidinv
 EOF
 
 # Ensure that existing users receive this setting
@@ -119,9 +114,10 @@ for user in /home/*; do
     fi
 done
 
-# Enable and start the systemd service
+# Enable systemd services
 systemctl daemon-reload
 systemctl enable RFIDInventory.service
+
 systemctl start RFIDInventory.service
 EOL
 
