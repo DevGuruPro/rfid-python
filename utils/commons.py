@@ -116,6 +116,8 @@ def find_gps_port():
                 time.sleep(.5)
         except (OSError, serial.SerialException):
             pass  # Ignore if the port can't be opened
+
+    for port in serial_ports:
         try:
             # Open each port
             with serial.Serial(port, baudrate=BAUD_RATE_GPS, timeout=1) as ser:
