@@ -34,8 +34,8 @@ Type=Application
 Categories=Utility;
 EOL
 
-# Create systemd service file
-echo "Creating systemd service file..."
+# Create systemd service template file
+echo "Creating systemd service template file..."
 cat > ${PACKAGE_NAME}-${PACKAGE_VERSION}/etc/systemd/system/${PACKAGE_NAME}.service.tpl <<EOL
 [Unit]
 Description=RFID Inventory Management Service
@@ -82,18 +82,21 @@ INSTALL_USER=$(logname)
 echo "Install user is $INSTALL_USER"
 
 # Replace %USER% with the actual username in the service file
-SERVICE_FILE="/etc/systemd/system/RFIDInventory.service"
 TEMPLATE_FILE="/etc/systemd/system/RFIDInventory.service.tpl"
+SERVICE_FILE="/etc/systemd/system/RFIDInventory.service"
 sed "s/%USER%/$INSTALL_USER/g" "$TEMPLATE_FILE" > "$SERVICE_FILE"
 
 # Create data directory for RFIDInventory
 RFID_DATA_DIR=/var/lib/rfidinventory
 if [ ! -d "$RFID_DATA_DIR" ]; then
     mkdir -p "$RFID_DATA_DIR"
-    chown -R "$INSTALL_USER":"$INSTALL_USER" "$RFID_DATA_DIR"
-    chmod -R 750 "$RFID_DATA_DIR"
-    echo "Created writable directory at $RFID_DATA_DIR for RFIDInventory data."
 fi
+chown -R "$INSTALL_USER:$INSTALL_USER" "$RFID_DATA_DIR"
+chmod -R 750 "$RFID_DATA_DIR"
+echo "Ensured writable directory at $RFID_DATA_DIR for RFIDInventory data."
+
+# Ensure the binary has execution permissions
+chmod +x /usr/local/bin/RFIDInventory
 
 # Create autostart directory if not exist
 mkdir -p /etc/skel/.config/autostart
@@ -116,8 +119,7 @@ for user in /home/*; do
     fi
 done
 
-# Enable systemd services
-echo "Enabling service: RFIDInventory.service"
+# Enable and start the systemd service
 systemctl daemon-reload
 systemctl enable RFIDInventory.service
 systemctl start RFIDInventory.service
