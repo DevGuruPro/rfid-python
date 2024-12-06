@@ -113,20 +113,20 @@ def find_gps_port():
                 serw.write('AT+QGPS=1\r'.encode())
                 logger.debug(f"AT-{port}")
                 serw.close()
-                time.sleep(.5)
+                time.sleep(1)
         except (OSError, serial.SerialException):
             pass  # Ignore if the port can't be opened
 
     for port in serial_ports:
         try:
             # Open each port
-            with serial.Serial(port, baudrate=BAUD_RATE_GPS, timeout=1) as ser:
+            with serial.Serial(port, baudrate=BAUD_RATE_GPS, timeout=1, rtscts=True, dsrdtr=True) as ser:
                 buffer = ser.in_waiting
                 if buffer < 80:
-                    time.sleep(.2)
+                    time.sleep(.5)
                 # Try reading from the port
                 line = ser.readline().decode('utf-8', errors='ignore').strip()
-                logger.debug(line)
+                logger.debug(line, port)
                 if line.startswith('$G'):
                     logger.info(f"GPS found on port: {port}")
                     return port
