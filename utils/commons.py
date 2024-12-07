@@ -105,10 +105,9 @@ def get_mac_address():
     return formatted_mac_address
 
 
-def find_gps_port():
+def pre_config_gps():
     serial_ports = [port.device for port in serial.tools.list_ports.comports()]
     logger.debug(f"Available ports:{serial_ports}")
-
     if platform.system() != 'Windows':
         for port in serial_ports:
             try:
@@ -123,6 +122,9 @@ def find_gps_port():
             except (OSError, serial.SerialException):
                 pass  # Ignore if the port can't be opened
 
+
+def find_gps_port():
+    serial_ports = [port.device for port in serial.tools.list_ports.comports()]
     for port in serial_ports:
         try:
             # Open each port

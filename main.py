@@ -40,9 +40,7 @@ class InventorySystem(object):
             'password': password
         }
         try:
-            print(payload)
             response = requests.Session().post(LOGIN_URL, json=payload, timeout=4)
-            print('1')
             if response.status_code == 200:
                 data = response.json()
                 if data['metadata']['code'] == '200':

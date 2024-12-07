@@ -22,7 +22,7 @@ from settings import HEALTH_UPLOAD_URL, RECORD_UPLOAD_URL, LOGIN_URL
 from ui.ui_main import Ui_MainWindow
 from ui.wav_data import wav_data
 from utils.commons import extract_from_gps, get_date_from_utc, find_gps_port, is_ipv4_address, \
-    find_smallest_available_id, calculate_speed_bearing, convert_formatted_payload
+    find_smallest_available_id, calculate_speed_bearing, convert_formatted_payload, pre_config_gps
 
 from utils.gps import GPS
 from utils.logger import logger
@@ -137,6 +137,7 @@ class MainWnd(QMainWindow):
         self.internet_gps = threading.Thread(target=self.get_internet_gps_data)
         self.igps_stop = threading.Event()
 
+        pre_config_gps()
         self.load_setting()
 
         self.rfid = RFID()
