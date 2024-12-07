@@ -110,9 +110,10 @@ def find_gps_port():
     for port in serial_ports:
         try:
             with serial.Serial(port, baudrate=BAUD_RATE_GPS, timeout=1, rtscts=True, dsrdtr=True) as serw:
-                logger.debug(serw.write('AT+QGPS?\r'.encode()))
-                logger.debug(serw.write('AT+QGPS=1\r'.encode()))
-                logger.debug(serw.write('AT+QGPS?\r'.encode()))
+                serw.write('AT+QGPS=1\r'.encode())
+                # logger.debug(serw.write('AT+QGPS?\r'.encode()))
+                # logger.debug(serw.write('AT+QGPS=1\r'.encode()))
+                # logger.debug(serw.write('AT+QGPS?\r'.encode()))
                 logger.debug(f"AT-{port}")
                 serw.close()
                 time.sleep(1)
