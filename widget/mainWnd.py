@@ -115,11 +115,18 @@ class MainWnd(QMainWindow):
         self.ui.tag_limit.clicked.connect(self.on_tag_check)
         self.ui.rssi_limit.clicked.connect(self.on_rssi_check)
         self.ui.check_run_db.clicked.connect(self.on_run_db_check)
+        self.ui.login_cred.clicked.connect(self.on_login_cred_check)
 
         self.ui.gps_wid.setDisabled(True)
         self.ui.speed_chw.setDisabled(True)
         self.ui.rssi_chw.setDisabled(True)
         self.ui.tag_chw.setDisabled(True)
+        self.ui.login_chw.setDisabled(True)
+
+        self.userName = user_name
+        self.token = token
+        self.email = email
+        self.password = password
 
         self._stop = threading.Event()
 
@@ -142,11 +149,6 @@ class MainWnd(QMainWindow):
         self.upload_record.connect(self.upload_scanned_data)
 
         self.notify_thread = threading.Thread(target=self.beep_sound)
-
-        self.userName = user_name
-        self.token = token
-        self.email = email
-        self.password = password
 
         self.db_connection = sqlite3.connect('database.db')
         self.db_cursor = self.db_connection.cursor()
@@ -328,6 +330,12 @@ class MainWnd(QMainWindow):
         else:
             self.ui.rssi_chw.setDisabled(True)
 
+    def on_login_cred_check(self):
+        if self.ui.login_cred.isChecked():
+            self.ui.login_chw.setEnabled(True)
+        else:
+            self.ui.login_chw.setDisabled(True)
+
     def on_gps_checked(self):
         if self.ui.gps_checkBox.isChecked():
             self.ui.gps_wid.setEnabled(True)
@@ -435,73 +443,90 @@ class MainWnd(QMainWindow):
             self.rfid.set_reader(text, True if self.ui.rfid_connection_status.text() == "Connected" else False)
 
     def load_setting(self):
-        if not os.path.isfile('setting/module.setting'):
-            # logger.debug("Setting file does not exist.")
-            return
-        with open('setting/module.setting', 'r') as load_file:
-            setting_data = json.load(load_file)
-            self.ui.edit_rfid_noti.setText(setting_data['RFID']['notify'])
-            self.ui.edit_rfid_host.setText(setting_data['RFID']['host'])
-            self.ui.edit_rfid_rsa1.setText(setting_data['RFID']['rsa1'])
-            self.ui.edit_rfid_rsa2.setText(setting_data['RFID']['rsa2'])
-            self.ui.edit_rfid_lsa1.setText(setting_data['RFID']['lsa1'])
-            self.ui.edit_rfid_lsa2.setText(setting_data['RFID']['lsa2'])
-            self.ui.edit_rfid_ra1.setText(setting_data['RFID']['ra1'])
-            self.ui.edit_rfid_ra2.setText(setting_data['RFID']['ra2'])
+        if os.path.isfile('setting/module.setting'):
+            try:
+                with open('setting/module.setting', 'r') as load_file:
+                    setting_data = json.load(load_file)
+                    self.ui.edit_rfid_noti.setText(setting_data['RFID']['notify'])
+                    self.ui.edit_rfid_host.setText(setting_data['RFID']['host'])
+                    self.ui.edit_rfid_rsa1.setText(setting_data['RFID']['rsa1'])
+                    self.ui.edit_rfid_rsa2.setText(setting_data['RFID']['rsa2'])
+                    self.ui.edit_rfid_lsa1.setText(setting_data['RFID']['lsa1'])
+                    self.ui.edit_rfid_lsa2.setText(setting_data['RFID']['lsa2'])
+                    self.ui.edit_rfid_ra1.setText(setting_data['RFID']['ra1'])
+                    self.ui.edit_rfid_ra2.setText(setting_data['RFID']['ra2'])
 
-            if setting_data['gps']['checked']:
-                self.ui.gps_checkBox.setChecked(True)
-                self.ui.gps_wid.setEnabled(True)
-            else:
-                self.ui.gps_checkBox.setChecked(False)
-                self.ui.gps_wid.setDisabled(True)
-            if setting_data['gps']['is_external']:
-                self.ui.radio_external_gps.setChecked(True)
-                pp = find_gps_port()
-                if pp is not None:
-                    self.ui.edit_gps_port.setText(pp)
-                    self.gps = GPS(port=pp)
-                    self.gps.sig_msg.connect(self.monitor_gps_status)
-                    self.gps.start()
-                self.scan_port_stop.clear()
-                self.scan_port_thread = threading.Thread(target=self.monitor_gps_port)
-                self.scan_port_thread.start()
-            else:
-                self.ui.radio_internet_gps.setChecked(True)
-                self.igps_stop.clear()
-                self.internet_gps = threading.Thread(target=self.get_internet_gps_data)
-                self.internet_gps.start()
-            if setting_data['speed']['checked']:
-                self.ui.speed_limit.setChecked(True)
-                self.ui.speed_chw.setEnabled(True)
-            else:
-                self.ui.speed_limit.setChecked(False)
-                self.ui.speed_chw.setDisabled(True)
-            if setting_data['rssi']['checked']:
-                self.ui.rssi_limit.setChecked(True)
-                self.ui.rssi_chw.setEnabled(True)
-            else:
-                self.ui.rssi_limit.setChecked(False)
-                self.ui.rssi_chw.setDisabled(True)
-            if setting_data['tag_range']['checked']:
-                self.ui.tag_limit.setChecked(True)
-                self.ui.tag_chw.setEnabled(True)
-            else:
-                self.ui.tag_limit.setChecked(False)
-                self.ui.tag_chw.setDisabled(True)
-            self.ui.edit_gps_noti.setText(setting_data['gps']['notify'])
-            self.ui.edit_gps_hand.setText(setting_data['gps']['handshake'])
-            self.ui.edit_gps_dbits.setText(setting_data['gps']['data_bits'])
-            self.ui.edit_gps_sbits.setText(setting_data['gps']['stop_bits'])
-            self.ui.edit_gps_parity.setText(setting_data['gps']['parity'])
-            self.ui.edit_gps_baud.setText(setting_data['gps']['baud_rate'])
+                    if setting_data['gps']['checked']:
+                        self.ui.gps_checkBox.setChecked(True)
+                        self.ui.gps_wid.setEnabled(True)
+                    else:
+                        self.ui.gps_checkBox.setChecked(False)
+                        self.ui.gps_wid.setDisabled(True)
+                    if setting_data['gps']['is_external']:
+                        self.ui.radio_external_gps.setChecked(True)
+                        pp = find_gps_port()
+                        if pp is not None:
+                            self.ui.edit_gps_port.setText(pp)
+                            self.gps = GPS(port=pp)
+                            self.gps.sig_msg.connect(self.monitor_gps_status)
+                            self.gps.start()
+                        self.scan_port_stop.clear()
+                        self.scan_port_thread = threading.Thread(target=self.monitor_gps_port)
+                        self.scan_port_thread.start()
+                    else:
+                        self.ui.radio_internet_gps.setChecked(True)
+                        self.igps_stop.clear()
+                        self.internet_gps = threading.Thread(target=self.get_internet_gps_data)
+                        self.internet_gps.start()
+                    if setting_data['speed']['checked']:
+                        self.ui.speed_limit.setChecked(True)
+                        self.ui.speed_chw.setEnabled(True)
+                    else:
+                        self.ui.speed_limit.setChecked(False)
+                        self.ui.speed_chw.setDisabled(True)
+                    if setting_data['rssi']['checked']:
+                        self.ui.rssi_limit.setChecked(True)
+                        self.ui.rssi_chw.setEnabled(True)
+                    else:
+                        self.ui.rssi_limit.setChecked(False)
+                        self.ui.rssi_chw.setDisabled(True)
+                    if setting_data['tag_range']['checked']:
+                        self.ui.tag_limit.setChecked(True)
+                        self.ui.tag_chw.setEnabled(True)
+                    else:
+                        self.ui.tag_limit.setChecked(False)
+                        self.ui.tag_chw.setDisabled(True)
+                    if setting_data['use_database']:
+                        self.ui.check_run_db.setChecked(True)
+                    else:
+                        self.ui.check_run_db.setChecked(False)
+                    if setting_data['login']['checked']:
+                        self.ui.login_chw.setChecked(True)
+                        self.ui.login_chw.setEnabled(True)
+                    else:
+                        self.ui.login_chw.setChecked(False)
+                        self.ui.login_chw.setDisabled(True)
+                    self.ui.edit_gps_noti.setText(setting_data['gps']['notify'])
+                    self.ui.edit_gps_hand.setText(setting_data['gps']['handshake'])
+                    self.ui.edit_gps_dbits.setText(setting_data['gps']['data_bits'])
+                    self.ui.edit_gps_sbits.setText(setting_data['gps']['stop_bits'])
+                    self.ui.edit_gps_parity.setText(setting_data['gps']['parity'])
+                    self.ui.edit_gps_baud.setText(setting_data['gps']['baud_rate'])
 
-            self.ui.setting_min_speed.setText(setting_data['speed']['min'])
-            self.ui.setting_max_speed.setText(setting_data['speed']['max'])
-            self.ui.setting_min_rssi.setText(setting_data['rssi']['min'])
-            self.ui.setting_max_rssi.setText(setting_data['rssi']['max'])
-            self.ui.setting_start_tag.setText(setting_data['tag_range']['min'])
-            self.ui.setting_end_tag.setText(setting_data['tag_range']['max'])
+                    self.ui.setting_min_speed.setText(setting_data['speed']['min'])
+                    self.ui.setting_max_speed.setText(setting_data['speed']['max'])
+                    self.ui.setting_min_rssi.setText(setting_data['rssi']['min'])
+                    self.ui.setting_max_rssi.setText(setting_data['rssi']['max'])
+                    self.ui.setting_start_tag.setText(setting_data['tag_range']['min'])
+                    self.ui.setting_end_tag.setText(setting_data['tag_range']['max'])
+                    self.ui.setting_login_user.setText(setting_data['login']['username'])
+                    self.ui.setting_login_pass.setText(setting_data['login']['password'])
+            except Exception:
+                pass
+        if self.ui.setting_login_user.text() == "":
+            self.ui.setting_login_user.setText(self.email)
+        if self.ui.setting_login_pass.text() == "":
+            self.ui.setting_login_pass.setText(self.password)
 
     def setting_save(self):
         setting_data = {
@@ -519,7 +544,10 @@ class MainWnd(QMainWindow):
             'rssi': {'checked': self.ui.rssi_limit.isChecked(), 'min': self.ui.setting_min_rssi.text(),
                      'max': self.ui.setting_max_rssi.text()},
             'tag_range': {'checked': self.ui.tag_limit.isChecked(), 'min': self.ui.setting_start_tag.text(),
-                          'max': self.ui.setting_end_tag.text()}
+                          'max': self.ui.setting_end_tag.text()},
+            'use_database': self.ui.check_run_db.isChecked(),
+            'login': {'checked': self.ui.login_cred.isChecked(), 'username': self.ui.setting_login_user.text(),
+                      'password': self.ui.setting_login_pass.text()}
         }
         if not os.path.exists('setting'):
             os.makedirs('setting')

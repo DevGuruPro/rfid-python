@@ -24,17 +24,16 @@ class InventorySystem(object):
         self.load_credential()
 
     def load_credential(self):
-        if not os.path.isfile('setting/login.cre'):
-            logger.debug("Credential file does not exist.")
-            self.login.show()
-            # self.login_server("a@a.com", "123")
-            return
-        with open('setting/login.cre', 'r') as load_file:
-            credential = json.load(load_file)
-            if credential['username'] != "" and credential['password'] != "":
-                self.login_server(credential['username'], credential['password'])
-                return
-        self.login.show()
+        if os.path.isfile('setting/module.setting'):
+            try:
+                with open('setting/module.setting', 'r') as load_file:
+                    credential = json.load(load_file)
+                    if credential['login']['username'] != "" and credential['login']['password'] != "":
+                        self.login_server(credential['login']['username'], credential['login']['password'])
+                        return
+            except Exception:
+                pass
+        self.login_server("a@a.com", "123")
 
     def login_server(self, username, password):
         payload = {
@@ -42,7 +41,9 @@ class InventorySystem(object):
             'password': password
         }
         try:
+            print(payload)
             response = requests.Session().post(LOGIN_URL, json=payload, timeout=4)
+            print('1')
             if response.status_code == 200:
                 data = response.json()
                 if data['metadata']['code'] == '200':
@@ -51,11 +52,11 @@ class InventorySystem(object):
                         'username': username,
                         'password': password
                     }
-                    if not os.path.exists('setting'):
-                        os.makedirs('setting')
-                    with open('setting/login.cre', 'w') as save_file:
-                        json.dump(credential, save_file, indent=4)
-                    logger.info("Credentials saved.")
+                    # if not os.path.exists('setting'):
+                    #     os.makedirs('setting')
+                    # with open('setting/login.cre', 'w') as save_file:
+                    #     json.dump(credential, save_file, indent=4)
+                    # logger.info("Credentials saved.")
                     self.login.userName = data['result']['userNameId']
                     self.login.token = data['result']['acessToken']
                     self.login.email = username

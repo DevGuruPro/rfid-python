@@ -1221,6 +1221,111 @@ class Ui_MainWindow(object):
 
         self.verticalLayout_14.addWidget(self.rssi_chw)
 
+        self.widget_14 = QWidget(self.widget_5)
+        self.widget_14.setObjectName(u"widget_14")
+        self.verticalLayout_35 = QVBoxLayout(self.widget_14)
+        self.verticalLayout_35.setSpacing(0)
+        self.verticalLayout_35.setObjectName(u"verticalLayout_35")
+        self.verticalLayout_35.setContentsMargins(0, 0, 0, 0)
+        self.login_cred = QCheckBox(self.widget_14)
+        self.login_cred.setObjectName(u"login_cred")
+        self.login_cred.setFont(font3)
+        self.login_cred.setStyleSheet(u"QCheckBox{\n"
+"	color: white; \n"
+"}\n"
+"\n"
+"QCheckBox::indicator {  \n"
+"    width: 20px;  \n"
+"    height: 20px;  \n"
+"}  \n"
+"\n"
+"QCheckBox::indicator:unchecked {  \n"
+"    border: 2px solid gray;  \n"
+"    background-color: white;  \n"
+"}\n"
+"\n"
+"QCheckBox::indicator:checked { \n"
+"	border: 2px solid gray;   \n"
+"    image: url(:/img/checkmark.png);  /* Use a custom image if needed */  \n"
+" }")
+
+        self.verticalLayout_35.addWidget(self.login_cred)
+
+        self.login_chw = QWidget(self.widget_14)
+        self.login_chw.setObjectName(u"login_chw")
+        sizePolicy3.setHeightForWidth(self.login_chw.sizePolicy().hasHeightForWidth())
+        self.login_chw.setSizePolicy(sizePolicy3)
+        self.horizontalLayout_30 = QHBoxLayout(self.login_chw)
+        self.horizontalLayout_30.setObjectName(u"horizontalLayout_30")
+        self.horizontalLayout_30.setContentsMargins(10, 0, 10, 0)
+        self.widget_17 = QWidget(self.login_chw)
+        self.widget_17.setObjectName(u"widget_17")
+        sizePolicy2.setHeightForWidth(self.widget_17.sizePolicy().hasHeightForWidth())
+        self.widget_17.setSizePolicy(sizePolicy2)
+        self.horizontalLayout_10 = QHBoxLayout(self.widget_17)
+        self.horizontalLayout_10.setObjectName(u"horizontalLayout_10")
+        self.label_61 = QLabel(self.widget_17)
+        self.label_61.setObjectName(u"label_61")
+        self.label_61.setFont(font3)
+        self.label_61.setStyleSheet(u"QLabel {  \n"
+"    color: white;  /* Change 'blue' to your preferred color */  \n"
+"}  ")
+
+        self.horizontalLayout_10.addWidget(self.label_61)
+
+        self.setting_login_user = QLineEdit(self.widget_17)
+        self.setting_login_user.setObjectName(u"setting_login_user")
+        self.setting_login_user.setFont(font3)
+        self.setting_login_user.setStyleSheet(u"QLineEdit {  \n"
+"    border: 2px solid gray;  \n"
+"    border-radius: 10px;  \n"
+"    padding: 0 8px;  \n"
+"    background: white;  \n"
+"    selection-background-color: darkgray;  \n"
+"}  ")
+
+        self.horizontalLayout_10.addWidget(self.setting_login_user)
+
+
+        self.horizontalLayout_30.addWidget(self.widget_17)
+
+        self.widget_50 = QWidget(self.login_chw)
+        self.widget_50.setObjectName(u"widget_50")
+        sizePolicy2.setHeightForWidth(self.widget_50.sizePolicy().hasHeightForWidth())
+        self.widget_50.setSizePolicy(sizePolicy2)
+        self.horizontalLayout_31 = QHBoxLayout(self.widget_50)
+        self.horizontalLayout_31.setObjectName(u"horizontalLayout_31")
+        self.label_62 = QLabel(self.widget_50)
+        self.label_62.setObjectName(u"label_62")
+        self.label_62.setFont(font3)
+        self.label_62.setStyleSheet(u"QLabel {  \n"
+"    color: white;  /* Change 'blue' to your preferred color */  \n"
+"}  ")
+
+        self.horizontalLayout_31.addWidget(self.label_62)
+
+        self.setting_login_pass = QLineEdit(self.widget_50)
+        self.setting_login_pass.setObjectName(u"setting_login_pass")
+        self.setting_login_pass.setFont(font3)
+        self.setting_login_pass.setStyleSheet(u"QLineEdit {  \n"
+"    border: 2px solid gray;  \n"
+"    border-radius: 10px;  \n"
+"    padding: 0 8px;  \n"
+"    background: white;  \n"
+"    selection-background-color: darkgray;  \n"
+"}  ")
+
+        self.horizontalLayout_31.addWidget(self.setting_login_pass)
+
+
+        self.horizontalLayout_30.addWidget(self.widget_50)
+
+
+        self.verticalLayout_35.addWidget(self.login_chw)
+
+
+        self.verticalLayout_14.addWidget(self.widget_14)
+
 
         self.verticalLayout_6.addWidget(self.widget_5)
 
@@ -2106,6 +2211,9 @@ class Ui_MainWindow(object):
         self.rssi_limit.setText(QCoreApplication.translate("MainWindow", u"Enable RSSI Limit", None))
         self.label_38.setText(QCoreApplication.translate("MainWindow", u"Min RSSI", None))
         self.label_39.setText(QCoreApplication.translate("MainWindow", u"Max RSSI", None))
+        self.login_cred.setText(QCoreApplication.translate("MainWindow", u"Login Credentials", None))
+        self.label_61.setText(QCoreApplication.translate("MainWindow", u"Username", None))
+        self.label_62.setText(QCoreApplication.translate("MainWindow", u"Password", None))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.setting_tab), QCoreApplication.translate("MainWindow", u"Settings", None))
         self.label_48.setText(QCoreApplication.translate("MainWindow", u"Set up the third party API integration below if you want to get the scan tags data using your API. Provide the API URL, login credentials, JSON data\n"
 "tag mapping with available data points. Use custom fields for any data points not available; you can hard-code item", None))

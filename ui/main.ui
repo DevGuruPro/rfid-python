@@ -2214,6 +2214,187 @@ QCheckBox::indicator:checked {
                    </layout>
                   </widget>
                  </item>
+                 <item>
+                  <widget class="QWidget" name="widget_14" native="true">
+                   <layout class="QVBoxLayout" name="verticalLayout_35">
+                    <property name="spacing">
+                     <number>0</number>
+                    </property>
+                    <property name="leftMargin">
+                     <number>0</number>
+                    </property>
+                    <property name="topMargin">
+                     <number>0</number>
+                    </property>
+                    <property name="rightMargin">
+                     <number>0</number>
+                    </property>
+                    <property name="bottomMargin">
+                     <number>0</number>
+                    </property>
+                    <item>
+                     <widget class="QCheckBox" name="login_cred">
+                      <property name="font">
+                       <font>
+                        <pointsize>10</pointsize>
+                        <weight>50</weight>
+                        <bold>false</bold>
+                       </font>
+                      </property>
+                      <property name="styleSheet">
+                       <string notr="true">QCheckBox{
+	color: white; 
+}
+
+QCheckBox::indicator {  
+    width: 20px;  
+    height: 20px;  
+}  
+
+QCheckBox::indicator:unchecked {  
+    border: 2px solid gray;  
+    background-color: white;  
+}
+
+QCheckBox::indicator:checked { 
+	border: 2px solid gray;   
+    image: url(:/img/checkmark.png);  /* Use a custom image if needed */  
+ }</string>
+                      </property>
+                      <property name="text">
+                       <string>Login Credentials</string>
+                      </property>
+                     </widget>
+                    </item>
+                    <item>
+                     <widget class="QWidget" name="login_chw" native="true">
+                      <property name="sizePolicy">
+                       <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
+                        <horstretch>0</horstretch>
+                        <verstretch>0</verstretch>
+                       </sizepolicy>
+                      </property>
+                      <layout class="QHBoxLayout" name="horizontalLayout_30">
+                       <property name="leftMargin">
+                        <number>10</number>
+                       </property>
+                       <property name="topMargin">
+                        <number>0</number>
+                       </property>
+                       <property name="rightMargin">
+                        <number>10</number>
+                       </property>
+                       <property name="bottomMargin">
+                        <number>0</number>
+                       </property>
+                       <item>
+                        <widget class="QWidget" name="widget_17" native="true">
+                         <property name="sizePolicy">
+                          <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
+                           <horstretch>0</horstretch>
+                           <verstretch>0</verstretch>
+                          </sizepolicy>
+                         </property>
+                         <layout class="QHBoxLayout" name="horizontalLayout_10">
+                          <item>
+                           <widget class="QLabel" name="label_61">
+                            <property name="font">
+                             <font>
+                              <pointsize>10</pointsize>
+                              <weight>50</weight>
+                              <bold>false</bold>
+                             </font>
+                            </property>
+                            <property name="styleSheet">
+                             <string notr="true">QLabel {  
+    color: white;  /* Change 'blue' to your preferred color */  
+}  </string>
+                            </property>
+                            <property name="text">
+                             <string>Username</string>
+                            </property>
+                           </widget>
+                          </item>
+                          <item>
+                           <widget class="QLineEdit" name="setting_login_user">
+                            <property name="font">
+                             <font>
+                              <pointsize>10</pointsize>
+                              <weight>50</weight>
+                              <bold>false</bold>
+                             </font>
+                            </property>
+                            <property name="styleSheet">
+                             <string notr="true">QLineEdit {  
+    border: 2px solid gray;  
+    border-radius: 10px;  
+    padding: 0 8px;  
+    background: white;  
+    selection-background-color: darkgray;  
+}  </string>
+                            </property>
+                           </widget>
+                          </item>
+                         </layout>
+                        </widget>
+                       </item>
+                       <item>
+                        <widget class="QWidget" name="widget_50" native="true">
+                         <property name="sizePolicy">
+                          <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
+                           <horstretch>0</horstretch>
+                           <verstretch>0</verstretch>
+                          </sizepolicy>
+                         </property>
+                         <layout class="QHBoxLayout" name="horizontalLayout_31">
+                          <item>
+                           <widget class="QLabel" name="label_62">
+                            <property name="font">
+                             <font>
+                              <pointsize>10</pointsize>
+                              <weight>50</weight>
+                              <bold>false</bold>
+                             </font>
+                            </property>
+                            <property name="styleSheet">
+                             <string notr="true">QLabel {  
+    color: white;  /* Change 'blue' to your preferred color */  
+}  </string>
+                            </property>
+                            <property name="text">
+                             <string>Password</string>
+                            </property>
+                           </widget>
+                          </item>
+                          <item>
+                           <widget class="QLineEdit" name="setting_login_pass">
+                            <property name="font">
+                             <font>
+                              <pointsize>10</pointsize>
+                              <weight>50</weight>
+                              <bold>false</bold>
+                             </font>
+                            </property>
+                            <property name="styleSheet">
+                             <string notr="true">QLineEdit {  
+    border: 2px solid gray;  
+    border-radius: 10px;  
+    padding: 0 8px;  
+    background: white;  
+    selection-background-color: darkgray;  
+}  </string>
+                            </property>
+                           </widget>
+                          </item>
+                         </layout>
+                        </widget>
+                       </item>
+                      </layout>
+                     </widget>
+                    </item>
+                   </layout>
+                  </widget>
+                 </item>
                 </layout>
                </widget>
               </item>

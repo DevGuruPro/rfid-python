@@ -44,11 +44,6 @@ class LoginWnd(QMainWindow):
                         'username': username,
                         'password': password
                     }
-                    if not os.path.exists('setting'):
-                        os.makedirs('setting')
-                    with open('setting/login.cre', 'w') as save_file:
-                        json.dump(credential, save_file, indent=4)
-                    logger.info("Credentials saved.")
                     self.token = data['result']['acessToken']
                     self.userName = data['result']['userNameId']
                     self.email = username
