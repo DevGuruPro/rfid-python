@@ -121,7 +121,24 @@ def pre_config_gps():
                     time.sleep(1)
             except (OSError, serial.SerialException):
                 pass  # Ignore if the port can't be opened
+    for port in serial_ports:
+        try:
+            # Open each port
+            with serial.Serial(port, baudrate=BAUD_RATE_GPS, timeout=1, rtscts=True, dsrdtr=True) as ser:
+                buffer = ser.in_waiting
+                if buffer < 80:
+                    time.sleep(.2)
+                # Try reading from the port
+                line = ser.readline().decode('utf-8', errors='ignore').strip()
+                logger.debug(f"{line}, {port}")
+                if line.startswith('$G'):
+                    logger.info(f"GPS found on port: {port}")
+                    return port
+        except (OSError, serial.SerialException):
+            pass  # Ignore if the port can't be opened
 
+    logger.info("No GPS port found")
+    return None
 
 def find_gps_port():
     serial_ports = [port.device for port in serial.tools.list_ports.comports()]
