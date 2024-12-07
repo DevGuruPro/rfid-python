@@ -4,21 +4,7 @@
 sudo apt update
 
 # Install development tools and libraries
-sudo apt install -y build-essential
-sudo apt install -y python3-dev
-sudo apt install -y zlib1g-dev
-sudo apt install -y libssl-dev
-sudo apt install -y libffi-dev
-sudo apt install -y libbz2-dev
-sudo apt install -y libreadline-dev
-sudo apt install -y libsqlite3-dev
-sudo apt install -y libncursesw5-dev
-sudo apt install -y libgdbm-dev
-sudo apt install -y liblzma-dev
-sudo apt install -y libc6-dev
-sudo apt install -y libx11-dev libxrender-dev libxtst-dev libxi-dev libxt-dev
-sudo apt install -y pkg-config
-sudo apt install -y tk-dev
+sudo apt install -y build-essential python3-dev zlib1g-dev libssl-dev libffi-dev libbz2-dev libreadline-dev libncursesw5-dev libsqlite3-dev libgdbm-dev liblzma-dev libc6-dev libx11-dev libxrender-dev libxtst-dev libxi-dev libxt-dev libxcb-xinerama0 libxcb-cursor0 libx11-xcb1 libxcb1 libxfixes3 libxi6 libxrender1 libxcb-render0 libxcb-shape0 libxcb-xfixes0 x11-xserver-utils pkg-config tk-dev
 
 # Download and extract Python source
 wget https://www.python.org/ftp/python/3.9.0/Python-3.9.0.tar.xz
