@@ -2,6 +2,7 @@ import re
 import time
 from datetime import datetime
 from geopy.distance import geodesic
+import platform
 
 from settings import BAUD_RATE_GPS, PORT_WRITE, PORT_READ
 from geographiclib.geodesic import Geodesic
@@ -10,6 +11,7 @@ import serial
 import serial.tools.list_ports
 import uuid
 from utils.logger import logger
+
 
 def convert_to_decimal(coord, direction, is_latitude):
     try:
@@ -107,19 +109,19 @@ def find_gps_port():
     serial_ports = [port.device for port in serial.tools.list_ports.comports()]
     logger.debug(f"Available ports:{serial_ports}")
 
-    for port in serial_ports:
-        try:
-            with serial.Serial(port, baudrate=BAUD_RATE_GPS, timeout=1, rtscts=True, dsrdtr=True) as serw:
-                serw.write('AT+QGPS=1\r'.encode())
-                # logger.debug(serw.write('AT+QGPS?\r'.encode()))
-                # logger.debug(serw.write('AT+QGPS=1\r'.encode()))
-                # logger.debug(serw.write('AT+QGPS?\r'.encode()))
-                logger.debug(f"AT-{port}")
-                serw.close()
-                time.sleep(1)
-
-        except (OSError, serial.SerialException):
-            pass  # Ignore if the port can't be opened
+    if platform.system() != 'Windows':
+        for port in serial_ports:
+            try:
+                with serial.Serial(port, baudrate=BAUD_RATE_GPS, timeout=1, rtscts=True, dsrdtr=True) as serw:
+                    serw.write('AT+QGPS=1\r'.encode())
+                    # logger.debug(serw.write('AT+QGPS?\r'.encode()))
+                    # logger.debug(serw.write('AT+QGPS=1\r'.encode()))
+                    # logger.debug(serw.write('AT+QGPS?\r'.encode()))
+                    logger.debug(f"AT-{port}")
+                    serw.close()
+                    time.sleep(1)
+            except (OSError, serial.SerialException):
+                pass  # Ignore if the port can't be opened
 
     for port in serial_ports:
         try:

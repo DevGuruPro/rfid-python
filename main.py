@@ -1,7 +1,6 @@
 import json
 import os
 import sys
-import threading
 
 import requests
 from PySide6.QtWidgets import QApplication
@@ -48,10 +47,10 @@ class InventorySystem(object):
                 data = response.json()
                 if data['metadata']['code'] == '200':
                     logger.debug('Login successful!')
-                    credential = {
-                        'username': username,
-                        'password': password
-                    }
+                    # credential = {
+                    #     'username': username,
+                    #     'password': password
+                    # }
                     # if not os.path.exists('setting'):
                     #     os.makedirs('setting')
                     # with open('setting/login.cre', 'w') as save_file:

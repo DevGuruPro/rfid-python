@@ -421,7 +421,7 @@ class MainWnd(QMainWindow):
                     self.last_lat = self.cur_lat
                     self.last_lon = self.cur_lon
                     self.last_utctime = milliseconds_time
-            except Exception as e:
+            except Exception:
                 if self.ui.gps_connection_status.text() == "Connected":
                     self.monitor_gps_status(False)
             time.sleep(4)
@@ -434,7 +434,7 @@ class MainWnd(QMainWindow):
             sound = pygame.mixer.Sound(tmp_wav_path)
             sound.play()
         except pygame.error:
-            logger.error(f"pygame error.")
+            logger.error("pygame error.")
         finally:
             os.unlink(tmp_wav_path)
 

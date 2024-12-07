@@ -40,10 +40,10 @@ class LoginWnd(QMainWindow):
                 data = response.json()
                 if data['metadata']['code'] == '200':
                     logger.debug('Login successful!')
-                    credential = {
-                        'username': username,
-                        'password': password
-                    }
+                    # credential = {
+                    #     'username': username,
+                    #     'password': password
+                    # }
                     self.token = data['result']['acessToken']
                     self.userName = data['result']['userNameId']
                     self.email = username
